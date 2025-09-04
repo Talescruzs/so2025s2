@@ -31,11 +31,13 @@ enum EstadoProcesso {
     PRONTO,      /* 0 */
     EXECUTANDO,  /* 1 */
     BLOQUEADO,   /* 2 */
+    MORTO       /* 3 */
 };
 
 typedef struct processo {
     int pid;                    // identificador do processo
     int ppid;                   // identificador do processo pai
+    int terminal;               // terminal associado ao processo (se aplicável)
     enum EstadoProcesso estado; // estado do processo (pronto, executando, bloqueado)
     int regA, regX, regPC, regERRO; // registradores salvos do processo
     int quantum;                // quantum restante (se/quando usar escalonamento por tempo)
@@ -89,6 +91,14 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   if (self->tabela_processos == NULL) {
       free(self);
       return NULL;
+  }
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+      self->tabela_processos[i].estado = MORTO; // inicializa todos os processos como mortos
+      
+      if(i == 0) self->tabela_processos[i].terminal = D_TERM_A_TELA;
+      else if(i == 1) self->tabela_processos[i].terminal = D_TERM_B_TELA;
+      else if(i == 2) self->tabela_processos[i].terminal = D_TERM_C_TELA;
+      else if(i == 3) self->tabela_processos[i].terminal = D_TERM_D_TELA;
   }
 
   self->processo_corrente = -1; // nenhum processo está executando
@@ -194,11 +204,48 @@ static void so_trata_pendencias(so_t *self)
 
 static void so_escalona(so_t *self)
 {
-  // escolhe o próximo processo a executar, que passa a ser o processo
-  //   corrente; pode continuar sendo o mesmo de antes ou não
-  // t2: na primeira versão, escolhe um processo pronto caso o processo
-  //   corrente não possa continuar executando, senão deixa o mesmo processo.
-  //   depois, implementa um escalonador melhor
+  console_printf("escalonando   %d", self->processo_corrente);
+    int atual = self->processo_corrente;
+    int proximo = -1;
+    int prontos = 0;
+
+    // Conta quantos processos PRONTO existem
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            prontos++;
+        }
+    }
+
+    // Só coloca o processo corrente em PRONTO se houver outro processo PRONTO
+    if (atual >= 0 && atual < MAX_PROCESSOS &&
+        self->tabela_processos[atual].estado == EXECUTANDO &&
+        prontos > 0) {
+        self->tabela_processos[atual].estado = PRONTO;
+    }
+
+    // Procura próximo processo PRONTO (round-robin)
+    for (int i = 1; i <= MAX_PROCESSOS; i++) {
+        int idx = (atual + i) % MAX_PROCESSOS;
+        if (self->tabela_processos[idx].estado == PRONTO) {
+            proximo = idx;
+            break;
+        }
+    }
+
+    // Se achou, coloca como EXECUTANDO
+    if (proximo != -1) {
+        self->tabela_processos[proximo].estado = EXECUTANDO;
+        self->processo_corrente = proximo;
+    } else if (atual >= 0 && atual < MAX_PROCESSOS &&
+               self->tabela_processos[atual].estado != BLOQUEADO &&
+               self->tabela_processos[atual].estado != MORTO) {
+        // Se não achou, mas o atual não está bloqueado ou morto, mantém EXECUTANDO
+        self->tabela_processos[atual].estado = EXECUTANDO;
+        self->processo_corrente = atual;
+    } else {
+        // Nenhum processo pronto/executando
+        self->processo_corrente = -1;
+    }
 }
 
 static int so_despacha(so_t *self)
@@ -485,7 +532,7 @@ static void so_chamada_escr(so_t *self)
   // t2: caso o processo tenha sido bloqueado, esse acesso deve ser realizado em outra execução
   //   do SO, quando ele verificar que esse acesso já pode ser feito.
   dado = self->tabela_processos[self->processo_corrente].regX;
-  if (es_escreve(self->es, D_TERM_A_TELA, dado) != ERR_OK) {
+  if (es_escreve(self->es, self->tabela_processos[self->processo_corrente].terminal, dado) != ERR_OK) {
     console_printf("SO: problema no acesso à tela");
     self->erro_interno = true;
     return;
@@ -498,26 +545,49 @@ static void so_chamada_escr(so_t *self)
 static void so_chamada_cria_proc(so_t *self)
 {
   console_printf("chamada de criação de processo   ");
-  // ainda sem suporte a processos, carrega programa e passa a executar ele
-  // quem chamou o sistema não vai mais ser executado, coitado!
-  // t2: deveria criar um novo processo
-
-  // em X está o endereço onde está o nome do arquivo
-  int ender_proc;
-  // t2: deveria ler o X do descritor do processo criador
-  ender_proc = self->tabela_processos[self->processo_corrente].regX;
+  int ender_proc = self->tabela_processos[self->processo_corrente].regX;
   char nome[100];
-  if (copia_str_da_mem(100, nome, self->mem, ender_proc)) {
-    int ender_carga = so_carrega_programa(self, nome);
-    if (ender_carga > 0) {
-      // t2: deveria escrever no PC do descritor do processo criado
-      self->tabela_processos[self->processo_corrente].regPC = ender_carga;
-      return;
-    } // else?
+  if (!copia_str_da_mem(100, nome, self->mem, ender_proc)) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
   }
-  // deveria escrever -1 (se erro) ou o PID do processo criado (se OK) no reg A
-  //   do processo que pediu a criação
-  self->tabela_processos[self->processo_corrente].regA = -1;
+
+  int ender_carga = so_carrega_programa(self, nome);
+  if (ender_carga <= 0) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+
+  // Procura slot livre (MORTO ou nunca usado)
+  int slot = -1;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].estado == MORTO) {
+      slot = i;
+      break;
+    }
+  }
+  if (slot == -1) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+
+  // Inicializa novo processo
+  static int next_pid = 2; // init é 1
+  self->tabela_processos[slot].pid = next_pid++;
+  self->tabela_processos[slot].ppid = self->tabela_processos[self->processo_corrente].pid;
+  self->tabela_processos[slot].estado = PRONTO;
+  self->tabela_processos[slot].regA = 0;
+  self->tabela_processos[slot].regX = 0;
+  self->tabela_processos[slot].regERRO = 0;
+  self->tabela_processos[slot].regPC = ender_carga;
+  self->tabela_processos[slot].quantum = 0;
+  self->tabela_processos[slot].esperando_pid = -1;
+  self->tabela_processos[slot].esperando_dispositivo = -1;
+  self->tabela_processos[slot].memoria_base = 0;
+  self->tabela_processos[slot].memoria_limite = 0;
+
+  // Retorna o PID do novo processo no regA do processo criador
+  self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
 }
 
 // implementação da chamada se sistema SO_MATA_PROC
