@@ -130,6 +130,7 @@ int main()
   cria_hardware(&hw);
   // cria o sistema operacional
   so = so_cria(hw.cpu, hw.mem, hw.es, hw.console);
+  console_printf("Simulador de computador iniciado  ");
 
   // executa o laço principal do controlador
   controle_laco(hw.controle);
