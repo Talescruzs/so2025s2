@@ -57,50 +57,50 @@ SO: chamada de sistema 2
 chamada de escrita   
 escalonando   0
 despachando   0  
-interrompido   
-SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
-tratando IRQ   
-interrupção do relógio   
-SO: interrupção do relógio (não tratada)
-escalonando   0
-despachando   0  
-interrompido   
-SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
-tratando IRQ   
-chamada de sistema   
-SO: chamada de sistema 2
-chamada de escrita   
-escalonando   0
-despachando   0  
-interrompido   
-SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
-tratando IRQ   
-chamada de sistema   
-SO: chamada de sistema 2
-chamada de escrita   
-escalonando   0
-despachando   0  
-interrompido   
-SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
-tratando IRQ   
-chamada de sistema   
-SO: chamada de sistema 2
-chamada de escrita   
-escalonando   0
-despachando   0  
-interrompido   
-SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
-tratando IRQ   
-interrupção do relógio   
-SO: interrupção do relógio (não tratada)
-escalonando   0
-despachando   0  
 CMD: 'd1'
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   0  
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
 salvando estado da CPU   
@@ -2496,4 +2496,2482 @@ SO: interrupção do relógio (não tratada)
 escalonando   2
 despachando   3  
 interrompido   
-SO: recebi IRQ 2
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 8
+chamada de morte de processo   
+SO: SO_MATA_PROC não implementada
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 8
+chamada de morte de processo   
+SO: SO_MATA_PROC não implementada
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   2
+despachando   3  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   3
+despachando   0  
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+salvando estado da CPU   
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+escalonando   0
+despachando   1  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalonando   1
+despachando   2  
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+escalona

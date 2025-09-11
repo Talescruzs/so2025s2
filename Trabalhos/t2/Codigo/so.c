@@ -508,29 +508,17 @@ static void so_chamada_le(so_t *self)
 static void so_chamada_escr(so_t *self)
 {
   console_printf("chamada de escrita   ");
-  // implementação com espera ocupada
-  //   t2: deveria bloquear o processo se dispositivo ocupado
-  // implementação escrevendo direto do terminal A
-  //   t2: deveria usar o dispositivo de saída corrente do processo
   for (;;) {
     int estado;
-    if (es_le(self->es, D_TERM_A_TELA_OK, &estado) != ERR_OK) {
+    if (es_le(self->es, self->tabela_processos[self->processo_corrente].terminal + 1, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado da tela");
       self->erro_interno = true;
       return;
     }
     if (estado != 0) break;
-    // como não está saindo do SO, a unidade de controle não está executando seu laço.
-    // esta gambiarra faz pelo menos a console ser atualizada
-    // t2: não deve mais existir quando houver suporte a processos, porque o SO não poderá
-    //   executar por muito tempo, permitindo a execução do laço da unidade de controle
     console_tictac(self->console);
   }
   int dado;
-  // está lendo o valor de X e escrevendo o de A direto onde o processador colocou/vai pegar
-  // t2: deveria usar os registradores do processo que está realizando a E/S
-  // t2: caso o processo tenha sido bloqueado, esse acesso deve ser realizado em outra execução
-  //   do SO, quando ele verificar que esse acesso já pode ser feito.
   dado = self->tabela_processos[self->processo_corrente].regX;
   if (es_escreve(self->es, self->tabela_processos[self->processo_corrente].terminal, dado) != ERR_OK) {
     console_printf("SO: problema no acesso à tela");
