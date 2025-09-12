@@ -583,10 +583,33 @@ static void so_chamada_cria_proc(so_t *self)
 static void so_chamada_mata_proc(so_t *self)
 {
   console_printf("chamada de morte de processo   ");
-  // t2: deveria matar um processo
-  // ainda sem suporte a processos, retorna erro -1
-  console_printf("SO: SO_MATA_PROC não implementada");
-  self->tabela_processos[self->processo_corrente].regA = -1;
+  int pid_alvo = self->tabela_processos[self->processo_corrente].regX;
+  int alvo = -1;
+  if (pid_alvo == 0) {
+    alvo = self->processo_corrente;
+  } else {
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+      if (self->tabela_processos[i].pid == pid_alvo && self->tabela_processos[i].estado != MORTO) {
+        alvo = i;
+        break;
+      }
+    }
+  }
+  if (alvo == -1) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+  self->tabela_processos[alvo].estado = MORTO;
+  self->tabela_processos[alvo].regA = -1;
+  // Desbloqueia o pai se estiver esperando esse filho
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].estado == BLOQUEADO && self->tabela_processos[i].esperando_pid == self->tabela_processos[alvo].pid) {
+      self->tabela_processos[i].estado = PRONTO;
+      self->tabela_processos[i].esperando_pid = -1;
+      self->tabela_processos[i].regA = 0; // sucesso
+    }
+  }
+  self->tabela_processos[self->processo_corrente].regA = 0;
 }
 
 // implementação da chamada se sistema SO_ESPERA_PROC
@@ -594,10 +617,20 @@ static void so_chamada_mata_proc(so_t *self)
 static void so_chamada_espera_proc(so_t *self)
 {
   console_printf("chamada de espera de processo   ");
-  // t2: deveria bloquear o processo se for o caso (e desbloquear na morte do esperado)
-  // ainda sem suporte a processos, retorna erro -1
-  console_printf("SO: SO_ESPERA_PROC não implementada");
-  self->tabela_processos[self->processo_corrente].regA = -1;
+  int pid_esperado = self->tabela_processos[self->processo_corrente].regX;
+  int existe = 0;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].pid == pid_esperado && self->tabela_processos[i].estado != MORTO) {
+      existe = 1;
+      break;
+    }
+  }
+  if (!existe) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+  self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
+  self->tabela_processos[self->processo_corrente].esperando_pid = pid_esperado;
 }
 
 
