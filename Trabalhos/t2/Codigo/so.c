@@ -466,40 +466,24 @@ static void so_trata_irq_chamada_sistema(so_t *self)
 static void so_chamada_le(so_t *self)
 {
   console_printf("chamada de leitura   ");
-  // implementação com espera ocupada
-  //   t2: deveria realizar a leitura somente se a entrada estiver disponível,
-  //     senão, deveria bloquear o processo.
-  //   no caso de bloqueio do processo, a leitura (e desbloqueio) deverá
-  //     ser feita mais tarde, em tratamentos pendentes em outra interrupção,
-  //     ou diretamente em uma interrupção específica do dispositivo, se for
-  //     o caso
-  // implementação lendo direto do terminal A
-  //   t2: deveria usar dispositivo de entrada corrente do processo
+  int terminal_teclado = self->tabela_processos[self->processo_corrente].terminal - 2; // D_TERM_X_TELA - 2 = D_TERM_X_TECLADO
+  int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal - 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
   for (;;) {  // espera ocupada!
     int estado;
-    if (es_le(self->es, D_TERM_A_TECLADO_OK, &estado) != ERR_OK) {
+    if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado do teclado");
       self->erro_interno = true;
       return;
     }
     if (estado != 0) break;
-    // como não está saindo do SO, a unidade de controle não está executando seu laço.
-    // esta gambiarra faz pelo menos a console ser atualizada
-    // t2: com a implementação de bloqueio de processo, esta gambiarra não
-    //   deve mais existir.
     console_tictac(self->console);
   }
   int dado;
-  if (es_le(self->es, D_TERM_A_TECLADO, &dado) != ERR_OK) {
+  if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
     console_printf("SO: problema no acesso ao teclado");
     self->erro_interno = true;
     return;
   }
-  // escreve no reg A do processador
-  // (na verdade, na posição onde o processador vai pegar o A quando retornar da int)
-  // t2: se houvesse processo, deveria escrever no reg A do processo
-  // t2: o acesso só deve ser feito nesse momento se for possível; se não, o processo
-  //   é bloqueado, e o acesso só deve ser feito mais tarde (e o processo desbloqueado)
   self->tabela_processos[self->processo_corrente].regA = dado;
 }
 
@@ -508,9 +492,10 @@ static void so_chamada_le(so_t *self)
 static void so_chamada_escr(so_t *self)
 {
   console_printf("chamada de escrita   ");
+  int terminal_tela_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA + 1 = D_TERM_X_TELA_OK
   for (;;) {
     int estado;
-    if (es_le(self->es, self->tabela_processos[self->processo_corrente].terminal + 1, &estado) != ERR_OK) {
+    if (es_le(self->es, terminal_tela_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado da tela");
       self->erro_interno = true;
       return;
