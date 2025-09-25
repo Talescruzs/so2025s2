@@ -42,6 +42,13 @@ limpa    define 10
          chamas
          armm pid3
 
+         ; cria um outro
+         ;cargi prog4
+         ;trax
+         ;cargi SO_CRIA_PROC
+         ;chamas
+         ;armm pid4
+
          ; espera os processos terminarem
          cargm pid1
          trax
@@ -55,6 +62,10 @@ limpa    define 10
          trax
          cargi SO_ESPERA_PROC
          chamas
+         ;cargm pid4
+         ;trax
+         ;cargi SO_ESPERA_PROC
+         ;chamas
 
          ; acabou o trabalho -- adeus mundo cruel
 morre
@@ -74,9 +85,11 @@ msg_ini  string 'init inicializando...'
 prog1    string 'p1.maq'
 prog2    string 'p2.maq'
 prog3    string 'p3.maq'
+prog4    string 'ex6.maq'
 pid1     espaco 1
 pid2     espaco 1
 pid3     espaco 1
+pid4     espaco 1
 msg_fim  string 'init terminando...'
 nao_morri string 'nao morri! '
 

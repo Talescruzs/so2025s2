@@ -96,7 +96,7 @@ A configuração do relógio também é realizada no atendimento à interrupçã
 
 ## Parte I
 
-[ 8/9 ]
+[ 9/9 ]
 
 Entenda as mudanças no código e o funcionamento do SO.
 
@@ -113,7 +113,7 @@ Faça uma implementação inicial de processos:
 
 ## Parte II
 
-[ 0/3 ]
+[ 1/4 ]
 
 Na parte I, um processo não bloqueia, se ele não está morto, ele pode executar.
 Nesta parte, vamos implementar o bloqueio de processos e eliminar a espera ocupada na E/S.
@@ -124,7 +124,7 @@ Nesta parte, vamos implementar o bloqueio de processos e eliminar a espera ocupa
 
 ## Parte III
 
-[ 2/6 ]
+[ 3/6 ]
 
 Implemente um escalonador preemptivo *round-robin* (circular):
 - [x] os processos prontos são colocados em uma fila
