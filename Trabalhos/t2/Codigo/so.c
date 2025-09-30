@@ -474,13 +474,6 @@ static void so_chamada_le(so_t *self)
   int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal - 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
   for (;;) {  // espera ocupada!
     int estado;
-    err_t es_resultado = es_le(self->es, terminal_teclado_ok, &estado);
-    if (es_resultado == ERR_OCUP){
-      console_printf("SO: dispositivo ocupado");
-      self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
-      self->tabela_processos[self->processo_corrente].esperando_dispositivo = terminal_teclado_ok;
-      return;
-    }
     if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado do teclado");
       self->erro_interno = true;
@@ -506,13 +499,6 @@ static void so_chamada_escr(so_t *self)
   int terminal_tela_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA + 1 = D_TERM_X_TELA_OK
   for (;;) {
     int estado;
-    err_t es_resultado = es_le(self->es, terminal_tela_ok, &estado);
-    if (es_resultado == ERR_OCUP){
-      console_printf("SO: dispositivo ocupado");
-      self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
-      self->tabela_processos[self->processo_corrente].esperando_dispositivo = terminal_tela_ok;
-      return;
-    }
     if (es_le(self->es, terminal_tela_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado da tela");
       self->erro_interno = true;
