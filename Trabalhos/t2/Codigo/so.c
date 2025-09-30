@@ -24,7 +24,7 @@
 
 // intervalo entre interrupções do relógio
 #define INTERVALO_INTERRUPCAO 50   // em instruções executadas
-#define MAX_PROCESSOS 10
+#define MAX_PROCESSOS 4
 
 // modificacao:
 enum EstadoProcesso {
@@ -94,11 +94,12 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   }
   for (int i = 0; i < MAX_PROCESSOS; i++) {
       self->tabela_processos[i].estado = MORTO; // inicializa todos os processos como mortos
+
       
-      if(i == 0) self->tabela_processos[i].terminal = D_TERM_A_TELA;
-      else if(i == 1) self->tabela_processos[i].terminal = D_TERM_B_TELA;
-      else if(i == 2) self->tabela_processos[i].terminal = D_TERM_C_TELA;
-      else if(i == 3) self->tabela_processos[i].terminal = D_TERM_D_TELA;
+      // if(i == 0) self->tabela_processos[i].terminal = D_TERM_A_TELA;
+      // else if(i == 1) self->tabela_processos[i].terminal = D_TERM_B_TELA;
+      // else if(i == 2) self->tabela_processos[i].terminal = D_TERM_C_TELA;
+      // else if(i == 3) self->tabela_processos[i].terminal = D_TERM_D_TELA;
   }
 
   self->processo_corrente = -1; // nenhum processo está executando
@@ -358,6 +359,9 @@ static void so_trata_reset(so_t *self)
   self->tabela_processos[0].esperando_dispositivo = -1;
   self->tabela_processos[0].memoria_base = 0;
   self->tabela_processos[0].memoria_limite = 0;
+  self->tabela_processos[0].terminal = D_TERM_A_TELA;
+  
+
 
 
   // coloca o programa init na memória
@@ -470,6 +474,13 @@ static void so_chamada_le(so_t *self)
   int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal - 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
   for (;;) {  // espera ocupada!
     int estado;
+    err_t es_resultado = es_le(self->es, terminal_teclado_ok, &estado);
+    if (es_resultado == ERR_OCUP){
+      console_printf("SO: dispositivo ocupado");
+      self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
+      self->tabela_processos[self->processo_corrente].esperando_dispositivo = terminal_teclado_ok;
+      return;
+    }
     if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado do teclado");
       self->erro_interno = true;
@@ -495,6 +506,13 @@ static void so_chamada_escr(so_t *self)
   int terminal_tela_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA + 1 = D_TERM_X_TELA_OK
   for (;;) {
     int estado;
+    err_t es_resultado = es_le(self->es, terminal_tela_ok, &estado);
+    if (es_resultado == ERR_OCUP){
+      console_printf("SO: dispositivo ocupado");
+      self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
+      self->tabela_processos[self->processo_corrente].esperando_dispositivo = terminal_tela_ok;
+      return;
+    }
     if (es_le(self->es, terminal_tela_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado da tela");
       self->erro_interno = true;
@@ -561,6 +579,11 @@ static void so_chamada_cria_proc(so_t *self)
 
   // Retorna o PID do novo processo no regA do processo criador
   self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
+
+  self->tabela_processos[slot].terminal = D_TERM_A_TELA + (self->tabela_processos[slot].pid-1%4)*4; // Associa terminal baseado no slot
+
+  // if(i == 0) self->tabela_processos[i].terminal = D_TERM_A_TELA;
+
 }
 
 // implementação da chamada se sistema SO_MATA_PROC

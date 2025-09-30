@@ -117,7 +117,7 @@ Faça uma implementação inicial de processos:
 
 Na parte I, um processo não bloqueia, se ele não está morto, ele pode executar.
 Nesta parte, vamos implementar o bloqueio de processos e eliminar a espera ocupada na E/S.
-- [ ] nas chamadas de E/S, se o dispositivo não estiver pronto, o SO deve bloquear o processo e não realizar a E/S; se o dispositivo estiver pronto, ele realiza a E/S e não bloqueia, como na parte I.
+- [tentei algo, mas sla] nas chamadas de E/S, se o dispositivo não estiver pronto, o SO deve bloquear o processo e não realizar a E/S; se o dispositivo estiver pronto, ele realiza a E/S e não bloqueia, como na parte I.
 - [ ] na função que trata de pendências, o SO deve verificar o estado dos dispositivos que causaram bloqueio e realizar operações pendentes e desbloquear processos se for o caso
 - [x] implemente a chamada de sistema SO_ESPERA_PROC, que bloqueia o processo chamador até que o processo que ele identifica na chamada tenha terminado. 
 - [ ] Se o processo esperado não existe ou se for o próprio processo chamador, retorna um erro para o processo, não bloqueia ele esperando algo que não vai acontecer. Quando tratar a morte de um processo, o SO deve verificar se há alguém esperando por esse acontecimento.
