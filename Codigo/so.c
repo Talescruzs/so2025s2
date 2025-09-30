@@ -227,6 +227,8 @@ static void so_trata_pendencias(so_t *self)
     }
 }
 
+//
+
 static void so_escalona(so_t *self)
 {
   console_printf("escalonando   %d", self->processo_corrente);
