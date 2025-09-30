@@ -130,7 +130,7 @@ Nesta parte, vamos implementar o bloqueio de processos e eliminar a espera ocupa
 Implemente um escalonador preemptivo *round-robin* (circular):
 - [x] os processos prontos são colocados em uma fila
 - [x] o escalonador sempre escolhe o primeiro da fila
-- [ ] quando um processo fica pronto (é criado ou desbloqueia), vai para o final da fila
+- [x] quando um processo fica pronto (é criado ou desbloqueia), vai para o final da fila
 - [x] se terminar o *quantum* de um processo, ele é colocado no final da fila (preempção)
 
 O *quantum* é definido como um múltiplo do intervalo de interrupção do relógio (em outras palavras, o *quantum* equivale a tantas interrupções). Quando um processo é selecionado para executar, tem o direito de executar durante o tempo de um quantum. Uma forma simples de implementar isso é ter uma variável do SO, controlada pelo escalonador, que é inicializada com o valor do quantum (em interrupções) quando um processo diferente do que foi interrompido é selecionado. Cada vez que recebe uma interrupção do relógio, decrementa essa variável. Quando essa variável chega a zero, o processo corrente é movido para o final da fila, se não tiver bloqueado.
