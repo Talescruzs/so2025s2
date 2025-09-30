@@ -14,6 +14,7 @@
 #include "memoria.h"
 #include "programa.h"
 
+#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -49,16 +50,26 @@ typedef struct processo {
 } processo;
 
 struct so_t {
-  cpu_t *cpu;
-  mem_t *mem;
-  es_t *es;
-  console_t *console;
-  bool erro_interno;
+    cpu_t *cpu;
+    mem_t *mem;
+    es_t *es;
+    console_t *console;
+    bool erro_interno;
 
-  // int regA, regX, regPC, regERRO; // cópia do estado da CPU
-  int processo_corrente; // índice do processo corrente na tabela de processos
-  processo *tabela_processos; // t2: tabela de processos, processo corrente, pendências, etc
+    int processo_corrente; // índice do processo corrente na tabela de processos
+
+    // Tabela de processos alocada dinamicamente
+    processo *tabela_processos;
+
+    // Fila circular de processos prontos
+    int fila_prontos[MAX_PROCESSOS];
+    int inicio_fila;
+    int fim_fila;
 };
+
+
+static void insere_fila_prontos(so_t *self, int idx_processo);
+
 
 
 // função de tratamento de interrupção (entrada no SO)
@@ -80,6 +91,14 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   console_printf("criando  ");
   so_t *self = malloc(sizeof(*self));
   if (self == NULL) return NULL;
+
+  self->inicio_fila = 0;
+  self->fim_fila = 0;
+  self->processo_corrente = -1;
+
+
+  self->tabela_processos = malloc(sizeof(processo) * MAX_PROCESSOS);
+  memset(self->tabela_processos, 0, sizeof(processo) * MAX_PROCESSOS);
 
   self->cpu = cpu;
   self->mem = mem;
@@ -195,17 +214,48 @@ static void so_salva_estado_da_cpu(so_t *self)
 
 static void so_trata_pendencias(so_t *self)
 {
-  // t2: realiza ações que não são diretamente ligadas com a interrupção que
-  //   está sendo atendida:
-  // - E/S pendente
-  // - desbloqueio de processos
-  // - contabilidades
-  // - etc
+    for (int i = 0; i < MAX_PROCESSOS; i++){
+      processo *proc = &self->tabela_processos[i];
+      // ex: desbloq processo que espera dispositivo pronto
+      if (proc->estado == BLOQUEADO){
+        if (proc->esperando_dispositivo >= 0) {
+          int disp = proc->esperando_dispositivo;
+          int estado_disp = 0;
+          if (es_le(self->es, disp, &estado_disp) == ERR_OK && estado_disp != 0) {
+                    proc->estado = PRONTO;
+                    proc->esperando_dispositivo = -1;
+                    proc->quantum = 0;
+                    insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
+
+                }
+        }
+
+        if (proc->esperando_pid > 0){
+          bool terminou = true;
+          for (int j = 0; j < MAX_PROCESSOS; j++){
+            if (self->tabela_processos[j].pid == proc->esperando_pid && self->tabela_processos[j].estado != MORTO) {
+              terminou = false;
+              break;
+            }
+          }
+          if (terminou) {
+            proc->estado = PRONTO;
+            proc->esperando_pid = -1;
+            proc->quantum = 0;
+            insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
+
+          }
+        }
+      }
+    }
 }
+
+//
 
 static void so_escalona(so_t *self)
 {
-  console_printf("escalonando   %d", self->processo_corrente);
+    console_printf("escalonando   %d", self->processo_corrente);
+
     int atual = self->processo_corrente;
     int proximo = -1;
     int prontos = 0;
@@ -217,11 +267,13 @@ static void so_escalona(so_t *self)
         }
     }
 
-    // Só coloca o processo corrente em PRONTO se houver outro processo PRONTO
+    // Se processo atual está EXECUTANDO e há outro processo PRONTO, coloca atual como PRONTO
     if (atual >= 0 && atual < MAX_PROCESSOS &&
         self->tabela_processos[atual].estado == EXECUTANDO &&
         prontos > 0) {
         self->tabela_processos[atual].estado = PRONTO;
+        // Também coloca o processo atual no fim da fila de prontos para escalonamento circular
+        insere_fila_prontos(self, atual);
     }
 
     // Procura próximo processo PRONTO (round-robin)
@@ -248,6 +300,7 @@ static void so_escalona(so_t *self)
         self->processo_corrente = -1;
     }
 }
+
 
 static int so_despacha(so_t *self)
 {
@@ -563,6 +616,8 @@ static void so_chamada_cria_proc(so_t *self)
   self->tabela_processos[slot].memoria_base = 0;
   self->tabela_processos[slot].memoria_limite = 0;
 
+  insere_fila_prontos(self, slot);
+
   // Retorna o PID do novo processo no regA do processo criador
   self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
 
@@ -687,5 +742,20 @@ static bool copia_str_da_mem(int tam, char str[tam], mem_t *mem, int ender)
   // estourou o tamanho de str
   return false;
 }
+
+void insere_fila_prontos(so_t *self, int idx_processo) {
+    self->fila_prontos[self->fim_fila] = idx_processo;
+    self->fim_fila = (self->fim_fila + 1) % MAX_PROCESSOS;
+}
+
+int remove_fila_prontos(so_t *self) {
+    if (self->inicio_fila == self->fim_fila) {
+        return -1; // fila vazia
+    }
+    int idx = self->fila_prontos[self->inicio_fila];
+    self->inicio_fila = (self->inicio_fila + 1) % MAX_PROCESSOS;
+    return idx;
+}
+
 
 // vim: foldmethod=marker
