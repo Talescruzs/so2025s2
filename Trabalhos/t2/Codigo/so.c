@@ -330,7 +330,7 @@ static void so_escalona2(so_t *self)
         self->tabela_processos[atual].estado == EXECUTANDO &&
         prontos > 0) {
 
-        // Obtém t_exec e tempo de quantum (deve estar armazenado em algum lugar), exemplo:
+        // Obtém t_exec e tempo de quantum (deve estar armazenado em algum lugar)
         int t_quantum = self->quantum;
         int t_exec = t_quantum - self->contador_quantum; // contador_quantum é decrementado a cada interrupção
 
