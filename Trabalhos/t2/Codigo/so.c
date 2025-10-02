@@ -47,6 +47,7 @@ typedef struct processo {
     int memoria_base;           // endereço base da memória do processo (se/quando implementar)
     int memoria_limite;         // limite superior da memória do processo (se/quando implementar)
     struct processo *prox;      // ponteiro para próximo processo na fila (lista encadeada)
+    float prioridade;
 } processo;
 
 struct so_t {
@@ -65,6 +66,12 @@ struct so_t {
     int fila_prontos[MAX_PROCESSOS];
     int inicio_fila;
     int fim_fila;
+
+    // pro segundo escalonador
+    int estado;
+    float prioridade;
+    int contador_quantum;
+    int quantum;
 };
 
 
@@ -95,7 +102,8 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   self->inicio_fila = 0;
   self->fim_fila = 0;
   self->processo_corrente = -1;
-
+  self->quantum = 50;  // define o quantum inicial
+  self->contador_quantum = 0;
 
   self->tabela_processos = malloc(sizeof(processo) * MAX_PROCESSOS);
   memset(self->tabela_processos, 0, sizeof(processo) * MAX_PROCESSOS);
@@ -148,7 +156,7 @@ void so_destroi(so_t *self)
 static void so_salva_estado_da_cpu(so_t *self);
 static void so_trata_irq(so_t *self, int irq);
 static void so_trata_pendencias(so_t *self);
-static void so_escalona(so_t *self);
+static void so_escalona2(so_t *self);
 static int so_despacha(so_t *self);
 
 // função a ser chamada pela CPU quando executa a instrução CHAMAC, no tratador de
@@ -185,7 +193,7 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   // faz o processamento independente da interrupção
   so_trata_pendencias(self);
   // escolhe o próximo processo a executar
-  so_escalona(self);
+  so_escalona2(self);
   // recupera o estado do processo escolhido
   return so_despacha(self);
 }
@@ -252,7 +260,7 @@ static void so_trata_pendencias(so_t *self)
 
 //
 
-static void so_escalona(so_t *self)
+/* static void so_escalona(so_t *self)
 {
     console_printf("escalonando   %d", self->processo_corrente);
 
@@ -299,6 +307,69 @@ static void so_escalona(so_t *self)
         // Nenhum processo pronto/executando
         self->processo_corrente = -1;
     }
+} */
+
+static void so_escalona2(so_t *self)
+{
+    console_printf("escalonando %d", self->processo_corrente);
+
+    int atual = self->processo_corrente;
+    int proximo = -1;
+    int prontos = 0;
+
+    // Contar processos PRONTOS
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            prontos++;
+        }
+    }
+
+    // Se processo atual está EXECUTANDO e há outro processo PRONTO,
+    // recalcula prioridade do atual (quantum estourado ou bloqueio deve ser tratado externamente)
+    if (atual >= 0 && atual < MAX_PROCESSOS &&
+        self->tabela_processos[atual].estado == EXECUTANDO &&
+        prontos > 0) {
+
+        // Obtém t_exec e tempo de quantum (deve estar armazenado em algum lugar), exemplo:
+        int t_quantum = self->quantum;
+        int t_exec = t_quantum - self->contador_quantum; // contador_quantum é decrementado a cada interrupção
+
+        float prio_antiga = self->tabela_processos[atual].prioridade;
+        float prio_nova = (prio_antiga + ((float)t_exec / t_quantum)) / 2.0f;
+
+        self->tabela_processos[atual].prioridade = prio_nova;
+        self->tabela_processos[atual].estado = PRONTO;
+
+        // Insere o processo atual no fim da fila de prontos
+        insere_fila_prontos(self, atual);
+    }
+
+    // Escolhe o próximo processo PRONTO com menor valor de prioridade (maior prioridade real)
+    float menor_prio = 1000.0f; // valor grande inicial
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            float prio = self->tabela_processos[i].prioridade;
+            if (prio < menor_prio) {
+                menor_prio = prio;
+                proximo = i;
+            }
+        }
+    }
+
+    if (proximo != -1) {
+        self->tabela_processos[proximo].estado = EXECUTANDO;
+        self->processo_corrente = proximo;
+        self->contador_quantum = self->quantum; // reseta contador do quantum para novo processo
+    } else if (atual >= 0 && atual < MAX_PROCESSOS &&
+               self->tabela_processos[atual].estado != BLOQUEADO &&
+               self->tabela_processos[atual].estado != MORTO) {
+        // Mantém processo atual EXECUTANDO se não há outro PRONTO
+        self->tabela_processos[atual].estado = EXECUTANDO;
+        self->processo_corrente = atual;
+    } else {
+        // Nenhum processo PRONTO ou EXECUTANDO disponível
+        self->processo_corrente = -1;
+    }
 }
 
 
@@ -310,11 +381,45 @@ static int so_despacha(so_t *self)
   // o valor retornado será o valor de retorno de CHAMAC, e será colocado no 
   //   registrador A para o tratador de interrupção (ver trata_irq.asm).
   console_printf("despachando   %d  ", self->processo_corrente);
-  if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
+// Se não há processo corrente (-1), mas existem processos PRONTOS,
+// isso é um erro de escalonamento
+if (self->processo_corrente < 0) {
+    int tem_pronto = 0;
+    console_printf("Aviso: processo_corrente é -1, verificando processos disponíveis...\n");
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado != MORTO) {
+            console_printf("  Processo %d (PID %d): estado=%d PC=%d\n",
+                         i,
+                         self->tabela_processos[i].pid,
+                         self->tabela_processos[i].estado,
+                         self->tabela_processos[i].regPC);
+            if (self->tabela_processos[i].estado == PRONTO) {
+                tem_pronto = 1;
+            }
+        }
+    }
+    // Se tem processo PRONTO mas processo_corrente é -1, é um erro
+    if (tem_pronto) {
+        console_printf("Erro fatal: Há processos PRONTOS mas processo_corrente é -1\n");
+        self->erro_interno = true;
+        return 1;
+    }
+    // Se não tem nenhum processo PRONTO, retorna 1 para CPU aguardar
+    console_printf("Nenhum processo disponível para executar, CPU aguardando...\n");
+    return 1;
+}
+// Verifica se processo_corrente está dentro dos limites
+if (self->processo_corrente >= MAX_PROCESSOS) {
+    console_printf("Erro fatal: processo_corrente inválido (%d)\n", self->processo_corrente);
+    self->erro_interno = true;
+    return 1;
+}
+
+  /* if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
     console_printf("SO: processo_corrente inválido em despacha");
     self->erro_interno = true;
     return 1;
-  }
+  } */
   if (mem_escreve(self->mem, CPU_END_A, self->tabela_processos[self->processo_corrente].regA) != ERR_OK
       || mem_escreve(self->mem, CPU_END_PC, self->tabela_processos[self->processo_corrente].regPC) != ERR_OK
       || mem_escreve(self->mem, CPU_END_erro, self->tabela_processos[self->processo_corrente].regERRO) != ERR_OK
@@ -407,12 +512,13 @@ static void so_trata_reset(so_t *self)
   self->tabela_processos[0].regX = 0;
   self->tabela_processos[0].regERRO = 0;
   self->tabela_processos[0].regPC = ender;
-  self->tabela_processos[0].quantum = 0;
+  self->tabela_processos[0].quantum = self->quantum;  // inicializa com quantum completo
   self->tabela_processos[0].esperando_pid = -1;
   self->tabela_processos[0].esperando_dispositivo = -1;
   self->tabela_processos[0].memoria_base = 0;
   self->tabela_processos[0].memoria_limite = 0;
   self->tabela_processos[0].terminal = D_TERM_A_TELA;
+  self->tabela_processos[0].prioridade = 0.0f;  // prioridade inicial máxima
   
 
 
@@ -457,10 +563,18 @@ static void so_trata_irq_relogio(so_t *self)
     console_printf("SO: problema da reinicialização do timer");
     self->erro_interno = true;
   }
-  // t2: deveria tratar a interrupção
-  //   por exemplo, decrementa o quantum do processo corrente, quando se tem
-  //   um escalonador com quantum
-  console_printf("SO: interrupção do relógio (não tratada)");
+
+  // Decrementa o quantum do processo corrente
+  if (self->processo_corrente >= 0 && self->processo_corrente < MAX_PROCESSOS) {
+    self->contador_quantum--;
+    if (self->contador_quantum <= 0) {
+      // Quantum esgotado, força troca de contexto
+      console_printf("SO: quantum esgotado para processo %d", self->processo_corrente);
+      self->tabela_processos[self->processo_corrente].estado = PRONTO;
+      insere_fila_prontos(self, self->processo_corrente);
+      self->processo_corrente = -1;  // força troca de processo
+    }
+  }
 }
 
 // foi gerada uma interrupção para a qual o SO não está preparado
@@ -610,11 +724,12 @@ static void so_chamada_cria_proc(so_t *self)
   self->tabela_processos[slot].regX = 0;
   self->tabela_processos[slot].regERRO = 0;
   self->tabela_processos[slot].regPC = ender_carga;
-  self->tabela_processos[slot].quantum = 0;
+  self->tabela_processos[slot].quantum = self->quantum;  // inicializa com quantum completo
   self->tabela_processos[slot].esperando_pid = -1;
   self->tabela_processos[slot].esperando_dispositivo = -1;
   self->tabela_processos[slot].memoria_base = 0;
   self->tabela_processos[slot].memoria_limite = 0;
+  self->tabela_processos[slot].prioridade = 0.0f;  // prioridade inicial máxima
 
   insere_fila_prontos(self, slot);
 
@@ -756,6 +871,8 @@ int remove_fila_prontos(so_t *self) {
     self->inicio_fila = (self->inicio_fila + 1) % MAX_PROCESSOS;
     return idx;
 }
+
+
 
 
 // vim: foldmethod=marker
