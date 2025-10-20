@@ -72,10 +72,20 @@ struct so_t {
     float prioridade;
     int contador_quantum;
     int quantum;
+
+    // ponteiro para função de escalonamento (definida em runtime)
+    void (*escalonador)(struct so_t *self);
 };
 
+// protótipos de escalonadores
+static void so_escalona(so_t *self);
+static void so_escalona2(so_t *self);
+
+// API para escolher escalonador em runtime
+void so_define_escalonador(so_t *self, int id);
 
 static void insere_fila_prontos(so_t *self, int idx_processo);
+static int remove_fila_prontos(so_t *self);
 
 
 
@@ -113,6 +123,9 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   self->es = es;
   self->console = console;
   self->erro_interno = false;
+
+  // escalonador padrão: round-robin
+  self->escalonador = so_escalona;
 
   self->tabela_processos = malloc(MAX_PROCESSOS * sizeof(processo));
   if (self->tabela_processos == NULL) {
@@ -184,17 +197,12 @@ static int so_trata_interrupcao(void *argC, int reg_A)
     self->processo_corrente = 0;
   }
 
-  // esse print polui bastante, recomendo tirar quando estiver com mais confiança
   console_printf("SO: recebi IRQ %d (%s)", irq, irq_nome(irq));
-  // salva o estado da cpu no descritor do processo que foi interrompido
   so_salva_estado_da_cpu(self);
-  // faz o atendimento da interrupção
   so_trata_irq(self, irq);
-  // faz o processamento independente da interrupção
   so_trata_pendencias(self);
-  // escolhe o próximo processo a executar
-  so_escalona2(self);
-  // recupera o estado do processo escolhido
+  // usa o escalonador selecionado
+  if (self->escalonador) self->escalonador(self);
   return so_despacha(self);
 }
 
@@ -308,6 +316,57 @@ static void so_trata_pendencias(so_t *self)
         self->processo_corrente = -1;
     }
 } */
+
+// reativa o escalonador round-robin
+static void so_escalona(so_t *self)
+{
+    console_printf("escalonando (RR) %d", self->processo_corrente);
+
+    int atual = self->processo_corrente;
+    int proximo = -1;
+    int prontos = 0;
+
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            prontos++;
+        }
+    }
+
+    if (atual >= 0 && atual < MAX_PROCESSOS &&
+        self->tabela_processos[atual].estado == EXECUTANDO &&
+        prontos > 0) {
+        self->tabela_processos[atual].estado = PRONTO;
+        insere_fila_prontos(self, atual);
+    }
+
+    // pega próximo da fila se houver
+    int idx_fila = remove_fila_prontos(self);
+    if (idx_fila != -1 && self->tabela_processos[idx_fila].estado == PRONTO) {
+        proximo = idx_fila;
+    } else {
+        // fallback: busca sequencial
+        for (int i = 1; i <= MAX_PROCESSOS; i++) {
+            int idx = (atual + i) % MAX_PROCESSOS;
+            if (self->tabela_processos[idx].estado == PRONTO) {
+                proximo = idx;
+                break;
+            }
+        }
+    }
+
+    if (proximo != -1) {
+        self->tabela_processos[proximo].estado = EXECUTANDO;
+        self->processo_corrente = proximo;
+        self->contador_quantum = self->quantum;
+    } else if (atual >= 0 && atual < MAX_PROCESSOS &&
+               self->tabela_processos[atual].estado != BLOQUEADO &&
+               self->tabela_processos[atual].estado != MORTO) {
+        self->tabela_processos[atual].estado = EXECUTANDO;
+        self->processo_corrente = atual;
+    } else {
+        self->processo_corrente = -1;
+    }
+}
 
 static void so_escalona2(so_t *self)
 {
@@ -858,12 +917,12 @@ static bool copia_str_da_mem(int tam, char str[tam], mem_t *mem, int ender)
   return false;
 }
 
-void insere_fila_prontos(so_t *self, int idx_processo) {
+static void insere_fila_prontos(so_t *self, int idx_processo) {
     self->fila_prontos[self->fim_fila] = idx_processo;
     self->fim_fila = (self->fim_fila + 1) % MAX_PROCESSOS;
 }
-
-int remove_fila_prontos(so_t *self) {
+ 
+static int remove_fila_prontos(so_t *self) {
     if (self->inicio_fila == self->fim_fila) {
         return -1; // fila vazia
     }
@@ -873,6 +932,18 @@ int remove_fila_prontos(so_t *self) {
 }
 
 
+
+
+void so_define_escalonador(so_t *self, int id)
+{
+    if (id == 2) {
+        self->escalonador = so_escalona2;
+        console_printf("SO: usando escalonador 2 (prioridade)");
+    } else {
+        self->escalonador = so_escalona;
+        console_printf("SO: usando escalonador 1 (round-robin)");
+    }
+}
 
 
 // vim: foldmethod=marker

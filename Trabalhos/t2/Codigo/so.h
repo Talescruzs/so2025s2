@@ -6,15 +6,18 @@
 #ifndef SO_H
 #define SO_H
 
-typedef struct so_t so_t;
-
-#include "memoria.h"
 #include "cpu.h"
+#include "memoria.h"
 #include "es.h"
-#include "console.h" // só para uma gambiarra
+#include "console.h"
+
+typedef struct so_t so_t;
 
 so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console);
 void so_destroi(so_t *self);
+
+// permite escolher o escalonador em runtime (1=RR, 2=prioridade)
+void so_define_escalonador(so_t *self, int id);
 
 // Chamadas de sistema
 // Uma chamada de sistema é realizada colocando a identificação da

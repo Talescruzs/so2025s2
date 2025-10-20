@@ -121,7 +121,7 @@ static void destroi_hardware(hardware_t *hw)
   mem_destroi(hw->mem);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
   hardware_t hw;
   so_t *so;
@@ -130,10 +130,24 @@ int main()
   cria_hardware(&hw);
   // cria o sistema operacional
   so = so_cria(hw.cpu, hw.mem, hw.es, hw.console);
-  console_printf("Simulador de computador iniciado  ");
+  if (so == NULL) {
+    console_printf("Erro na criação do SO\n");
+    return 1;
+  }
 
-  // executa o laço principal do controlador
-  controle_laco(hw.controle);
+  // Seleção do escalonador via argumento: ./main 1 ou ./main 2
+  if (argc > 1) {
+    int id = atoi(argv[1]);
+    if (id != 1 && id != 2) {
+      console_printf("Arg inválido para escalonador (%s). Use 1 ou 2.\n", argv[1]);
+    } else {
+      so_define_escalonador(so, id);
+      console_printf("Simulador de computador iniciado  ");
+
+      // executa o laço principal do controlador
+      controle_laco(hw.controle);
+    }
+  }
 
   // destroi tudo
   so_destroi(so);

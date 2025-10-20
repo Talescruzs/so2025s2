@@ -1,2 +1,2 @@
-so.o so.d : so.c so.h memoria.h err.h cpu.h es.h dispositivos.h terminal.h \
+so.o so.d : so.c so.h cpu.h memoria.h err.h es.h dispositivos.h terminal.h \
  irq.h console.h programa.h
