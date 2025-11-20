@@ -160,7 +160,9 @@ implementam os novos dispositivos de hardware e seu uso;
   (o endereço físico 0 é usado pelo mecanismo de interrupção, e não é possível 
   colocar mais de um programa no mesmo endereço físico);
 - main.c cria a MMU e passa para CPU e SO;
-- o SO tem uma tabela de páginas única, isso tem que ser alterado para uma por processo;
+ 
+-o SO tem uma tabela de páginas única, isso tem que ser alterado para uma por processo;
+
 - a carga de programa é realizada no próximo endereço livre, e a tabela de
   páginas é alterada para mapear o endereço virtual 0 para o endereço de carga --
   isso permite a execução de um programa, mas como só tem uma tabela de páginas,

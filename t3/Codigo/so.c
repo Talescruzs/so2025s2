@@ -133,11 +133,11 @@ static int so_trata_interrupcao(void *argC, int reg_A);
 // no t3, foi adicionado o 'processo' aos argumentos dessas funções 
 // carrega o programa contido no arquivo para memória virtual de um processo
 // retorna o endereço virtual inicial de execução
-static int so_carrega_programa(so_t *self, processo processo,
+static int so_carrega_programa(so_t *self, int processo,
                                char *nome_do_executavel);
 // copia para str da memória do processo, até copiar um 0 (retorna true) ou tam bytes
 static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
-                                     int end_virt, processo processo);
+                                     int end_virt, int processo);
 
 
 // ---------------------------------------------------------------------
@@ -153,7 +153,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
 
   self->inicio_fila = 0;
   self->fim_fila = 0;
-  self->processo_corrente = -1;
+  self->processo_corrente = 0;
   self->quantum = 50;  // define o quantum inicial
   self->contador_quantum = 0;
 
@@ -187,7 +187,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
   for (int i = 0; i < MAX_PROCESSOS; i++) {
       self->tabela_processos[i].estado = MORTO; // inicializa todos os processos como mortos
   }
-  self->processo_corrente = -1; // nenhum processo está executando
+  self->processo_corrente = 0; // nenhum processo está executando
 
   cpu_define_chamaC(self->cpu, so_trata_interrupcao, self);
 
@@ -528,7 +528,7 @@ static void so_trata_reset(so_t *self)
   //   de interrupção (escrito em asm). esse programa deve conter a
   //   instrução CHAMAC, que vai chamar so_trata_interrupcao (como
   //   foi definido na inicialização do SO)
-  int ender = so_carrega_programa(self, self->tabela_processos[0], "trata_int.maq");
+  int ender = so_carrega_programa(self, NENHUM_PROCESSO, "trata_int.maq");
   if (ender != CPU_END_TRATADOR) {
     console_printf("SO: problema na carga do programa de tratamento de interrupção");
     self->erro_interno = true;
@@ -555,8 +555,8 @@ static void so_trata_reset(so_t *self)
   //   carregar para os seus registradores quando executar a instrução RETI
   //   em bios.asm (que é onde está a instrução CHAMAC que causou a execução
   //   deste código
-  ender = so_carrega_programa(self, self->tabela_processos[self->processo_corrente], "init.maq");
-  if (ender != 100) {
+  ender = so_carrega_programa(self, self->processo_corrente, "init.maq");
+  if (ender == -1) {
     console_printf("SO: problema na carga do programa inicial, ender = %d", ender);
     self->erro_interno = true;
     return;
@@ -576,15 +576,6 @@ static void so_trata_reset(so_t *self)
   self->tabela_processos[0].memoria_limite = 0;
   self->tabela_processos[0].terminal = D_TERM_A_TELA;
   self->tabela_processos[0].prioridade = 0.0f;  // prioridade inicial máxima
-
-  // coloca o programa init na memória
-  
-  ender = so_carrega_programa(self, *self->tabela_processos[self->processo_corrente].prox, "init.maq");
-  if (ender == -1) {
-    console_printf("SO: problema na carga do programa inicial na memoria virtual");
-    self->erro_interno = true;
-    return;
-  }
 
   // altera o PC para o endereço de carga
   self->regPC = ender; // deveria ser no processo
@@ -755,12 +746,12 @@ static void so_chamada_cria_proc(so_t *self)
   int ender_proc = self->tabela_processos[self->processo_corrente].regX;
   char nome[100];
   if (!so_copia_str_do_processo(self, 100, nome, ender_proc,
-                                self->tabela_processos[self->processo_corrente])) {
+                                self->processo_corrente)) {
     self->tabela_processos[self->processo_corrente].regA = -1;
     return;
   }
 
-  int ender_carga = so_carrega_programa(self, self->tabela_processos[self->processo_corrente], nome);
+  int ender_carga = so_carrega_programa(self, self->processo_corrente, nome);
   if (ender_carga <= 0) {
     self->tabela_processos[self->processo_corrente].regA = -1;
     return;
@@ -869,13 +860,13 @@ static void so_chamada_espera_proc(so_t *self)
 static int so_carrega_programa_na_memoria_fisica(so_t *self, programa_t *programa);
 static int so_carrega_programa_na_memoria_virtual(so_t *self,
                                                   programa_t *programa,
-                                                  processo processo);
+                                                  int processo);
 
 // carrega o programa na memória
 // se processo for NENHUM_PROCESSO, carrega o programa na memória física
 //   senão, carrega na memória virtual do processo
 // retorna o endereço de carga ou -1
-static int so_carrega_programa(so_t *self, processo processo,
+static int so_carrega_programa(so_t *self, int processo,
                                char *nome_do_executavel)
 {
   console_printf("SO: carga de '%s'", nome_do_executavel);
@@ -887,17 +878,12 @@ static int so_carrega_programa(so_t *self, processo processo,
   }
 
   int end_carga;
-  int flag = 0;
-  for (int i = 0; i < MAX_PROCESSOS; i++) {
-    if (self->tabela_processos[i].estado == MORTO) {
-      end_carga = so_carrega_programa_na_memoria_fisica(self, programa);
-      flag = 1;
-      break;
-    }
-  }
-  if (flag == 0) {
+  if (processo == NENHUM_PROCESSO) {
+    end_carga = so_carrega_programa_na_memoria_fisica(self, programa);
+  } else {
     end_carga = so_carrega_programa_na_memoria_virtual(self, programa, processo);
   }
+
 
   prog_destroi(programa);
   return end_carga;
@@ -915,13 +901,13 @@ static int so_carrega_programa_na_memoria_fisica(so_t *self, programa_t *program
     }
   }
 
-  console_printf("SO: carga na memória física %d-%d", end_ini, end_fim);
+  console_printf("SO: carga na memória física %d-%d\n", end_ini, end_fim);
   return end_ini;
 }
 
 static int so_carrega_programa_na_memoria_virtual(so_t *self,
                                                   programa_t *programa,
-                                                  processo processo)
+                                                  int processo)
 {
   // t3: isto tá furado...
   // está simplesmente lendo para o próximo quadro que nunca foi ocupado,
@@ -975,9 +961,9 @@ static int so_carrega_programa_na_memoria_virtual(so_t *self,
 // t3: Com memória virtual, cada valor do espaço de endereçamento do processo
 //   pode estar em memória principal ou secundária (e tem que achar onde)
 static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
-                                     int end_virt, processo processo)
+                                     int end_virt, int processo)
 {
-  if (self->tabela_processos[self->processo_corrente].estado == MORTO) return false;
+  if (self->tabela_processos[processo].estado == MORTO) return false;
   for (int indice_str = 0; indice_str < tam; indice_str++) {
     int caractere;
     // não tem memória virtual implementada, posso usar a mmu para traduzir
