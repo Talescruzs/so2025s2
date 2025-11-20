@@ -16,9 +16,9 @@ void pr_on_clock_tick(int current_proc_idx) {
   // Implementação de envelhecimento por frame:
   if (!g_ft) return;
   // ajusta aging: aging >>= 1 ; if accessed set MSB; then clear accessed
-  for (int f = 0; f < g_ft->n_frames; f++) {
-    // não expor n_frames: usar ft_get_owner falhando, assumimos API expandida ou faça casting (simplificação)
-  }
+  // for (int f = 0; f < g_ft->n_frames; f++) {
+  //   // não expor n_frames: usar ft_get_owner falhando, assumimos API expandida ou faça casting (simplificação)
+  // }
 }
 
 int pr_choose_victim(void) {

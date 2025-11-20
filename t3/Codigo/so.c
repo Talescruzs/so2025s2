@@ -17,6 +17,7 @@
 #include "tabpag.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
 
@@ -26,6 +27,16 @@
 
 // intervalo entre interrupções do relógio
 #define INTERVALO_INTERRUPCAO 50   // em instruções executadas
+#define MAX_PROCESSOS 4
+
+
+enum EstadoProcesso {
+    PRONTO,      /* 0 */
+    EXECUTANDO,  /* 1 */
+    BLOQUEADO,   /* 2 */
+    MORTO       /* 3 */
+};
+
 
 // Não tem processos nem memória virtual, mas é preciso usar a paginação,
 //   pelo menos para implementar relocação, já que os programas estão sendo
@@ -39,6 +50,21 @@
 //   no quadro onde o programa foi carregado. Com isso, o programa carregado
 //   é acessível, mas o acesso ao anterior é perdido.
 
+typedef struct processo {
+    int pid;                    // identificador do processo
+    int ppid;                   // identificador do processo pai
+    int terminal;               // terminal associado ao processo (se aplicável)
+    enum EstadoProcesso estado; // estado do processo (pronto, executando, bloqueado)
+    int regA, regX, regPC, regERRO; // registradores salvos do processo
+    int quantum;                // quantum restante (se/quando usar escalonamento por tempo)
+    int esperando_pid;          // PID do processo que está esperando (SO_ESPERA_PROC)
+    int esperando_dispositivo;  // dispositivo de E/S que está aguardando (se aplicável)
+    int memoria_base;           // endereço base da memória do processo (se/quando implementar)
+    int memoria_limite;         // limite superior da memória do processo (se/quando implementar)
+    struct processo *prox;      // ponteiro para próximo processo na fila (lista encadeada)
+    float prioridade;
+} processo;
+
 // t3: a interface de algumas funções que manipulam memória teve que ser alterada,
 //   para incluir o processo ao qual elas se referem. Para isso, é necessário um
 //   tipo de dados para identificar um processo. Neste código, não tem processos
@@ -48,7 +74,6 @@
 //   processo_t e NENHUM_PROCESSO para o seu tipo.
 //   ALGUM_PROCESSO serve para representar um processo que não é NENHUM. Só tem
 //   algum sentido enquanto não tem implementação de processos.
-typedef int processo_t;
 #define NENHUM_PROCESSO -1
 #define ALGUM_PROCESSO 0
 
@@ -63,6 +88,24 @@ struct so_t {
   int regA, regX, regPC, regERRO, regComplemento; // cópia do estado da CPU
   // t2: tabela de processos, processo corrente, pendências, etc
 
+  int processo_corrente; // índice do processo corrente na tabela de processos
+
+  processo *tabela_processos;
+
+  // Fila circular de processos prontos
+  int fila_prontos[MAX_PROCESSOS];
+  int inicio_fila;
+  int fim_fila;
+
+  // pro segundo escalonador
+  int estado;
+  float prioridade;
+  int contador_quantum;
+  int quantum;
+
+  // ponteiro para função de escalonamento (definida em runtime)
+  void (*escalonador)(struct so_t *self);
+
   // primeiro quadro da memória que está livre (quadros anteriores estão ocupados)
   // t3: com memória virtual, o controle de memória livre e ocupada deve ser mais
   //     completo que isso
@@ -73,6 +116,15 @@ struct so_t {
   tabpag_t *tabpag_global;
 };
 
+// protótipos de escalonadores
+static void so_escalona(so_t *self);
+static void so_escalona2(so_t *self);
+
+// API para escolher escalonador em runtime
+void so_define_escalonador(so_t *self, int id);
+
+static void insere_fila_prontos(so_t *self, int idx_processo);
+static int remove_fila_prontos(so_t *self);
 
 // função de tratamento de interrupção (entrada no SO)
 static int so_trata_interrupcao(void *argC, int reg_A);
@@ -81,11 +133,11 @@ static int so_trata_interrupcao(void *argC, int reg_A);
 // no t3, foi adicionado o 'processo' aos argumentos dessas funções 
 // carrega o programa contido no arquivo para memória virtual de um processo
 // retorna o endereço virtual inicial de execução
-static int so_carrega_programa(so_t *self, processo_t processo,
+static int so_carrega_programa(so_t *self, processo processo,
                                char *nome_do_executavel);
 // copia para str da memória do processo, até copiar um 0 (retorna true) ou tam bytes
 static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
-                                     int end_virt, processo_t processo);
+                                     int end_virt, processo processo);
 
 
 // ---------------------------------------------------------------------
@@ -95,8 +147,18 @@ static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
 so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
               es_t *es, console_t *console)
 {
+  console_printf("criando  ");
   so_t *self = malloc(sizeof(*self));
   if (self == NULL) return NULL;
+
+  self->inicio_fila = 0;
+  self->fim_fila = 0;
+  self->processo_corrente = -1;
+  self->quantum = 50;  // define o quantum inicial
+  self->contador_quantum = 0;
+
+  self->tabela_processos = malloc(sizeof(processo) * MAX_PROCESSOS);
+  memset(self->tabela_processos, 0, sizeof(processo) * MAX_PROCESSOS);
 
   self->cpu = cpu;
   self->mem = mem;
@@ -105,9 +167,11 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
   self->console = console;
   self->erro_interno = false;
 
+  // escalonador padrão: round-robin
+  self->escalonador = so_escalona;
+
   // quando a CPU executar uma instrução CHAMAC, deve chamar a função
   //   so_trata_interrupcao, com primeiro argumento um ptr para o SO
-  cpu_define_chamaC(self->cpu, so_trata_interrupcao, self);
 
   // inicializa a tabela de páginas global, e entrega ela para a MMU
   // t3: com processos, essa tabela não existiria, teria uma por processo, que
@@ -115,9 +179,23 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
   self->tabpag_global = tabpag_cria();
   mmu_define_tabpag(self->mmu, self->tabpag_global);
 
+  self->tabela_processos = malloc(MAX_PROCESSOS * sizeof(processo));
+  if (self->tabela_processos == NULL) {
+      free(self);
+      return NULL;
+  }
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+      self->tabela_processos[i].estado = MORTO; // inicializa todos os processos como mortos
+  }
+  self->processo_corrente = -1; // nenhum processo está executando
+
+  cpu_define_chamaC(self->cpu, so_trata_interrupcao, self);
+
+  console_printf("criei   ");
+
+
   return self;
 }
-
 void so_destroi(so_t *self)
 {
   cpu_define_chamaC(self->cpu, NULL, NULL);
@@ -152,8 +230,10 @@ static int so_despacha(so_t *self);
 //   outra interrupção
 static int so_trata_interrupcao(void *argC, int reg_A)
 {
+  console_printf("interrompido   ");
   so_t *self = argC;
   irq_t irq = reg_A;
+  
   // esse print polui bastante, recomendo tirar quando estiver com mais confiança
   console_printf("SO: recebi IRQ %d (%s)", irq, irq_nome(irq));
   // salva o estado da cpu no descritor do processo que foi interrompido
@@ -163,11 +243,12 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   // faz o processamento independente da interrupção
   so_trata_pendencias(self);
   // escolhe o próximo processo a executar
-  so_escalona(self);
+  if (self->escalonador) self->escalonador(self);
   // recupera o estado do processo escolhido
   return so_despacha(self);
 }
 
+  
 static void so_salva_estado_da_cpu(so_t *self)
 {
   // t2: salva os registradores que compõem o estado da cpu no descritor do
@@ -175,33 +256,172 @@ static void so_salva_estado_da_cpu(so_t *self)
   //   CPU na memória, nos endereços CPU_END_PC etc. O registrador X foi salvo
   //   pelo tratador de interrupção (ver trata_irq.asm) no endereço 59
   // se não houver processo corrente, não faz nada
-  if (mem_le(self->mem, CPU_END_A, &self->regA) != ERR_OK
-      || mem_le(self->mem, CPU_END_PC, &self->regPC) != ERR_OK
-      || mem_le(self->mem, CPU_END_erro, &self->regERRO) != ERR_OK
-      || mem_le(self->mem, CPU_END_complemento, &self->regComplemento) != ERR_OK
-      || mem_le(self->mem, 59, &self->regX)) {
+  console_printf("salvando estado da CPU   ");
+  if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
+    console_printf("SO: processo_corrente inválido em salva_estado");
+    self->erro_interno = true;
+    return;
+  }
+  if (mem_le(self->mem, CPU_END_A, &self->tabela_processos[self->processo_corrente].regA) != ERR_OK
+      || mem_le(self->mem, CPU_END_PC, &self->tabela_processos[self->processo_corrente].regPC) != ERR_OK
+      || mem_le(self->mem, CPU_END_erro, &self->tabela_processos[self->processo_corrente].regERRO) != ERR_OK
+      || mem_le(self->mem, 59, &self->tabela_processos[self->processo_corrente].regX)) {
     console_printf("SO: erro na leitura dos registradores");
     self->erro_interno = true;
   }
 }
 
+
 static void so_trata_pendencias(so_t *self)
 {
-  // t2: realiza ações que não são diretamente ligadas com a interrupção que
-  //   está sendo atendida:
-  // - E/S pendente
-  // - desbloqueio de processos
-  // - contabilidades
-  // - etc
+    for (int i = 0; i < MAX_PROCESSOS; i++){
+      processo *proc = &self->tabela_processos[i];
+      // ex: desbloq processo que espera dispositivo pronto
+      if (proc->estado == BLOQUEADO){
+        if (proc->esperando_dispositivo >= 0) {
+          int disp = proc->esperando_dispositivo;
+          int estado_disp = 0;
+          if (es_le(self->es, disp, &estado_disp) == ERR_OK && estado_disp != 0) {
+                    proc->estado = PRONTO;
+                    proc->esperando_dispositivo = -1;
+                    proc->quantum = 0;
+                    insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
+
+                }
+        }
+
+        if (proc->esperando_pid > 0){
+          bool terminou = true;
+          for (int j = 0; j < MAX_PROCESSOS; j++){
+            if (self->tabela_processos[j].pid == proc->esperando_pid && self->tabela_processos[j].estado != MORTO) {
+              terminou = false;
+              break;
+            }
+          }
+          if (terminou) {
+            proc->estado = PRONTO;
+            proc->esperando_pid = -1;
+            proc->quantum = 0;
+            insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
+
+          }
+        }
+      }
+    }
 }
+
 
 static void so_escalona(so_t *self)
 {
-  // escolhe o próximo processo a executar, que passa a ser o processo
-  //   corrente; pode continuar sendo o mesmo de antes ou não
-  // t2: na primeira versão, escolhe um processo pronto caso o processo
-  //   corrente não possa continuar executando, senão deixa o mesmo processo.
-  //   depois, implementa um escalonador melhor
+    console_printf("escalonando (RR) %d", self->processo_corrente);
+
+    int atual = self->processo_corrente;
+    int proximo = -1;
+    int prontos = 0;
+
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            prontos++;
+        }
+    }
+
+    if (atual >= 0 && atual < MAX_PROCESSOS &&
+        self->tabela_processos[atual].estado == EXECUTANDO &&
+        prontos > 0) {
+        self->tabela_processos[atual].estado = PRONTO;
+        insere_fila_prontos(self, atual);
+    }
+
+    // pega próximo da fila se houver
+    int idx_fila = remove_fila_prontos(self);
+    if (idx_fila != -1 && self->tabela_processos[idx_fila].estado == PRONTO) {
+        proximo = idx_fila;
+    } else {
+        // fallback: busca sequencial
+        for (int i = 1; i <= MAX_PROCESSOS; i++) {
+            int idx = (atual + i) % MAX_PROCESSOS;
+            if (self->tabela_processos[idx].estado == PRONTO) {
+                proximo = idx;
+                break;
+            }
+        }
+    }
+
+    if (proximo != -1) {
+        self->tabela_processos[proximo].estado = EXECUTANDO;
+        self->processo_corrente = proximo;
+        self->contador_quantum = self->quantum;
+    } else if (atual >= 0 && atual < MAX_PROCESSOS &&
+               self->tabela_processos[atual].estado != BLOQUEADO &&
+               self->tabela_processos[atual].estado != MORTO) {
+        self->tabela_processos[atual].estado = EXECUTANDO;
+        self->processo_corrente = atual;
+    } else {
+        self->processo_corrente = -1;
+    }
+}
+
+static void so_escalona2(so_t *self)
+{
+    console_printf("escalonando %d", self->processo_corrente);
+
+    int atual = self->processo_corrente;
+    int proximo = -1;
+    int prontos = 0;
+
+    // Contar processos PRONTOS
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            prontos++;
+        }
+    }
+
+    // Se processo atual está EXECUTANDO e há outro processo PRONTO,
+    // recalcula prioridade do atual (quantum estourado ou bloqueio deve ser tratado externamente)
+    if (atual >= 0 && atual < MAX_PROCESSOS &&
+        self->tabela_processos[atual].estado == EXECUTANDO &&
+        prontos > 0) {
+
+        // Obtém t_exec e tempo de quantum (deve estar armazenado em algum lugar)
+        int t_quantum = self->quantum;
+        int t_exec = t_quantum - self->contador_quantum; // contador_quantum é decrementado a cada interrupção
+
+        float prio_antiga = self->tabela_processos[atual].prioridade;
+        float prio_nova = (prio_antiga + ((float)t_exec / t_quantum)) / 2.0f;
+
+        self->tabela_processos[atual].prioridade = prio_nova;
+        self->tabela_processos[atual].estado = PRONTO;
+
+        // Insere o processo atual no fim da fila de prontos
+        insere_fila_prontos(self, atual);
+    }
+
+    // Escolhe o próximo processo PRONTO com menor valor de prioridade (maior prioridade real)
+    float menor_prio = 1000.0f; // valor grande inicial
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            float prio = self->tabela_processos[i].prioridade;
+            if (prio < menor_prio) {
+                menor_prio = prio;
+                proximo = i;
+            }
+        }
+    }
+
+    if (proximo != -1) {
+        self->tabela_processos[proximo].estado = EXECUTANDO;
+        self->processo_corrente = proximo;
+        self->contador_quantum = self->quantum; // reseta contador do quantum para novo processo
+    } else if (atual >= 0 && atual < MAX_PROCESSOS &&
+               self->tabela_processos[atual].estado != BLOQUEADO &&
+               self->tabela_processos[atual].estado != MORTO) {
+        // Mantém processo atual EXECUTANDO se não há outro PRONTO
+        self->tabela_processos[atual].estado = EXECUTANDO;
+        self->processo_corrente = atual;
+    } else {
+        // Nenhum processo PRONTO ou EXECUTANDO disponível
+        self->processo_corrente = -1;
+    }
 }
 
 static int so_despacha(so_t *self)
@@ -211,10 +431,50 @@ static int so_despacha(so_t *self)
   //   senão retorna 1
   // o valor retornado será o valor de retorno de CHAMAC, e será colocado no 
   //   registrador A para o tratador de interrupção (ver trata_irq.asm).
-  if (mem_escreve(self->mem, CPU_END_A, self->regA) != ERR_OK
-      || mem_escreve(self->mem, CPU_END_PC, self->regPC) != ERR_OK
-      || mem_escreve(self->mem, CPU_END_erro, self->regERRO) != ERR_OK
-      || mem_escreve(self->mem, 59, self->regX)) {
+  console_printf("despachando   %d  ", self->processo_corrente);
+// Se não há processo corrente (-1), mas existem processos PRONTOS,
+// isso é um erro de escalonamento
+if (self->processo_corrente < 0) {
+    int tem_pronto = 0;
+    console_printf("Aviso: processo_corrente é -1, verificando processos disponíveis...\n");
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado != MORTO) {
+            console_printf("  Processo %d (PID %d): estado=%d PC=%d\n",
+                         i,
+                         self->tabela_processos[i].pid,
+                         self->tabela_processos[i].estado,
+                         self->tabela_processos[i].regPC);
+            if (self->tabela_processos[i].estado == PRONTO) {
+                tem_pronto = 1;
+            }
+        }
+    }
+    // Se tem processo PRONTO mas processo_corrente é -1, é um erro
+    if (tem_pronto) {
+        console_printf("Erro fatal: Há processos PRONTOS mas processo_corrente é -1\n");
+        self->erro_interno = true;
+        return 1;
+    }
+    // Se não tem nenhum processo PRONTO, retorna 1 para CPU aguardar
+    console_printf("Nenhum processo disponível para executar, CPU aguardando...\n");
+    return 1;
+}
+// Verifica se processo_corrente está dentro dos limites
+if (self->processo_corrente >= MAX_PROCESSOS) {
+    console_printf("Erro fatal: processo_corrente inválido (%d)\n", self->processo_corrente);
+    self->erro_interno = true;
+    return 1;
+}
+
+  /* if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
+    console_printf("SO: processo_corrente inválido em despacha");
+    self->erro_interno = true;
+    return 1;
+  } */
+  if (mem_escreve(self->mem, CPU_END_A, self->tabela_processos[self->processo_corrente].regA) != ERR_OK
+      || mem_escreve(self->mem, CPU_END_PC, self->tabela_processos[self->processo_corrente].regPC) != ERR_OK
+      || mem_escreve(self->mem, CPU_END_erro, self->tabela_processos[self->processo_corrente].regERRO) != ERR_OK
+      || mem_escreve(self->mem, 59, self->tabela_processos[self->processo_corrente].regX) != ERR_OK) {
     console_printf("SO: erro na escrita dos registradores");
     self->erro_interno = true;
   }
@@ -235,7 +495,8 @@ static void so_trata_irq_relogio(so_t *self);
 static void so_trata_irq_desconhecida(so_t *self, int irq);
 
 static void so_trata_irq(so_t *self, int irq)
-{
+{ 
+  console_printf("tratando IRQ   ");
   // verifica o tipo de interrupção que está acontecendo, e atende de acordo
   switch (irq) {
     case IRQ_RESET:
@@ -258,6 +519,7 @@ static void so_trata_irq(so_t *self, int irq)
 // chamada uma única vez, quando a CPU inicializa
 static void so_trata_reset(so_t *self)
 {
+  console_printf("recebi RESET   ");
   // coloca o tratador de interrupção na memória
   // quando a CPU aceita uma interrupção, passa para modo supervisor,
   //   salva seu estado à partir do endereço CPU_END_PC, e desvia para o
@@ -266,12 +528,12 @@ static void so_trata_reset(so_t *self)
   //   de interrupção (escrito em asm). esse programa deve conter a
   //   instrução CHAMAC, que vai chamar so_trata_interrupcao (como
   //   foi definido na inicialização do SO)
-  int ender = so_carrega_programa(self, NENHUM_PROCESSO, "trata_int.maq");
+  int ender = so_carrega_programa(self, self->tabela_processos[0], "trata_int.maq");
   if (ender != CPU_END_TRATADOR) {
     console_printf("SO: problema na carga do programa de tratamento de interrupção");
     self->erro_interno = true;
   }
-
+  
   // programa o relógio para gerar uma interrupção após INTERVALO_INTERRUPCAO
   if (es_escreve(self->es, D_RELOGIO_TIMER, INTERVALO_INTERRUPCAO) != ERR_OK) {
     console_printf("SO: problema na programação do timer");
@@ -293,12 +555,33 @@ static void so_trata_reset(so_t *self)
   //   carregar para os seus registradores quando executar a instrução RETI
   //   em bios.asm (que é onde está a instrução CHAMAC que causou a execução
   //   deste código
+  ender = so_carrega_programa(self, self->tabela_processos[self->processo_corrente], "init.maq");
+  if (ender != 100) {
+    console_printf("SO: problema na carga do programa inicial, ender = %d", ender);
+    self->erro_interno = true;
+    return;
+  }
+  self->processo_corrente = 0;
+  self->tabela_processos[0].pid = 1;
+  self->tabela_processos[0].ppid = 0;
+  self->tabela_processos[0].estado = EXECUTANDO;
+  self->tabela_processos[0].regA = 0;
+  self->tabela_processos[0].regX = 0;
+  self->tabela_processos[0].regERRO = 0;
+  self->tabela_processos[0].regPC = ender;
+  self->tabela_processos[0].quantum = self->quantum;  // inicializa com quantum completo
+  self->tabela_processos[0].esperando_pid = -1;
+  self->tabela_processos[0].esperando_dispositivo = -1;
+  self->tabela_processos[0].memoria_base = 0;
+  self->tabela_processos[0].memoria_limite = 0;
+  self->tabela_processos[0].terminal = D_TERM_A_TELA;
+  self->tabela_processos[0].prioridade = 0.0f;  // prioridade inicial máxima
 
   // coloca o programa init na memória
-  processo_t processo = ALGUM_PROCESSO; // deveria inicializar um processo...
-  ender = so_carrega_programa(self, processo, "init.maq");
+  
+  ender = so_carrega_programa(self, *self->tabela_processos[self->processo_corrente].prox, "init.maq");
   if (ender == -1) {
-    console_printf("SO: problema na carga do programa inicial");
+    console_printf("SO: problema na carga do programa inicial na memoria virtual");
     self->erro_interno = true;
     return;
   }
@@ -310,6 +593,7 @@ static void so_trata_reset(so_t *self)
 // interrupção gerada quando a CPU identifica um erro
 static void so_trata_irq_err_cpu(so_t *self)
 {
+  console_printf("erro na CPU   ");
   // Ocorreu um erro interno na CPU
   // O erro está codificado em CPU_END_erro
   // Em geral, causa a morte do processo que causou o erro
@@ -317,15 +601,19 @@ static void so_trata_irq_err_cpu(so_t *self)
   // t2: com suporte a processos, deveria pegar o valor do registrador erro
   //   no descritor do processo corrente, e reagir de acordo com esse erro
   //   (em geral, matando o processo)
-  err_t err = self->regERRO;
+  err_t err = self->tabela_processos[self->processo_corrente].regERRO;
   console_printf("SO: IRQ não tratada -- erro na CPU: %s (%d)",
                  err_nome(err), self->regComplemento);
+  console_printf("SO: IRQ não tratada -- erro na CPU: %s", err_nome(err));
+
   self->erro_interno = true;
 }
+
 
 // interrupção gerada quando o timer expira
 static void so_trata_irq_relogio(so_t *self)
 {
+  console_printf("interrupção do relógio   ");
   // rearma o interruptor do relógio e reinicializa o timer para a próxima interrupção
   err_t e1, e2;
   e1 = es_escreve(self->es, D_RELOGIO_INTERRUPCAO, 0); // desliga o sinalizador de interrupção
@@ -337,12 +625,23 @@ static void so_trata_irq_relogio(so_t *self)
   // t2: deveria tratar a interrupção
   //   por exemplo, decrementa o quantum do processo corrente, quando se tem
   //   um escalonador com quantum
+  if (self->processo_corrente >= 0 && self->processo_corrente < MAX_PROCESSOS) {
+    self->contador_quantum--;
+    if (self->contador_quantum <= 0) {
+      // Quantum esgotado, força troca de contexto
+      console_printf("SO: quantum esgotado para processo %d", self->processo_corrente);
+      self->tabela_processos[self->processo_corrente].estado = PRONTO;
+      insere_fila_prontos(self, self->processo_corrente);
+      self->processo_corrente = -1;  // força troca de processo
+      return;
+    }
+  }
   console_printf("SO: interrupção do relógio (não tratada)");
 }
 
-// foi gerada uma interrupção para a qual o SO não está preparado
 static void so_trata_irq_desconhecida(so_t *self, int irq)
 {
+  console_printf("tratando IRQ desconhecida   ");
   console_printf("SO: não sei tratar IRQ %d (%s)", irq, irq_nome(irq));
   self->erro_interno = true;
 }
@@ -359,11 +658,21 @@ static void so_chamada_cria_proc(so_t *self);
 static void so_chamada_mata_proc(so_t *self);
 static void so_chamada_espera_proc(so_t *self);
 
+
 static void so_trata_irq_chamada_sistema(so_t *self)
 {
+  console_printf("chamada de sistema   ");
+
   // a identificação da chamada está no registrador A
   // t2: com processos, o reg A deve estar no descritor do processo corrente
-  int id_chamada = self->regA;
+
+  if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
+    console_printf("SO: processo_corrente inválido em chamada_sistema");
+    self->erro_interno = true;
+    return;
+  }
+
+  int id_chamada = self->tabela_processos[self->processo_corrente].regA;
   console_printf("SO: chamada de sistema %d", id_chamada);
   switch (id_chamada) {
     case SO_LE:
@@ -388,132 +697,169 @@ static void so_trata_irq_chamada_sistema(so_t *self)
   }
 }
 
-// implementação da chamada se sistema SO_LE
-// faz a leitura de um dado da entrada corrente do processo, coloca o dado no reg A
 static void so_chamada_le(so_t *self)
 {
-  // implementação com espera ocupada
-  //   t2: deveria realizar a leitura somente se a entrada estiver disponível,
-  //     senão, deveria bloquear o processo.
-  //   no caso de bloqueio do processo, a leitura (e desbloqueio) deverá
-  //     ser feita mais tarde, em tratamentos pendentes em outra interrupção,
-  //     ou diretamente em uma interrupção específica do dispositivo, se for
-  //     o caso
-  // implementação lendo direto do terminal A
-  //   t2: deveria usar dispositivo de entrada corrente do processo
+  console_printf("chamada de leitura   ");
+  int terminal_teclado = self->tabela_processos[self->processo_corrente].terminal - 2; // D_TERM_X_TELA - 2 = D_TERM_X_TECLADO
+  int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal - 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
   for (;;) {  // espera ocupada!
     int estado;
-    if (es_le(self->es, D_TERM_A_TECLADO_OK, &estado) != ERR_OK) {
+    if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado do teclado");
       self->erro_interno = true;
       return;
     }
     if (estado != 0) break;
-    // como não está saindo do SO, a unidade de controle não está executando seu laço.
-    // esta gambiarra faz pelo menos a console ser atualizada
-    // t2: com a implementação de bloqueio de processo, esta gambiarra não
-    //   deve mais existir.
     console_tictac(self->console);
   }
   int dado;
-  if (es_le(self->es, D_TERM_A_TECLADO, &dado) != ERR_OK) {
+  if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
     console_printf("SO: problema no acesso ao teclado");
     self->erro_interno = true;
     return;
   }
-  // escreve no reg A do processador
-  // (na verdade, na posição onde o processador vai pegar o A quando retornar da int)
-  // t2: se houvesse processo, deveria escrever no reg A do processo
-  // t2: o acesso só deve ser feito nesse momento se for possível; se não, o processo
-  //   é bloqueado, e o acesso só deve ser feito mais tarde (e o processo desbloqueado)
-  self->regA = dado;
+  self->tabela_processos[self->processo_corrente].regA = dado;
 }
 
 // implementação da chamada se sistema SO_ESCR
 // escreve o valor do reg X na saída corrente do processo
 static void so_chamada_escr(so_t *self)
 {
-  // implementação com espera ocupada
-  //   t2: deveria bloquear o processo se dispositivo ocupado
-  // implementação escrevendo direto do terminal A
-  //   t2: deveria usar o dispositivo de saída corrente do processo
+  console_printf("chamada de escrita   ");
+  int terminal_tela_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA + 1 = D_TERM_X_TELA_OK
   for (;;) {
     int estado;
-    if (es_le(self->es, D_TERM_A_TELA_OK, &estado) != ERR_OK) {
+    if (es_le(self->es, terminal_tela_ok, &estado) != ERR_OK) {
       console_printf("SO: problema no acesso ao estado da tela");
       self->erro_interno = true;
       return;
     }
     if (estado != 0) break;
-    // como não está saindo do SO, a unidade de controle não está executando seu laço.
-    // esta gambiarra faz pelo menos a console ser atualizada
-    // t2: não deve mais existir quando houver suporte a processos, porque o SO não poderá
-    //   executar por muito tempo, permitindo a execução do laço da unidade de controle
     console_tictac(self->console);
   }
   int dado;
-  // está lendo o valor de X e escrevendo o de A direto onde o processador colocou/vai pegar
-  // t2: deveria usar os registradores do processo que está realizando a E/S
-  // t2: caso o processo tenha sido bloqueado, esse acesso deve ser realizado em outra execução
-  //   do SO, quando ele verificar que esse acesso já pode ser feito.
-  dado = self->regX;
-  if (es_escreve(self->es, D_TERM_A_TELA, dado) != ERR_OK) {
+  dado = self->tabela_processos[self->processo_corrente].regX;
+  if (es_escreve(self->es, self->tabela_processos[self->processo_corrente].terminal, dado) != ERR_OK) {
     console_printf("SO: problema no acesso à tela");
     self->erro_interno = true;
     return;
   }
-  self->regA = 0;
+  self->tabela_processos[self->processo_corrente].regA = 0;
 }
 
 // implementação da chamada se sistema SO_CRIA_PROC
 // cria um processo
 static void so_chamada_cria_proc(so_t *self)
 {
-  // ainda sem suporte a processos, carrega programa e passa a executar ele
-  // quem chamou o sistema não vai mais ser executado, coitado!
-  // t2: deveria criar um novo processo
-  // t3: identifica direito esses processos
-  processo_t processo_criador = ALGUM_PROCESSO;
-  processo_t processo_criado = ALGUM_PROCESSO;
-
-  // em X está o endereço onde está o nome do arquivo
-  int ender_proc;
-  // t2: deveria ler o X do descritor do processo criador
-  ender_proc = self->regX;
+  console_printf("chamada de criação de processo   ");
+  int ender_proc = self->tabela_processos[self->processo_corrente].regX;
   char nome[100];
-  if (so_copia_str_do_processo(self, 100, nome, ender_proc, processo_criador)) {
-    int ender_carga = so_carrega_programa(self, processo_criado, nome);
-    if (ender_carga != -1) {
-      // t2: deveria escrever no PC do descritor do processo criado
-      self->regPC = ender_carga;
-      return;
-    } // else?
+  if (!so_copia_str_do_processo(self, 100, nome, ender_proc,
+                                self->tabela_processos[self->processo_corrente])) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
   }
-  // deveria escrever -1 (se erro) ou o PID do processo criado (se OK) no reg A
-  //   do processo que pediu a criação
-  self->regA = -1;
+
+  int ender_carga = so_carrega_programa(self, self->tabela_processos[self->processo_corrente], nome);
+  if (ender_carga <= 0) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+
+  // Procura slot livre (MORTO ou nunca usado)
+  int slot = -1;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].estado == MORTO) {
+      slot = i;
+      break;
+    }
+  }
+  if (slot == -1) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+
+  // Inicializa novo processo
+  static int next_pid = 2; // init é 1
+  self->tabela_processos[slot].pid = next_pid++;
+  self->tabela_processos[slot].ppid = self->tabela_processos[self->processo_corrente].pid;
+  self->tabela_processos[slot].estado = PRONTO;
+  self->tabela_processos[slot].regA = 0;
+  self->tabela_processos[slot].regX = 0;
+  self->tabela_processos[slot].regERRO = 0;
+  self->tabela_processos[slot].regPC = ender_carga;
+  self->tabela_processos[slot].quantum = self->quantum;  // inicializa com quantum completo
+  self->tabela_processos[slot].esperando_pid = -1;
+  self->tabela_processos[slot].esperando_dispositivo = -1;
+  self->tabela_processos[slot].memoria_base = 0;
+  self->tabela_processos[slot].memoria_limite = 0;
+  self->tabela_processos[slot].prioridade = 0.0f;  // prioridade inicial máxima
+
+  insere_fila_prontos(self, slot);
+
+  // Retorna o PID do novo processo no regA do processo criador
+  self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
+
+  self->tabela_processos[slot].terminal = D_TERM_A_TELA + (self->tabela_processos[slot].pid-1%4)*4; // Associa terminal baseado no slot
+
+  // if(i == 0) self->tabela_processos[i].terminal = D_TERM_A_TELA;
+
 }
 
 // implementação da chamada se sistema SO_MATA_PROC
 // mata o processo com pid X (ou o processo corrente se X é 0)
 static void so_chamada_mata_proc(so_t *self)
 {
-  // t2: deveria matar um processo
-  // ainda sem suporte a processos, retorna erro -1
-  console_printf("SO: SO_MATA_PROC não implementada");
-  self->regA = -1;
+  console_printf("chamada de morte de processo   ");
+  int pid_alvo = self->tabela_processos[self->processo_corrente].regX;
+  int alvo = -1;
+  if (pid_alvo == 0) {
+    alvo = self->processo_corrente;
+  } else {
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+      if (self->tabela_processos[i].pid == pid_alvo && self->tabela_processos[i].estado != MORTO) {
+        alvo = i;
+        break;
+      }
+    }
+  }
+  if (alvo == -1) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+  self->tabela_processos[alvo].estado = MORTO;
+  self->tabela_processos[alvo].regA = -1;
+  // Desbloqueia o pai se estiver esperando esse filho
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].estado == BLOQUEADO && self->tabela_processos[i].esperando_pid == self->tabela_processos[alvo].pid) {
+      self->tabela_processos[i].estado = PRONTO;
+      self->tabela_processos[i].esperando_pid = -1;
+      self->tabela_processos[i].regA = 0; // sucesso
+    }
+  }
+  self->tabela_processos[self->processo_corrente].regA = 0;
 }
 
 // implementação da chamada se sistema SO_ESPERA_PROC
 // espera o fim do processo com pid X
 static void so_chamada_espera_proc(so_t *self)
 {
-  // t2: deveria bloquear o processo se for o caso (e desbloquear na morte do esperado)
-  // ainda sem suporte a processos, retorna erro -1
-  console_printf("SO: SO_ESPERA_PROC não implementada");
-  self->regA = -1;
+  console_printf("chamada de espera de processo   ");
+  int pid_esperado = self->tabela_processos[self->processo_corrente].regX;
+  int existe = 0;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].pid == pid_esperado && self->tabela_processos[i].estado != MORTO) {
+      existe = 1;
+      break;
+    }
+  }
+  if (!existe) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+  self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
+  self->tabela_processos[self->processo_corrente].esperando_pid = pid_esperado;
 }
-
 
 // ---------------------------------------------------------------------
 // CARGA DE PROGRAMA {{{1
@@ -523,13 +869,13 @@ static void so_chamada_espera_proc(so_t *self)
 static int so_carrega_programa_na_memoria_fisica(so_t *self, programa_t *programa);
 static int so_carrega_programa_na_memoria_virtual(so_t *self,
                                                   programa_t *programa,
-                                                  processo_t processo);
+                                                  processo processo);
 
 // carrega o programa na memória
 // se processo for NENHUM_PROCESSO, carrega o programa na memória física
 //   senão, carrega na memória virtual do processo
 // retorna o endereço de carga ou -1
-static int so_carrega_programa(so_t *self, processo_t processo,
+static int so_carrega_programa(so_t *self, processo processo,
                                char *nome_do_executavel)
 {
   console_printf("SO: carga de '%s'", nome_do_executavel);
@@ -541,9 +887,15 @@ static int so_carrega_programa(so_t *self, processo_t processo,
   }
 
   int end_carga;
-  if (processo == NENHUM_PROCESSO) {
-    end_carga = so_carrega_programa_na_memoria_fisica(self, programa);
-  } else {
+  int flag = 0;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].estado == MORTO) {
+      end_carga = so_carrega_programa_na_memoria_fisica(self, programa);
+      flag = 1;
+      break;
+    }
+  }
+  if (flag == 0) {
     end_carga = so_carrega_programa_na_memoria_virtual(self, programa, processo);
   }
 
@@ -569,7 +921,7 @@ static int so_carrega_programa_na_memoria_fisica(so_t *self, programa_t *program
 
 static int so_carrega_programa_na_memoria_virtual(so_t *self,
                                                   programa_t *programa,
-                                                  processo_t processo)
+                                                  processo processo)
 {
   // t3: isto tá furado...
   // está simplesmente lendo para o próximo quadro que nunca foi ocupado,
@@ -623,9 +975,9 @@ static int so_carrega_programa_na_memoria_virtual(so_t *self,
 // t3: Com memória virtual, cada valor do espaço de endereçamento do processo
 //   pode estar em memória principal ou secundária (e tem que achar onde)
 static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
-                                     int end_virt, processo_t processo)
+                                     int end_virt, processo processo)
 {
-  if (processo == NENHUM_PROCESSO) return false;
+  if (self->tabela_processos[self->processo_corrente].estado == MORTO) return false;
   for (int indice_str = 0; indice_str < tam; indice_str++) {
     int caractere;
     // não tem memória virtual implementada, posso usar a mmu para traduzir
@@ -644,6 +996,35 @@ static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
   }
   // estourou o tamanho de str
   return false;
+}
+
+
+static void insere_fila_prontos(so_t *self, int idx_processo) {
+    self->fila_prontos[self->fim_fila] = idx_processo;
+    self->fim_fila = (self->fim_fila + 1) % MAX_PROCESSOS;
+}
+ 
+static int remove_fila_prontos(so_t *self) {
+    if (self->inicio_fila == self->fim_fila) {
+        return -1; // fila vazia
+    }
+    int idx = self->fila_prontos[self->inicio_fila];
+    self->inicio_fila = (self->inicio_fila + 1) % MAX_PROCESSOS;
+    return idx;
+}
+
+
+
+
+void so_define_escalonador(so_t *self, int id)
+{
+    if (id == 2) {
+        self->escalonador = so_escalona2;
+        console_printf("SO: usando escalonador 2 (prioridade)");
+    } else {
+        self->escalonador = so_escalona;
+        console_printf("SO: usando escalonador 1 (round-robin)");
+    }
 }
 
 // vim: foldmethod=marker

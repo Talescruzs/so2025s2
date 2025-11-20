@@ -18,6 +18,9 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
               es_t *es, console_t *console);
 void so_destroi(so_t *self);
 
+// permite escolher o escalonador em runtime (1=RR, 2=prioridade)
+void so_define_escalonador(so_t *self, int id);
+
 // Chamadas de sistema
 // Uma chamada de sistema é realizada colocando a identificação da
 //   chamada (um dos valores abaixo) no registrador A e executando a
