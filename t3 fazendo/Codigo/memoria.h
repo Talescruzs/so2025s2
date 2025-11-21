@@ -18,6 +18,7 @@
 #define MEMORIA_H
 
 #include "err.h"
+#define DISCO_TAM 10000000 // tamanho da memória secundária (disco)
 
 // tipo opaco que representa a memória
 typedef struct mem_t mem_t;

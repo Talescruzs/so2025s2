@@ -3,7 +3,6 @@ criei
 CMD: 'c'
 interrompido   
 SO: recebi IRQ 0 (Reset)
-salvando estado da CPU   
 tratando IRQ   
 recebi RESET   
 SO: carga de 'trata_int.maq'
@@ -12,320 +11,353 @@ SO: carga de 'init.maq'
 SO: carga na memória virtual V0-169 F100-269 npag=17
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 0, INST: 66, processo: 0, esperando PID: -1
+Página: 0
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: quantum esgotado para processo 0
 tratando pendências   
 escalonando (RR) -1
-despachando   0  
+PC: 149, INST: 156, processo: 0, esperando PID: -1
+Página: 14
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 160, INST: 2, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 167, INST: 156, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 145, INST: 0, processo: 0, esperando PID: -1
+Página: 14
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 157, INST: 5, processo: 0, esperando PID: -1
+Página: 15
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 162, INST: 7, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 167, INST: 156, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 163, INST: 3, processo: 0, esperando PID: -1
+Página: 16
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 8, INST: 88, processo: 0, esperando PID: -1
+Página: 0
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 2 (Chamada de sistema)
-salvando estado da CPU   
 tratando IRQ   
 chamada de sistema   
 SO: chamada de sistema 7
@@ -334,10 +366,12 @@ SO: carga de 'p1.maq'
 SO: carga na memória virtual V0-240 F270-510 npag=25
 tratando pendências   
 escalonando (RR) 0
-despachando   0  
+PC: 14, INST: 32, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-salvando estado da CPU   
+A = 0, X = 0, PC = 0
 tratando IRQ   
 erro na CPU   
 SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
@@ -346,56 +380,302 @@ SO: página 0 -> quadro 27  (acesso=0 alteracao=0)
 SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
 tratando pendências   
 escalonando (RR) 0
-despachando   -1  
-Aviso: processo_corrente é -1, verificando processos disponíveis...
-Nenhum processo disponível para executar, CPU aguardando...
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
 interrompido   
-SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
-SO: processo_corrente inválido em salva_estado
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
 tratando IRQ   
-interrupção do relógio   
-SO: interrupção do relógio (não tratada)
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
 tratando pendências   
-escalonando (RR) -1
-despachando   -1  
-Aviso: processo_corrente é -1, verificando processos disponíveis...
-Nenhum processo disponível para executar, CPU aguardando...
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
 interrompido   
-SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
-SO: processo_corrente inválido em salva_estado
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
 tratando IRQ   
-interrupção do relógio   
-SO: interrupção do relógio (não tratada)
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
 tratando pendências   
-escalonando (RR) -1
-despachando   -1  
-Aviso: processo_corrente é -1, verificando processos disponíveis...
-Nenhum processo disponível para executar, CPU aguardando...
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
 interrompido   
-SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
-SO: processo_corrente inválido em salva_estado
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
 tratando IRQ   
-interrupção do relógio   
-SO: interrupção do relógio (não tratada)
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
 tratando pendências   
-escalonando (RR) -1
-despachando   -1  
-Aviso: processo_corrente é -1, verificando processos disponíveis...
-Nenhum processo disponível para executar, CPU aguardando...
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
 interrompido   
-SO: recebi IRQ 3 (E/S: relógio)
-salvando estado da CPU   
-SO: processo_corrente inválido em salva_estado
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
 tratando IRQ   
-interrupção do relógio   
-SO: interrupção do relógio (não tratada)
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
 tratando pendências   
-escalonando (RR) -1
-despachando   -1  
-Aviso: processo_corrente é -1, verificando processos disponíveis...
-Nenhum processo disponível para executar, CPU aguardando...
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+A = 0, X = 0, PC = 0
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 inválida (tabpag_traduz retornou ERR_PAG_AUSENTE)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
+escalonando (RR) 0
+PC: 14, INST: 0, processo: 0, esperando PID: -1
+Página: 1
+RETORNO DESPACHA: 0
 CMD: 'f'
 Fim da execução.
