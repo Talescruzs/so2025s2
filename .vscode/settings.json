@@ -2,6 +2,7 @@
     "files.associations": {
         "string.h": "c",
         "programa.h": "c",
-        "es.h": "c"
+        "es.h": "c",
+        "tabpag.h": "c"
     }
 }

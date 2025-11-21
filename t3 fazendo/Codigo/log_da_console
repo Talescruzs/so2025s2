@@ -10,6 +10,7 @@ SO: carga de 'trata_int.maq'
 SO: carga na memória física 60-72
 SO: carga de 'init.maq'
 SO: carga na memória virtual V0-169 F100-269 npag=17
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -19,6 +20,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -28,6 +30,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -36,6 +39,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: quantum esgotado para processo 0
+tratando pendências   
 escalonando (RR) -1
 despachando   0  
 interrompido   
@@ -45,6 +49,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -54,6 +59,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -62,6 +68,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -71,6 +78,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -80,6 +88,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -89,6 +98,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -97,6 +107,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -106,6 +117,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -115,6 +127,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -123,6 +136,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -132,6 +146,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -141,6 +156,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -149,6 +165,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -158,6 +175,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -167,6 +185,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -175,6 +194,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -184,6 +204,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -193,6 +214,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -201,6 +223,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -210,6 +233,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -219,6 +243,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -228,6 +253,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -236,6 +262,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -245,6 +272,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -254,6 +282,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -262,6 +291,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -271,6 +301,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -280,6 +311,7 @@ tratando IRQ
 chamada de sistema   
 SO: chamada de sistema 2
 chamada de escrita   
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -288,6 +320,7 @@ salvando estado da CPU
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -299,6 +332,7 @@ SO: chamada de sistema 7
 chamada de criação de processo   
 SO: carga de 'p1.maq'
 SO: carga na memória virtual V0-240 F270-510 npag=25
+tratando pendências   
 escalonando (RR) 0
 despachando   0  
 interrompido   
@@ -306,33 +340,62 @@ SO: recebi IRQ 1 (Erro de execução)
 salvando estado da CPU   
 tratando IRQ   
 erro na CPU   
-SO: IRQ não tratada -- erro na CPU: Instrução inválida (0)
-SO: IRQ não tratada -- erro na CPU: Instrução inválida
+SO: IRQ de ERRO na CPU: Instrução inválida (complemento=0) proc_idx=0 pid=1 pc=14
+SO: endereço virtual que causou a falha = 0 (página 0)
+SO: página 0 -> quadro 27  (acesso=0 alteracao=0)
+SO: processo idx=0 pid=1 marcado como MORTO por erro na CPU
+tratando pendências   
 escalonando (RR) 0
-despachando   0  
+despachando   -1  
+Aviso: processo_corrente é -1, verificando processos disponíveis...
+Nenhum processo disponível para executar, CPU aguardando...
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
 salvando estado da CPU   
+SO: processo_corrente inválido em salva_estado
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
-escalonando (RR) 0
-despachando   0  
+tratando pendências   
+escalonando (RR) -1
+despachando   -1  
+Aviso: processo_corrente é -1, verificando processos disponíveis...
+Nenhum processo disponível para executar, CPU aguardando...
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
 salvando estado da CPU   
+SO: processo_corrente inválido em salva_estado
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
-escalonando (RR) 0
-despachando   0  
+tratando pendências   
+escalonando (RR) -1
+despachando   -1  
+Aviso: processo_corrente é -1, verificando processos disponíveis...
+Nenhum processo disponível para executar, CPU aguardando...
 interrompido   
 SO: recebi IRQ 3 (E/S: relógio)
 salvando estado da CPU   
+SO: processo_corrente inválido em salva_estado
 tratando IRQ   
 interrupção do relógio   
 SO: interrupção do relógio (não tratada)
-escalonando (RR) 0
-despachando   0  
+tratando pendências   
+escalonando (RR) -1
+despachando   -1  
+Aviso: processo_corrente é -1, verificando processos disponíveis...
+Nenhum processo disponível para executar, CPU aguardando...
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+salvando estado da CPU   
+SO: processo_corrente inválido em salva_estado
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando (RR) -1
+despachando   -1  
+Aviso: processo_corrente é -1, verificando processos disponíveis...
+Nenhum processo disponível para executar, CPU aguardando...
 CMD: 'f'
 Fim da execução.
