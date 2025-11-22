@@ -35,6 +35,57 @@ enum EstadoProcesso {
     MORTO       /* 3 */
 };
 
+typedef struct metricas {
+    int n_processos_criados;
+    int tempo_total_execucao;
+    int tempo_total_ocioso;
+    bool esta_ocioso;
+    int n_interrupcoes_tipo[7];
+    int n_preempcao;
+    int tempo_retorno[MAX_PROCESSOS];
+    int n_preempcao_processo[MAX_PROCESSOS];
+    int n_entradas_estado[MAX_PROCESSOS][3]; // 3 estados: pronto, bloqueado, executando
+    int tempo_estado[MAX_PROCESSOS][3];
+    int tempo_inicio_estado[MAX_PROCESSOS][3];
+    int tempo_medio_resposta[MAX_PROCESSOS];
+} metricas;
+
+metricas *cria_metrica() {
+    metricas *m = malloc(sizeof(metricas));
+    if (m == NULL) {
+        return NULL;
+    }
+    m->esta_ocioso = false;
+    return m;
+}
+
+void mostra_metricas(metricas *m) {
+    console_printf("Métricas do Sistema Operacional:");
+    console_printf("processos criados: %d\n", m->n_processos_criados);
+    console_printf("tempo total da execucao: %d\n", m->tempo_total_execucao);
+    console_printf("tempo total da ocioso: %d\n", m->tempo_total_ocioso);
+    console_printf("interrupcoes de reset: %d\n", m->n_interrupcoes_tipo[IRQ_RESET]);
+    console_printf("interrupcoes de CPU: %d\n", m->n_interrupcoes_tipo[IRQ_ERR_CPU]);
+    console_printf("interrupcoes de Relogio: %d\n", m->n_interrupcoes_tipo[IRQ_RELOGIO]);
+    console_printf("interrupcoes de Sistema: %d\n", m->n_interrupcoes_tipo[IRQ_SISTEMA]);
+    console_printf("interrupcoes de teclado: %d\n", m->n_interrupcoes_tipo[IRQ_TECLADO]);
+    console_printf("interrupcoes de tela: %d\n", m->n_interrupcoes_tipo[IRQ_TELA]);
+    console_printf("interrupcoes desconhecidas: %d\n", m->n_interrupcoes_tipo[6]);
+    console_printf("numero de preempcoes: %d\n", m->n_preempcao);
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        console_printf("processo %d: tempo de retorno: %d, numero de preempcoes: %d\n", i, m->tempo_retorno[i], m->n_preempcao_processo[i]);
+    }
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        console_printf("processo %d: entradas em estados - pronto: %d, bloqueado: %d, executando: %d\n", i, m->n_entradas_estado[i][PRONTO], m->n_entradas_estado[i][BLOQUEADO], m->n_entradas_estado[i][EXECUTANDO]);
+    }
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        console_printf("processo %d: tempo em estados - pronto: %d, bloqueado: %d, executando: %d\n", i, m->tempo_estado[i][PRONTO], m->tempo_estado[i][BLOQUEADO], m->tempo_estado[i][EXECUTANDO]);
+    }
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        console_printf("processo %d: tempo tempo medio de resposta: %d\n", i, m->tempo_medio_resposta[i]);
+    }
+}
+
 typedef struct processo {
     int pid;                    // identificador do processo
     int ppid;                   // identificador do processo pai
@@ -50,6 +101,7 @@ typedef struct processo {
     float prioridade;
 } processo;
 
+
 struct so_t {
     cpu_t *cpu;
     mem_t *mem;
@@ -61,6 +113,8 @@ struct so_t {
 
     // Tabela de processos alocada dinamicamente
     processo *tabela_processos;
+
+    metricas *metrica;
 
     // Fila circular de processos prontos
     int fila_prontos[MAX_PROCESSOS];
@@ -77,6 +131,37 @@ struct so_t {
     void (*escalonador)(struct so_t *self);
     int ident_escalonador;
 };
+
+void muda_estado_proc(so_t *self, int processo_id, enum EstadoProcesso novo_estado) {
+    processo *proc = &self->tabela_processos[processo_id];
+    if(proc->estado == novo_estado) {
+        return;
+    }
+    // Marca tempo atual
+    int tempo_atual = 0, tempo_inicio = 0;
+    if(novo_estado == MORTO) {
+      // Compara com a ultima mudanca de estado e soma no total de tempo do estado anterior
+      es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+      tempo_atual = tempo_inicio - self->metrica->tempo_inicio_estado[processo_id][proc->estado];
+
+      self->metrica->tempo_estado[processo_id][proc->estado] += tempo_atual;
+      // Muda estado
+      proc->estado = novo_estado;
+      return;
+    }
+
+    self->metrica->n_entradas_estado[processo_id][novo_estado]++;
+
+    // Compara com a ultima mudanca de estado e soma no total de tempo do estado anterior
+    es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+    tempo_atual = tempo_inicio - self->metrica->tempo_inicio_estado[processo_id][proc->estado];
+
+    self->metrica->tempo_estado[processo_id][proc->estado] += tempo_atual;
+    // Muda estado
+    proc->estado = novo_estado;
+    // Marca tempo de inicio do novo estado
+    es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_inicio_estado[processo_id][novo_estado]);
+}
 
 // protótipos de escalonadores
 static void so_escalona(so_t *self);
@@ -110,6 +195,12 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   so_t *self = malloc(sizeof(*self));
   if (self == NULL) return NULL;
 
+  self->metrica = cria_metrica();
+  if (self->metrica == NULL) {
+      free(self);
+      return NULL;
+  }
+
   self->cpu = cpu;
   self->mem = mem;
   self->es = es;
@@ -122,7 +213,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
       return NULL;
   }
   for (int i = 0; i < MAX_PROCESSOS; i++) {
-      self->tabela_processos[i].estado = MORTO; // inicializa todos os processos como mortos
+      muda_estado_proc(self, i, MORTO);
   }
 
   self->processo_corrente = -1;
@@ -142,12 +233,18 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
 
   // self->tabela_processos = NULL; // t2: inicializa a tabela de processos
   console_printf("criei   ");
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_total_execucao);
 
   return self;
 }
 
 void so_destroi(so_t *self)
 {
+  int final;
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &final);
+  self->metrica->tempo_total_execucao = final - self->metrica->tempo_total_execucao;
+
+  mostra_metricas(self->metrica);
   cpu_define_chamaC(self->cpu, NULL, NULL);
   free(self);
 }
@@ -235,7 +332,7 @@ static void so_trata_pendencias(so_t *self)
           int disp = proc->esperando_dispositivo;
           int estado_disp = 0;
           if (es_le(self->es, disp, &estado_disp) == ERR_OK && estado_disp != 0) {
-                    proc->estado = PRONTO;
+                    muda_estado_proc(self, i, PRONTO);
                     proc->esperando_dispositivo = -1;
                     proc->quantum = 0;
                     insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
@@ -252,7 +349,7 @@ static void so_trata_pendencias(so_t *self)
             }
           }
           if (terminou) {
-            proc->estado = PRONTO;
+            muda_estado_proc(self, i, PRONTO);
             proc->esperando_pid = -1;
             proc->quantum = 0;
             insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
@@ -282,7 +379,7 @@ static void so_escalona(so_t *self)
     if (atual >= 0 && atual < MAX_PROCESSOS &&
         self->tabela_processos[atual].estado == EXECUTANDO &&
         prontos > 0) {
-        self->tabela_processos[atual].estado = PRONTO;
+        muda_estado_proc(self, atual, PRONTO);
     }
 
     // Procura próximo processo PRONTO (round-robin)
@@ -296,72 +393,19 @@ static void so_escalona(so_t *self)
 
     // Se achou, coloca como EXECUTANDO
     if (proximo != -1) {
-        self->tabela_processos[proximo].estado = EXECUTANDO;
+        muda_estado_proc(self, proximo, EXECUTANDO);
         self->processo_corrente = proximo;
     } else if (atual >= 0 && atual < MAX_PROCESSOS &&
                self->tabela_processos[atual].estado != BLOQUEADO &&
                self->tabela_processos[atual].estado != MORTO) {
         // Se não achou, mas o atual não está bloqueado ou morto, mantém EXECUTANDO
-        self->tabela_processos[atual].estado = EXECUTANDO;
+        muda_estado_proc(self, atual, EXECUTANDO);
         self->processo_corrente = atual;
     } else {
         // Nenhum processo pronto/executando
         self->processo_corrente = -1;
     }
 }
-
-// // reativa o escalonador round-robin
-// static void so_escalona(so_t *self)
-// {
-//     console_printf("escalonando (RR) %d", self->processo_corrente);
-
-//     int atual = self->processo_corrente;
-//     int proximo = -1;
-//     int prontos = 0;
-
-//     // Conta quantos processos PRONTO existem
-//     for (int i = 0; i < MAX_PROCESSOS; i++) {
-//         if (self->tabela_processos[i].estado == PRONTO) {
-//             prontos++;
-//         }
-//     }
-
-//     // Só coloca o processo corrente em PRONTO se houver outro processo PRONTO
-//     if (atual >= 0 && atual < MAX_PROCESSOS &&
-//         self->tabela_processos[atual].estado == EXECUTANDO &&
-//         prontos > 0) {
-//         self->tabela_processos[atual].estado = PRONTO;
-//         insere_fila_prontos(self, atual);
-//     }
-
-//     // pega próximo da fila se houver
-//     int idx_fila = remove_fila_prontos(self);
-//     if (idx_fila != -1 && self->tabela_processos[idx_fila].estado == PRONTO) {
-//         proximo = idx_fila;
-//     } else {
-//         // fallback: busca sequencial
-//         for (int i = 1; i <= MAX_PROCESSOS; i++) {
-//             int idx = (atual + i) % MAX_PROCESSOS;
-//             if (self->tabela_processos[idx].estado == PRONTO) {
-//                 proximo = idx;
-//                 break;
-//             }
-//         }
-//     }
-
-//     if (proximo != -1) {
-//         self->tabela_processos[proximo].estado = EXECUTANDO;
-//         self->processo_corrente = proximo;
-//         self->contador_quantum = self->quantum;
-//     } else if (atual >= 0 && atual < MAX_PROCESSOS &&
-//                self->tabela_processos[atual].estado != BLOQUEADO &&
-//                self->tabela_processos[atual].estado != MORTO) {
-//         self->tabela_processos[atual].estado = EXECUTANDO;
-//         self->processo_corrente = atual;
-//     } else {
-//         self->processo_corrente = -1;
-//     }
-// }
 
 static void so_escalona2(so_t *self)
 {
@@ -392,7 +436,7 @@ static void so_escalona2(so_t *self)
         float prio_nova = (prio_antiga + ((float)t_exec / t_quantum)) / 2.0f;
 
         self->tabela_processos[atual].prioridade = prio_nova;
-        self->tabela_processos[atual].estado = PRONTO;
+        muda_estado_proc(self, atual, PRONTO);
 
         // Insere o processo atual no fim da fila de prontos
         insere_fila_prontos(self, atual);
@@ -411,13 +455,14 @@ static void so_escalona2(so_t *self)
     }
 
     if (proximo != -1) {
-        self->tabela_processos[proximo].estado = EXECUTANDO;
+        muda_estado_proc(self, proximo, EXECUTANDO);
+        
         self->processo_corrente = proximo;
     } else if (atual >= 0 && atual < MAX_PROCESSOS &&
                self->tabela_processos[atual].estado != BLOQUEADO &&
                self->tabela_processos[atual].estado != MORTO) {
         // Mantém processo atual EXECUTANDO se não há outro PRONTO
-        self->tabela_processos[atual].estado = EXECUTANDO;
+        muda_estado_proc(self, atual, EXECUTANDO);
         self->processo_corrente = atual;
         self->contador_quantum = self->quantum; // reseta contador do quantum para novo processo
     } else {
@@ -503,18 +548,23 @@ static void so_trata_irq(so_t *self, int irq)
   // verifica o tipo de interrupção que está acontecendo, e atende de acordo
   switch (irq) {
     case IRQ_RESET:
+      self->metrica->n_interrupcoes_tipo[IRQ_RESET]++; // 0
       so_trata_reset(self);
       break;
     case IRQ_SISTEMA:
+      self->metrica->n_interrupcoes_tipo[IRQ_SISTEMA]++; // 2
       so_trata_irq_chamada_sistema(self);
       break;
     case IRQ_ERR_CPU:
+      self->metrica->n_interrupcoes_tipo[IRQ_ERR_CPU]++; // 1
       so_trata_irq_err_cpu(self);
       break;
     case IRQ_RELOGIO:
+      self->metrica->n_interrupcoes_tipo[IRQ_RELOGIO]++; // 3
       so_trata_irq_relogio(self);
       break;
     default:
+      self->metrica->n_interrupcoes_tipo[6]++; // outras
       so_trata_irq_desconhecida(self, irq);
   }
 }
@@ -561,7 +611,7 @@ static void so_trata_reset(so_t *self)
   self->processo_corrente = 0;
   self->tabela_processos[0].pid = 1;
   self->tabela_processos[0].ppid = 0;
-  self->tabela_processos[0].estado = EXECUTANDO;
+  muda_estado_proc(self, 0, EXECUTANDO);
   self->tabela_processos[0].regA = 0;
   self->tabela_processos[0].regX = 0;
   self->tabela_processos[0].regERRO = 0;
@@ -573,6 +623,9 @@ static void so_trata_reset(so_t *self)
   self->tabela_processos[0].memoria_limite = 0;
   self->tabela_processos[0].terminal = D_TERM_A_TELA;
   self->tabela_processos[0].prioridade = 0.0f;  // prioridade inicial máxima
+  self->metrica->n_entradas_estado[0][EXECUTANDO]++;
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_inicio_estado[0][EXECUTANDO]);
+  self->metrica->n_processos_criados++;
 }
 
 // interrupção gerada quando a CPU identifica um erro
@@ -613,7 +666,9 @@ static void so_trata_irq_relogio(so_t *self)
       if (self->contador_quantum <= 0) {
         // Quantum esgotado, força troca de contexto
         console_printf("SO: quantum esgotado para processo %d", self->processo_corrente);
-        self->tabela_processos[self->processo_corrente].estado = PRONTO;
+        muda_estado_proc(self, self->processo_corrente, PRONTO);
+        self->metrica->n_preempcao++;
+        self->metrica->n_preempcao_processo[self->processo_corrente]++;
         insere_fila_prontos(self, self->processo_corrente);
         self->processo_corrente = -1;  // força troca de processo
       }
@@ -764,7 +819,7 @@ static void so_chamada_cria_proc(so_t *self)
   static int next_pid = 2; // init é 1
   self->tabela_processos[slot].pid = next_pid++;
   self->tabela_processos[slot].ppid = self->tabela_processos[self->processo_corrente].pid;
-  self->tabela_processos[slot].estado = PRONTO;
+  muda_estado_proc(self, slot, PRONTO);
   self->tabela_processos[slot].regA = 0;
   self->tabela_processos[slot].regX = 0;
   self->tabela_processos[slot].regERRO = 0;
@@ -783,7 +838,7 @@ static void so_chamada_cria_proc(so_t *self)
 
   self->tabela_processos[slot].terminal = D_TERM_A_TELA + (self->tabela_processos[slot].pid-1%4)*4; // Associa terminal baseado no slot
 
-  // if(i == 0) self->tabela_processos[i].terminal = D_TERM_A_TELA;
+  self->metrica->n_processos_criados++;
 
 }
 
@@ -808,12 +863,13 @@ static void so_chamada_mata_proc(so_t *self)
     self->tabela_processos[self->processo_corrente].regA = -1;
     return;
   }
-  self->tabela_processos[alvo].estado = MORTO;
+  muda_estado_proc(self, alvo, MORTO);
+  
   self->tabela_processos[alvo].regA = -1;
   // Desbloqueia o pai se estiver esperando esse filho
   for (int i = 0; i < MAX_PROCESSOS; i++) {
     if (self->tabela_processos[i].estado == BLOQUEADO && self->tabela_processos[i].esperando_pid == self->tabela_processos[alvo].pid) {
-      self->tabela_processos[i].estado = PRONTO;
+      muda_estado_proc(self, i, PRONTO);
       self->tabela_processos[i].esperando_pid = -1;
       self->tabela_processos[i].regA = 0; // sucesso
     }
@@ -838,7 +894,9 @@ static void so_chamada_espera_proc(so_t *self)
     self->tabela_processos[self->processo_corrente].regA = -1;
     return;
   }
-  self->tabela_processos[self->processo_corrente].estado = BLOQUEADO;
+  muda_estado_proc(self, self->processo_corrente, BLOQUEADO);
+  self->metrica->n_entradas_estado[self->processo_corrente][BLOQUEADO]++;
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_estado[self->processo_corrente][BLOQUEADO]);
   self->tabela_processos[self->processo_corrente].esperando_pid = pid_esperado;
 }
 
