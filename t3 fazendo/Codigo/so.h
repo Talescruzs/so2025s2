@@ -13,9 +13,10 @@ typedef struct so_t so_t;
 #include "cpu.h"
 #include "es.h"
 #include "console.h" // só para uma gambiarra
+#include "relogio.h"
 
 so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
-              es_t *es, console_t *console);
+              es_t *es, console_t *console, relogio_t *relogio);
 void so_destroi(so_t *self);
 
 // permite escolher o escalonador em runtime (1=RR, 2=prioridade)

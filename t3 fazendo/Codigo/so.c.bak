@@ -22,7 +22,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 
 // ---------------------------------------------------------------------
@@ -456,16 +455,12 @@ static void so_trata_pendencias(so_t *self)
   int tempo_atual = 0;
   relogio_leitura(self->relogio, 0, &tempo_atual);
   
-  console_printf("SO: tempo atual = %d", tempo_atual);
-  
     for (int i = 0; i < MAX_PROCESSOS; i++){
       processo *proc = &self->tabela_processos[i];
       // ex: desbloq processo que espera dispositivo pronto
       if (proc->estado == BLOQUEADO){
         // Desbloqueia processo que terminou espera por disco
         if (proc->tempo_desbloqueio > 0 && tempo_atual >= proc->tempo_desbloqueio) {
-            console_printf("SO: desbloqueando proc %d (tempo %d >= %d)", 
-                          proc->pid, tempo_atual, proc->tempo_desbloqueio);
             proc->estado = PRONTO;
             proc->tempo_desbloqueio = 0;
             insere_fila_prontos(self, i);
@@ -919,7 +914,6 @@ static int so_aloca_quadro(so_t *self)
 // Trata uma falta de página
 static void so_trata_falta_pagina(so_t *self, int idx_proc, int pagina)
 {
-  fprintf(stderr, "DEBUG: so_trata_falta_pagina proc=%d pag=%d\n", idx_proc, pagina);
   console_printf("SO: tratando falta de página %d do processo idx=%d", pagina, idx_proc);
   
   processo *proc = &self->tabela_processos[idx_proc];
@@ -927,20 +921,14 @@ static void so_trata_falta_pagina(so_t *self, int idx_proc, int pagina)
   // Aloca um quadro (pode fazer substituição)
   int quadro = so_aloca_quadro(self);
   if (quadro < 0) {
-    fprintf(stderr, "DEBUG: erro ao alocar quadro\n");
     console_printf("SO: erro ao alocar quadro");
     proc->estado = MORTO;
     return;
   }
   
-  fprintf(stderr, "DEBUG: quadro alocado=%d\n", quadro);
-  
   // Obtém endereço da página na swap
   int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina);
-  fprintf(stderr, "DEBUG: end_swap=%d pid=%d\n", end_swap, proc->pid);
-  
   if (end_swap < 0) {
-    fprintf(stderr, "DEBUG: erro ao obter endereço da página na swap\n");
     console_printf("SO: erro ao obter endereço da página na swap");
     proc->estado = MORTO;
     return;
@@ -1533,6 +1521,151 @@ static void so_chamada_espera_proc(so_t *self)
   self->tabela_processos[self->processo_corrente].esperando_pid = pid_esperado;
 }
 
+// ---------------------------------------------------------------------
+// GERENCIAMENTO DE MEMÓRIA VIRTUAL {{{1
+// ---------------------------------------------------------------------
+
+// Aloca um quadro livre da memória principal
+// Retorna o número do quadro ou -1 se não houver quadro livre
+static int so_aloca_quadro(so_t *self)
+{
+    int quadro = mem_quadros_tem_livre(self->quadros);
+    if (quadro >= 0) {
+        console_printf("SO: quadro %d alocado (livre)", quadro);
+        return quadro;
+    }
+    
+    // Não há quadro livre - precisa substituir uma página
+    console_printf("SO: sem quadros livres - iniciando substituição");
+    
+    // Escolhe vítima usando algoritmo FIFO (implementado em memoria_quadros)
+    quadro = mem_quadros_libera_quadro_fifo(self->quadros);
+    
+    if (quadro < 0) {
+        console_printf("SO: erro ao liberar quadro");
+        return -1;
+    }
+    
+    // Obtém informações sobre a página que está sendo removida
+    int dono_pid = mem_quadros_pega_dono(self->quadros, quadro);
+    int pagina_vitima = mem_quadros_pega_pagina(self->quadros, quadro);
+    
+    console_printf("SO: substituindo quadro %d (proc=%d pag=%d)", 
+                   quadro, dono_pid, pagina_vitima);
+    
+    // Encontra o processo dono
+    int idx_dono = -1;
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].pid == dono_pid && 
+            self->tabela_processos[i].estado != MORTO) {
+            idx_dono = i;
+            break;
+        }
+    }
+    
+    if (idx_dono < 0) {
+        console_printf("SO: processo dono %d não encontrado", dono_pid);
+        return quadro; // Retorna o quadro mesmo assim
+    }
+    
+    // Verifica se a página foi alterada
+    bool alterada = tabpag_bit_alteracao(self->tabela_processos[idx_dono].tabpag, pagina_vitima);
+    
+    if (alterada) {
+        // Precisa escrever a página na swap antes de remover
+        console_printf("SO: página %d do processo %d foi alterada - escrevendo na swap",
+                       pagina_vitima, dono_pid);
+        
+        int end_fis = quadro * TAM_PAGINA;
+        int dados[TAM_PAGINA];
+        
+        // Lê dados do quadro
+        for (int i = 0; i < TAM_PAGINA; i++) {
+            mem_le(self->mem, end_fis + i, &dados[i]);
+        }
+        
+        // Escreve na swap
+        int end_swap = swap_endereco_pagina(self->swap, dono_pid, pagina_vitima);
+        int tempo_bloqueio;
+        
+        if (swap_escreve_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio) != ERR_OK) {
+            console_printf("SO: erro ao escrever página na swap");
+        }
+        
+        // Bloqueia o processo dono se ele estiver executando
+        if (idx_dono == self->processo_corrente) {
+            self->tabela_processos[idx_dono].tempo_desbloqueio = tempo_bloqueio;
+            self->tabela_processos[idx_dono].estado = BLOQUEADO;
+            console_printf("SO: processo %d bloqueado até %d por escrita em disco",
+                           dono_pid, tempo_bloqueio);
+        }
+    }
+    
+    // Invalida a página na tabela do processo dono
+    tabpag_invalida_pagina(self->tabela_processos[idx_dono].tabpag, pagina_vitima);
+    
+    console_printf("SO: quadro %d liberado", quadro);
+    return quadro;
+}
+
+// Trata uma falta de página
+static void so_trata_falta_pagina(so_t *self, int idx_proc, int pagina)
+{
+    console_printf("SO: tratando falta de página %d do processo idx=%d",
+                   pagina, idx_proc);
+    
+    processo *proc = &self->tabela_processos[idx_proc];
+    
+    // Aloca um quadro
+    int quadro = so_aloca_quadro(self);
+    if (quadro < 0) {
+        console_printf("SO: erro ao alocar quadro para falta de página");
+        self->erro_interno = true;
+        return;
+    }
+    
+    // Lê a página da swap
+    int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina);
+    if (end_swap < 0) {
+        console_printf("SO: erro ao obter endereço da página na swap");
+        self->erro_interno = true;
+        return;
+    }
+    
+    int dados[TAM_PAGINA];
+    int tempo_bloqueio;
+    
+    if (swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio) != ERR_OK) {
+        console_printf("SO: erro ao ler página da swap");
+        self->erro_interno = true;
+        return;
+    }
+    
+    // Escreve dados no quadro
+    int end_fis = quadro * TAM_PAGINA;
+    for (int i = 0; i < TAM_PAGINA; i++) {
+        mem_escreve(self->mem, end_fis + i, dados[i]);
+    }
+    
+    // Atualiza tabela de páginas
+    tabpag_define_quadro(proc->tabpag, pagina, quadro);
+    
+    // Registra o quadro como ocupado
+    mem_quadros_muda_estado(self->quadros, quadro, false, proc->pid, pagina);
+    
+    // Bloqueia o processo pelo tempo de I/O
+    proc->tempo_desbloqueio = tempo_bloqueio;
+    proc->estado = BLOQUEADO;
+    
+    console_printf("SO: página %d mapeada no quadro %d, processo bloqueado até %d",
+                   pagina, quadro, tempo_bloqueio);
+}
+
+// ---------------------------------------------------------------------
+// CARGA DE PROGRAMA {{{1
+// ---------------------------------------------------------------------
+
+// funções auxiliares
 static int so_carrega_programa_na_memoria_fisica(so_t *self, programa_t *programa);
 static int so_carrega_programa_na_memoria_virtual(so_t *self,
                                                   programa_t *programa,
