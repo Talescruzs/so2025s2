@@ -107,15 +107,12 @@ processo *processo_cria(int id, int pc, int max_quantum) {
     return p;
 }
 
-// t3: a interface de algumas funções que manipulam memória teve que ser alterada,
-//   para incluir o processo ao qual elas se referem. Para isso, é necessário um
-//   tipo de dados para identificar um processo. Neste código, não tem processos
-//   implementados, e não tem um tipo para isso. Foi usado o tipo int.
-//   É necessário também um valor para representar um processo inexistente.
-//   Foi usado o valor -1. Altere para o seu tipo, ou substitua os usos de
-//   processo_t e NENHUM_PROCESSO para o seu tipo.
-//   ALGUM_PROCESSO serve para representar um processo que não é NENHUM. Só tem
-//   algum sentido enquanto não tem implementação de processos.
+// t3: Identificação de processos
+//   Usa-se int para representar o PID (Process ID) de um processo.
+//   NENHUM_PROCESSO (-1): indica operação na memória física (sem processo associado)
+//   ALGUM_PROCESSO (0): usado para inicialização quando o PID específico não importa
+//
+// Processos válidos têm PID >= 1 (definido em so_cria_processo)
 #define NENHUM_PROCESSO -1
 #define ALGUM_PROCESSO 0
 
