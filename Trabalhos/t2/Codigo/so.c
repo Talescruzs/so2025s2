@@ -40,6 +40,7 @@ typedef struct metricas {
     int tempo_total_execucao;
     int tempo_total_ocioso;
     bool esta_ocioso;
+    int tempo_inicio_ocioso;
     int n_interrupcoes_tipo[7];
     int n_preempcao;
     int tempo_retorno[MAX_PROCESSOS];
@@ -82,7 +83,10 @@ void mostra_metricas(metricas *m) {
         console_printf("processo %d: tempo em estados - pronto: %d, bloqueado: %d, executando: %d\n", i, m->tempo_estado[i][PRONTO], m->tempo_estado[i][BLOQUEADO], m->tempo_estado[i][EXECUTANDO]);
     }
     for (int i = 0; i < MAX_PROCESSOS; i++) {
-        console_printf("processo %d: tempo tempo medio de resposta: %d\n", i, m->tempo_medio_resposta[i]);
+        int entradas = m->n_entradas_estado[i][BLOQUEADO];
+        int tempo = m->tempo_estado[i][BLOQUEADO];
+        int media = (entradas > 0) ? (tempo / entradas) : 0;
+        console_printf("processo %d: tempo tempo medio de resposta: %d\n", i, media);
     }
 }
 
@@ -93,8 +97,9 @@ typedef struct processo {
     enum EstadoProcesso estado; // estado do processo (pronto, executando, bloqueado)
     int regA, regX, regPC, regERRO; // registradores salvos do processo
     int quantum;                // quantum restante (se/quando usar escalonamento por tempo)
-    int esperando_pid;          // PID do processo que está esperando (SO_ESPERA_PROC)
+    int esperando_pid[MAX_PROCESSOS];          // PID do processo que está esperando (SO_ESPERA_PROC)
     int esperando_dispositivo;  // dispositivo de E/S que está aguardando (se aplicável)
+    int indice_esperando_pid; 
     int memoria_base;           // endereço base da memória do processo (se/quando implementar)
     int memoria_limite;         // limite superior da memória do processo (se/quando implementar)
     struct processo *prox;      // ponteiro para próximo processo na fila (lista encadeada)
@@ -163,6 +168,20 @@ void muda_estado_proc(so_t *self, int processo_id, enum EstadoProcesso novo_esta
     es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_inicio_estado[processo_id][novo_estado]);
 }
 
+void marca_preempcao(so_t *self, int n_processo) {
+    int tempo_atual = 0, tempo_inicio = 0;
+    // Conta quantos processos PRONTO existem
+    
+    self->metrica->n_preempcao++;
+    self->metrica->n_preempcao_processo[n_processo]++;
+    self->metrica->tempo_retorno[n_processo] += self->quantum - self->contador_quantum;
+
+    es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+    tempo_atual = tempo_inicio - self->metrica->tempo_retorno[n_processo];
+
+    self->metrica->tempo_retorno[n_processo] += tempo_atual;
+}
+
 // protótipos de escalonadores
 static void so_escalona(so_t *self);
 static void so_escalona2(so_t *self);
@@ -214,6 +233,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   }
   for (int i = 0; i < MAX_PROCESSOS; i++) {
       muda_estado_proc(self, i, MORTO);
+      self->tabela_processos[i].indice_esperando_pid = 0;
   }
 
   self->processo_corrente = -1;
@@ -221,6 +241,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   self->fim_fila = 0;
   self->quantum = 50;  
   self->contador_quantum = 0;
+
 
 
   // escalonador padrão: round-robin
@@ -243,6 +264,15 @@ void so_destroi(so_t *self)
   int final;
   es_le(self->es, D_RELOGIO_INSTRUCOES, &final);
   self->metrica->tempo_total_execucao = final - self->metrica->tempo_total_execucao;
+
+  // saiu do ocioso
+  if(self->metrica->esta_ocioso == true){
+    int tempo_atual = 0;
+    es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_atual);
+
+    self->metrica->tempo_total_ocioso += tempo_atual - self->metrica->tempo_inicio_ocioso;
+    self->metrica->esta_ocioso = false;
+  }
 
   mostra_metricas(self->metrica);
   cpu_define_chamaC(self->cpu, NULL, NULL);
@@ -324,6 +354,28 @@ static void so_salva_estado_da_cpu(so_t *self)
 
 static void so_trata_pendencias(so_t *self)
 {
+  bool metrica_antes = self->metrica->esta_ocioso;
+  self->metrica->esta_ocioso = true;
+  for (int i = 0; i < MAX_PROCESSOS; i++){
+    if(self->tabela_processos[i].estado != BLOQUEADO && self->tabela_processos[i].estado != MORTO ){
+      self->metrica->esta_ocioso = false;
+      break;
+  }
+  // entrou em ocioso
+  if (self->metrica->esta_ocioso == true && metrica_antes == false){
+    int tempo_inicio = 0;
+    es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+
+    self->metrica->tempo_inicio_ocioso = tempo_inicio;
+  }
+  // saiu do ocioso
+  else if(self->metrica->esta_ocioso == false && metrica_antes == true){
+    int tempo_atual = 0;
+    es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_atual);
+
+    self->metrica->tempo_total_ocioso += tempo_atual - self->metrica->tempo_inicio_ocioso;
+  }
+  
     for (int i = 0; i < MAX_PROCESSOS; i++){
       processo *proc = &self->tabela_processos[i];
       // ex: desbloq processo que espera dispositivo pronto
@@ -339,18 +391,20 @@ static void so_trata_pendencias(so_t *self)
 
                 }
         }
-
-        if (proc->esperando_pid > 0){
-          bool terminou = true;
-          for (int j = 0; j < MAX_PROCESSOS; j++){
-            if (self->tabela_processos[j].pid == proc->esperando_pid && self->tabela_processos[j].estado != MORTO) {
-              terminou = false;
+        for (int k = 0; k < MAX_PROCESSOS; k++) {
+          if (proc->esperando_pid[k] > 0){
+            bool terminou = true;
+            for (int j = 0; j < MAX_PROCESSOS; j++){
+              if (self->tabela_processos[j].pid == proc->esperando_pid[k] && self->tabela_processos[j].estado != MORTO) {
+                terminou = false;
               break;
             }
           }
           if (terminou) {
             muda_estado_proc(self, i, PRONTO);
-            proc->esperando_pid = -1;
+            for(int m = 0; m < MAX_PROCESSOS; m++) {
+              proc->esperando_pid[m] = -1;
+            }
             proc->quantum = 0;
             insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
 
@@ -358,8 +412,9 @@ static void so_trata_pendencias(so_t *self)
         }
       }
     }
+  } 
 }
-
+}
 
 static void so_escalona(so_t *self)
 {
@@ -374,6 +429,7 @@ static void so_escalona(so_t *self)
             prontos++;
         }
     }
+    
 
     // Só coloca o processo corrente em PRONTO se houver outro processo PRONTO
     if (atual >= 0 && atual < MAX_PROCESSOS &&
@@ -381,6 +437,7 @@ static void so_escalona(so_t *self)
         prontos > 0) {
         muda_estado_proc(self, atual, PRONTO);
     }
+
 
     // Procura próximo processo PRONTO (round-robin)
     for (int i = 1; i <= MAX_PROCESSOS; i++) {
@@ -394,6 +451,8 @@ static void so_escalona(so_t *self)
     // Se achou, coloca como EXECUTANDO
     if (proximo != -1) {
         muda_estado_proc(self, proximo, EXECUTANDO);
+        marca_preempcao(self, atual);
+        
         self->processo_corrente = proximo;
     } else if (atual >= 0 && atual < MAX_PROCESSOS &&
                self->tabela_processos[atual].estado != BLOQUEADO &&
@@ -405,6 +464,7 @@ static void so_escalona(so_t *self)
         // Nenhum processo pronto/executando
         self->processo_corrente = -1;
     }
+     
 }
 
 static void so_escalona2(so_t *self)
@@ -617,7 +677,9 @@ static void so_trata_reset(so_t *self)
   self->tabela_processos[0].regERRO = 0;
   self->tabela_processos[0].regPC = ender;
   self->tabela_processos[0].quantum = self->quantum;  // inicializa com quantum completo
-  self->tabela_processos[0].esperando_pid = -1;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+      self->tabela_processos[0].esperando_pid[i] = -1;
+  }
   self->tabela_processos[0].esperando_dispositivo = -1;
   self->tabela_processos[0].memoria_base = 0;
   self->tabela_processos[0].memoria_limite = 0;
@@ -663,12 +725,18 @@ static void so_trata_irq_relogio(so_t *self)
     if (self->processo_corrente >= 0 && self->processo_corrente < MAX_PROCESSOS) {
       console_printf("DIMINUIU");
       self->contador_quantum--;
+      // Contar processos PRONTOS
+      int prontos = 0;
+      for (int i = 0; i < MAX_PROCESSOS; i++) {
+          if (self->tabela_processos[i].estado == PRONTO) {
+              prontos++;
+          }
+      }
       if (self->contador_quantum <= 0) {
         // Quantum esgotado, força troca de contexto
         console_printf("SO: quantum esgotado para processo %d", self->processo_corrente);
+        marca_preempcao(self, self->processo_corrente);
         muda_estado_proc(self, self->processo_corrente, PRONTO);
-        self->metrica->n_preempcao++;
-        self->metrica->n_preempcao_processo[self->processo_corrente]++;
         insere_fila_prontos(self, self->processo_corrente);
         self->processo_corrente = -1;  // força troca de processo
       }
@@ -825,11 +893,17 @@ static void so_chamada_cria_proc(so_t *self)
   self->tabela_processos[slot].regERRO = 0;
   self->tabela_processos[slot].regPC = ender_carga;
   self->tabela_processos[slot].quantum = self->quantum;  // inicializa com quantum completo
-  self->tabela_processos[slot].esperando_pid = -1;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+      self->tabela_processos[slot].esperando_pid[i] = -1;
+  }
   self->tabela_processos[slot].esperando_dispositivo = -1;
   self->tabela_processos[slot].memoria_base = 0;
   self->tabela_processos[slot].memoria_limite = 0;
   self->tabela_processos[slot].prioridade = 0.0f;  // prioridade inicial máxima
+  int tempo_inicio = 0;
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+  self->metrica->tempo_retorno[slot] = tempo_inicio;
+
 
   insere_fila_prontos(self, slot);
 
@@ -863,15 +937,23 @@ static void so_chamada_mata_proc(so_t *self)
     self->tabela_processos[self->processo_corrente].regA = -1;
     return;
   }
+  int tempo_inicio = 0;
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+  self->metrica->tempo_retorno[alvo] = tempo_inicio - self->metrica->tempo_retorno[alvo];
+
   muda_estado_proc(self, alvo, MORTO);
   
   self->tabela_processos[alvo].regA = -1;
   // Desbloqueia o pai se estiver esperando esse filho
   for (int i = 0; i < MAX_PROCESSOS; i++) {
-    if (self->tabela_processos[i].estado == BLOQUEADO && self->tabela_processos[i].esperando_pid == self->tabela_processos[alvo].pid) {
-      muda_estado_proc(self, i, PRONTO);
-      self->tabela_processos[i].esperando_pid = -1;
-      self->tabela_processos[i].regA = 0; // sucesso
+    for (int k = 0; k < MAX_PROCESSOS; k++) {
+      if (self->tabela_processos[i].estado == BLOQUEADO && self->tabela_processos[i].esperando_pid[k] == self->tabela_processos[alvo].pid) {
+        muda_estado_proc(self, i, PRONTO);
+        for (int m = 0; m < MAX_PROCESSOS; m++) {
+          self->tabela_processos[i].esperando_pid[m] = -1;
+        }
+        self->tabela_processos[i].regA = 0; // sucesso
+      }
     }
   }
   self->tabela_processos[self->processo_corrente].regA = 0;
@@ -897,7 +979,8 @@ static void so_chamada_espera_proc(so_t *self)
   muda_estado_proc(self, self->processo_corrente, BLOQUEADO);
   self->metrica->n_entradas_estado[self->processo_corrente][BLOQUEADO]++;
   es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_estado[self->processo_corrente][BLOQUEADO]);
-  self->tabela_processos[self->processo_corrente].esperando_pid = pid_esperado;
+  self->tabela_processos[self->processo_corrente].esperando_pid[self->tabela_processos[self->processo_corrente].indice_esperando_pid] = pid_esperado;
+  self->tabela_processos[self->processo_corrente].indice_esperando_pid++;
 }
 
 
