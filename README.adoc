@@ -1,8 +1,5 @@
 # Relatório Final - Sistemas Operacionais
 **Pedro Abreu, Tales Cruz, Rafael Kasper**  
-UFSM — CT / Ciência da Computação  
-Santa Maria — Brasil  
-_Data:_ **hoje**
 
 ---
 
