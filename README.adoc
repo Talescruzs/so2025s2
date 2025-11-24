@@ -1,67 +1,102 @@
-= so25b: Sistemas Operacionais, 2º semestre, 2025
-Benhur Stein <benhur+so25b@inf.ufsm.br>
-v0.0, 1ago25
+# Relatório Final - Sistemas Operacionais
+**Pedro Abreu, Tales Cruz, Rafael Kasper**  
+UFSM — CT / Ciência da Computação  
+Santa Maria — Brasil  
+_Data:_ **hoje**
 
-Página da disciplina de Sistemas Operacionais, segundo semestre de 2025.
+---
 
-[sidebar]
-[no-bullet]
-* ELC1080, DLSC/CT/UFSM, turmas de CC e Sistemas
-* professor: Benhur Stein <benhur+so25b@inf.ufsm.br>
-* terças e quintas, 10h30, sala 1309, anexo C do CT
+## **Sumário**
+- [T2 - Implementação de processos](#t2---implementação-de-processos)
+- [T3 - Implementação de memória virtual](#t3---implementação-de-memória-virtual)
+- [Conclusão Geral](#conclusão-geral)
 
+---
 
-== Desenvolvimento da disciplina
+## T2 - Implementação de processos
 
-A comunicação entre o professor e os alunos será realizada por:
+### **Objetivos**
+O objetivo deste trabalho foi implementar, em um computador simulado, um sistema operacional com processos, possibilitando a execução de múltiplos programas em paralelo e testando dois métodos de escalonamento.
 
-- encontros em sala de aula,
-- esta página,
-- e-mail (endereço acima),
-- encontros agendados com o professor.
+### **Implementação**
+Durante a implementação, foi percebida dificuldade em adaptar o conteúdo aprendido ao código fornecido, o que acrescentou um grau extra de complexidade ao trabalho.
 
-Esta página concentrará os assuntos vistos em aula, a descrição de exercícios e trabalhos, avaliações, etc.
-Ela será aumentada/atualizada durante todo o semestre.
-Ela é o canal mais oficial de informações sobre a disciplina, e deve ser consultada frequentemente pelo aluno (sugiro habilitar notificações de alteração do github).
+---
 
-A disciplina vai seguir de forma bastante próxima o assunto como ele é visto no livro
-```
-   Sistemas Operacionais Modernos
-   Andrew S Tanenbaum
-```
+### **Parte I**
+- ☑️ Criação de um tipo de dados com as informações de um processo  
+- ☑️ Criação de uma tabela de processos (vetor de estruturas)  
+- ☑️ Inicialização do processo inicial (`init`)  
+- ☑️ Criação da variável indicando processo em execução  
+- ☑️ Alterações nas funções `so_salva_estado_da_cpu` e `so_despacha`  
+- ☑️ Implementação do escalonador (`so_escalona`)  
+- ☑️ Implementação de chamadas de criação e término de processos  
+- ☑️ Tratamento de chamadas de E/S com terminais diferentes por processo
 
-### Ementa
+---
 
-Ver https://www.ufsm.br/ementario/disciplinas/ELC1080/[aqui].
+### **Parte II**
+- ☑️ Alteração da E/S para bloquear quando dispositivo não está pronto  
+- ☑️ Implementação de tratamento de pendências e desbloqueios  
+- ☑️ Implementação de `SO_ESPERA_PROC` com verificação de erros  
+- ☑️ Criação da variável de controle de processo em execução  
+- ☑️ Alteração de `so_salva_estado_da_cpu` e `so_despacha`  
+- ☑️ Implementação do escalonador simples  
+- ☑️ Chamadas de criação e término de processos  
+- ☑️ E/S com terminal dependente de PID
 
-### Aulas
+---
 
-[%autowidth]
-|===
-|  # | data  | assunto
+### **Parte III**
+- ☑️ Implementação de escalonador preemptivo Round-Robin  
+- ☑️ Criação do quantum  
+- ☑️ Cálculo de prioridade  
+- ☑️ Geração de métricas  
 
-|  1 | 5ago  | apresentação
-|  2 | 7ago  | introdução (1.1, 1.2)
-|  3 | 12ago | código do t1
-|  4 | 14ago | introdução (1.3)
-|  5 | 19ago | introdução (1.5, 1.6)
-|  6 | 21ago | processos (2.1)
-|  7 | 26ago | sobre o t2
-|===
+---
 
-### Avaliações
+### **Conclusão**
+O grupo conseguiu implementar o solicitado e fazer o trabalho funcionar, embora alguns bugs tenham surgido nas etapas finais devido a modificações tardias para suportar as métricas do T3.
 
-[%autowidth]
-|===
-| nome | data  | descrição
+O trabalho aprofundou os conhecimentos da disciplina, especialmente os já introduzidos em Arquitetura de Computadores.
 
-| t1   |       | Familiarização com o link:Trabalhos/t1[código].
-| t2   |       | link:Trabalhos/t2[Processos, escalonamento]
-|===
+---
 
-### Dados individuais
+## T3 - Implementação de memória virtual
 
-Dados sobre cada aluno estão na https://docs.google.com/spreadsheets/d/1BUePsr6-BJ0bhQDHo9YakGwzyZHLKRrVycYc7bjFJ6w/edit?usp=sharing[planilha].
+### **Objetivos**
+O objetivo foi incrementar o sistema operacional para incluir:
 
+- alocação dinâmica de endereços de processos  
+- suporte a múltiplas memórias  
+- swap entre disco e memória física  
 
+### **Implementação**
+A principal dificuldade foi traduzir endereços virtuais para físicos durante a leitura dos programas, uma falha crítica do projeto.
+
+O curto prazo somado ao grande volume de código acumulado da T2 tornou o trabalho mais complexo.
+
+---
+
+#### Checklist da implementação
+
+- ☐ Memória secundária  
+- ☑️ Tabela de páginas por processo  
+- ☐ Carga de programas  
+- ☐ Atendimento à interrupção de falta de página  
+- ☑️ Algoritmo de substituição de página  
+- ☐ Métricas do sistema de memória virtual  
+
+---
+
+### **Conclusão**
+O sistema roda parcialmente, executando o processo inicial, mas não consegue traduzir endereços virtuais para físicos, impedindo a execução completa dos demais programas.
+
+---
+
+## **Conclusão Geral**
+De forma geral, o grupo demonstrou empenho, porém apresentou dificuldade com prazos.  
+As tarefas iniciadas com antecedência foram concluídas com sucesso; as deixadas para o final não.
+
+---
 
