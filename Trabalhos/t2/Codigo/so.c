@@ -240,7 +240,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   self->inicio_fila = 0;
   self->fim_fila = 0;
   self->quantum = 50;  
-  self->contador_quantum = 0;
+  self->contador_quantum = 50;
 
 
 
@@ -482,11 +482,23 @@ static void so_escalona2(so_t *self)
         }
     }
 
+    // Escolhe o próximo processo PRONTO com menor valor de prioridade (maior prioridade real)
+    float menor_prio = 1000.0f; // valor grande inicial
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            float prio = self->tabela_processos[i].prioridade;
+            if (prio < menor_prio) {
+                menor_prio = prio;
+                proximo = i;
+            }
+        }
+    }
+
     // Se processo atual está EXECUTANDO e há outro processo PRONTO,
     // recalcula prioridade do atual (quantum estourado ou bloqueio deve ser tratado externamente)
     if (atual >= 0 && atual < MAX_PROCESSOS &&
         self->tabela_processos[atual].estado == EXECUTANDO &&
-        prontos > 0) {
+        self->contador_quantum <= 0 && prontos > 0) {
 
         // Obtém t_exec e tempo de quantum (deve estar armazenado em algum lugar)
         int t_quantum = self->quantum;
@@ -501,32 +513,29 @@ static void so_escalona2(so_t *self)
         // Insere o processo atual no fim da fila de prontos
         insere_fila_prontos(self, atual);
     }
+    console_printf("prox %d atual %d", proximo, atual);  
+    console_printf("%d", proximo != -1);  
+    console_printf("%d", (self->tabela_processos[atual].estado == PRONTO || self->tabela_processos[atual].estado == BLOQUEADO || atual == -1));  
 
-    // Escolhe o próximo processo PRONTO com menor valor de prioridade (maior prioridade real)
-    float menor_prio = 1000.0f; // valor grande inicial
-    for (int i = 0; i < MAX_PROCESSOS; i++) {
-        if (self->tabela_processos[i].estado == PRONTO) {
-            float prio = self->tabela_processos[i].prioridade;
-            if (prio < menor_prio) {
-                menor_prio = prio;
-                proximo = i;
-            }
-        }
-    }
-
-    if (proximo != -1) {
+    // Se achou, coloca como EXECUTANDO
+    if (proximo != -1 && (self->tabela_processos[atual].estado != EXECUTANDO || atual == -1)) {
+        console_printf("SO: escalonador2 escolheu processo %d com prioridade %.2f", proximo, self->tabela_processos[proximo].prioridade);  
         muda_estado_proc(self, proximo, EXECUTANDO);
-        
+        if (atual != -1) {
+          marca_preempcao(self, atual);
+        }
         self->processo_corrente = proximo;
+        self->contador_quantum = self->quantum; // reseta contador do quantum para novo processo
     } else if (atual >= 0 && atual < MAX_PROCESSOS &&
                self->tabela_processos[atual].estado != BLOQUEADO &&
                self->tabela_processos[atual].estado != MORTO) {
-        // Mantém processo atual EXECUTANDO se não há outro PRONTO
+        // Se não achou, mas o atual não está bloqueado ou morto, mantém EXECUTANDO
         muda_estado_proc(self, atual, EXECUTANDO);
         self->processo_corrente = atual;
-        self->contador_quantum = self->quantum; // reseta contador do quantum para novo processo
+        console_printf("SO: diminui quantum do processo %d, valor atual = %d", self->processo_corrente, self->contador_quantum);
+        self->contador_quantum--;
     } else {
-        // Nenhum processo PRONTO ou EXECUTANDO disponível
+        // Nenhum processo pronto/executando
         self->processo_corrente = -1;
     }
 }
@@ -718,30 +727,6 @@ static void so_trata_irq_relogio(so_t *self)
     console_printf("SO: problema da reinicialização do timer");
     self->erro_interno = true;
   }
-  if(self->ident_escalonador == 2){
-    console_printf("SO: diminui quantum do processo %d, valor atual = %d", self->processo_corrente, self->contador_quantum);
-
-    // Decrementa o quantum do processo corrente
-    if (self->processo_corrente >= 0 && self->processo_corrente < MAX_PROCESSOS) {
-      console_printf("DIMINUIU");
-      self->contador_quantum--;
-      // Contar processos PRONTOS
-      int prontos = 0;
-      for (int i = 0; i < MAX_PROCESSOS; i++) {
-          if (self->tabela_processos[i].estado == PRONTO) {
-              prontos++;
-          }
-      }
-      if (self->contador_quantum <= 0) {
-        // Quantum esgotado, força troca de contexto
-        console_printf("SO: quantum esgotado para processo %d", self->processo_corrente);
-        marca_preempcao(self, self->processo_corrente);
-        muda_estado_proc(self, self->processo_corrente, PRONTO);
-        insere_fila_prontos(self, self->processo_corrente);
-        self->processo_corrente = -1;  // força troca de processo
-      }
-    }
-  }
   return;  
 }
 
@@ -920,7 +905,6 @@ static void so_chamada_cria_proc(so_t *self)
 // mata o processo com pid X (ou o processo corrente se X é 0)
 static void so_chamada_mata_proc(so_t *self)
 {
-  console_printf("chamada de morte de processo   ");
   int pid_alvo = self->tabela_processos[self->processo_corrente].regX;
   int alvo = -1;
   if (pid_alvo == 0) {
@@ -942,6 +926,8 @@ static void so_chamada_mata_proc(so_t *self)
   self->metrica->tempo_retorno[alvo] = tempo_inicio - self->metrica->tempo_retorno[alvo];
 
   muda_estado_proc(self, alvo, MORTO);
+  console_printf("chamada de morte de processo   %d", alvo);
+  // remove_fila_prontos(self);
   
   self->tabela_processos[alvo].regA = -1;
   // Desbloqueia o pai se estiver esperando esse filho
