@@ -6,13 +6,6 @@ _Data:_ **hoje**
 
 ---
 
-## **Sumário**
-- [T2 - Implementação de processos](#t2---implementação-de-processos)
-- [T3 - Implementação de memória virtual](#t3---implementação-de-memória-virtual)
-- [Conclusão Geral](#conclusão-geral)
-
----
-
 ## T2 - Implementação de processos
 
 ### **Objetivos**
