@@ -104,6 +104,8 @@ typedef struct processo {
     int memoria_limite;         // limite superior da memória do processo (se/quando implementar)
     struct processo *prox;      // ponteiro para próximo processo na fila (lista encadeada)
     float prioridade;
+    // possivelmente gambiarra
+    char ultimo_char_para_escrever;
 } processo;
 
 
@@ -144,6 +146,8 @@ void muda_estado_proc(so_t *self, int processo_id, enum EstadoProcesso novo_esta
     if(proc->estado == novo_estado) {
         return;
     }
+    console_printf("muda estado do processo %d para %d   ", processo_id, novo_estado);
+
     // Marca tempo atual
     int tempo_atual = 0, tempo_inicio = 0;
     if(novo_estado == MORTO) {
@@ -184,12 +188,12 @@ void marca_preempcao(so_t *self, int n_processo) {
     self->metrica->tempo_retorno[n_processo] += tempo_atual;
 }
 
-bool verifica_bloqueio_leitura(so_t *self, int estado, int dispositivo) {
+bool verifica_bloqueio_leitura(so_t *self, int id_processo, int estado, int dispositivo) {
   console_printf("verificando bloqueio de E/S do dispositivo %d ", dispositivo);
   if (estado != 0) return true;
   console_printf("estado zero   ");
-  processo *proc = &self->tabela_processos[self->processo_corrente];
-  muda_estado_proc(self, self->processo_corrente, BLOQUEADO);
+  processo *proc = &self->tabela_processos[id_processo];
+  muda_estado_proc(self, id_processo, BLOQUEADO);
   proc->esperando_dispositivo = dispositivo;
   return false;
 }
@@ -271,7 +275,9 @@ void criar_processo(so_t *self, int ender_carga, bool eh_filho) {
 
   insere_fila_prontos(self, slot);
 
-  self->tabela_processos[slot].terminal = (self->tabela_processos[slot].pid-1%4)*4; // Associa terminal baseado no slot
+  // Associa terminal: base + ((pid-1) % 4) * 4
+  self->tabela_processos[slot].terminal = ((self->tabela_processos[slot].pid - 1) % 4) * 4;
+
   console_printf("processo criado no slot %d com PID %d e terminal %d   ", slot, self->tabela_processos[slot].pid, self->tabela_processos[slot].terminal);
 
   self->metrica->n_processos_criados++;
@@ -283,7 +289,7 @@ void criar_processo(so_t *self, int ender_carga, bool eh_filho) {
 
 so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
 {
-  console_printf("criando  ");
+  // console_printf("criando  ");
   so_t *self = malloc(sizeof(*self));
   if (self == NULL) return NULL;
 
@@ -326,7 +332,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, es_t *es, console_t *console)
   cpu_define_chamaC(self->cpu, so_trata_interrupcao, self);
 
   // self->tabela_processos = NULL; // t2: inicializa a tabela de processos
-  console_printf("criei   ");
+  // console_printf("criei   ");
   es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_total_execucao);
 
   return self;
@@ -380,7 +386,7 @@ static int so_despacha(so_t *self);
 //   outra interrupção
 static int so_trata_interrupcao(void *argC, int reg_A)
 {
-  console_printf("interrompido   ");
+  // console_printf("interrompido   ");
   so_t *self = argC;
   irq_t irq = reg_A;
 
@@ -390,7 +396,7 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   }
 
   // esse print polui bastante, recomendo tirar quando estiver com mais confiança
-  console_printf("SO: recebi IRQ %d (%s)", irq, irq_nome(irq));
+  // console_printf("SO: recebi IRQ %d (%s)", irq, irq_nome(irq));
   // salva o estado da cpu no descritor do processo que foi interrompido
   so_salva_estado_da_cpu(self);
   // faz o atendimento da interrupção
@@ -410,16 +416,26 @@ static void so_salva_estado_da_cpu(so_t *self)
   //   CPU na memória, nos endereços CPU_END_PC etc. O registrador X foi salvo
   //   pelo tratador de interrupção (ver trata_irq.asm) no endereço 59
   // se não houver processo corrente, não faz nada
-  console_printf("salvando estado da CPU   ");
+  // console_printf("salvando estado da CPU   ");
   if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
     console_printf("SO: processo_corrente inválido em salva_estado");
     self->erro_interno = true;
     return;
   }
+  console_printf("salvando estado do processo %d   ", self->processo_corrente);
+  // imprime apenas valores numéricos (decimal) para evitar caracteres de controle na saída
+  console_printf("valores cpu: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 self->tabela_processos[self->processo_corrente].regA,
+                 self->tabela_processos[self->processo_corrente].regPC,
+                 self->tabela_processos[self->processo_corrente].regERRO,
+                 self->tabela_processos[self->processo_corrente].regX);
+  console_printf("valores cpu: regX=%c",
+                 self->tabela_processos[self->processo_corrente].regX);
+
   if (mem_le(self->mem, CPU_END_A, &self->tabela_processos[self->processo_corrente].regA) != ERR_OK
       || mem_le(self->mem, CPU_END_PC, &self->tabela_processos[self->processo_corrente].regPC) != ERR_OK
       || mem_le(self->mem, CPU_END_erro, &self->tabela_processos[self->processo_corrente].regERRO) != ERR_OK
-      || mem_le(self->mem, 59, &self->tabela_processos[self->processo_corrente].regX)) {
+      || mem_le(self->mem, 59, &self->tabela_processos[self->processo_corrente].regX) != ERR_OK) {
     console_printf("SO: erro na leitura dos registradores");
     self->erro_interno = true;
   }
@@ -449,22 +465,32 @@ static void so_trata_pendencias(so_t *self)
     self->metrica->tempo_total_ocioso += tempo_atual - self->metrica->tempo_inicio_ocioso;
   }
   
-    for (int i = 0; i < MAX_PROCESSOS; i++){
-      processo *proc = &self->tabela_processos[i];
-      // ex: desbloq processo que espera dispositivo pronto
-      if (proc->estado == BLOQUEADO && proc->esperando_dispositivo >= 0){
-      console_printf("verificando desbloqueio do processo %d   ", i);
-        console_printf("dispositivo %d   ", proc->esperando_dispositivo);
-        // int disp = proc->esperando_dispositivo+1; // D_TERM_X + 1 = D_TERM_X_OK
-        int estado_disp = verifica_estado_dispositivo(self, proc->esperando_dispositivo);
-        if (verifica_bloqueio_leitura(self, estado_disp, proc->esperando_dispositivo)) { // dispositivo pronto
-            console_printf("%d pronto", proc->esperando_dispositivo);
-            muda_estado_proc(self, i, PRONTO);
-            proc->esperando_dispositivo = -1;
-            proc->quantum = 0;
-            insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
-        }
-      //   // ex: desbloq processo que espera outro processo terminar
+  for (int i = 0; i < MAX_PROCESSOS; i++){
+    processo *proc = &self->tabela_processos[i];
+    // ex: desbloq processo que espera dispositivo pronto
+    if (proc->estado == BLOQUEADO && proc->esperando_dispositivo >= 0){
+    console_printf("verificando desbloqueio do processo %d   ", i);
+      console_printf("dispositivo %d   ", proc->esperando_dispositivo);
+      // int disp = proc->esperando_dispositivo+1; // D_TERM_X + 1 = D_TERM_X_OK
+      int estado_disp = verifica_estado_dispositivo(self, proc->esperando_dispositivo);
+      if (verifica_bloqueio_leitura(self, i, estado_disp, proc->esperando_dispositivo)) { // dispositivo pronto
+          console_printf("%d pronto", proc->esperando_dispositivo);
+          
+
+          int dado = proc->ultimo_char_para_escrever;
+          console_printf("escrevendo %c no disp %d", dado, proc->esperando_dispositivo);
+          if (es_escreve(self->es, proc->esperando_dispositivo, dado) != ERR_OK) {
+            console_printf("SO: problema no acesso à tela do dispositivo %d", proc->esperando_dispositivo);
+            self->erro_interno = true;
+            return;
+          }
+
+          muda_estado_proc(self, i, PRONTO);
+          proc->esperando_dispositivo = -1;
+          proc->quantum = 0;
+          insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
+      }
+     //   // ex: desbloq processo que espera outro processo terminar
       //   for (int k = 0; k < MAX_PROCESSOS; k++) {
       //     if (proc->esperando_pid[k] > 0){
       //       bool terminou = true;
@@ -572,7 +598,7 @@ static void so_escalona2(so_t *self)
     // recalcula prioridade do atual (quantum estourado ou bloqueio deve ser tratado externamente)
     if (atual >= 0 && atual < MAX_PROCESSOS &&
         self->tabela_processos[atual].estado == EXECUTANDO &&
-        self->contador_quantum <= 0 && prontos > 0) {
+        self->contador_quantum <= 0) {
 
         // Obtém t_exec e tempo de quantum (deve estar armazenado em algum lugar)
         int t_quantum = self->quantum;
@@ -586,10 +612,8 @@ static void so_escalona2(so_t *self)
 
         // Insere o processo atual no fim da fila de prontos
         insere_fila_prontos(self, atual);
+        console_printf("prox %d atual %d", proximo, atual);  
     }
-    console_printf("prox %d atual %d", proximo, atual);  
-    console_printf("%d", proximo != -1);  
-    console_printf("%d", (self->tabela_processos[atual].estado == PRONTO || self->tabela_processos[atual].estado == BLOQUEADO || atual == -1));  
 
     // Se achou, coloca como EXECUTANDO
     if (proximo != -1 && (self->tabela_processos[atual].estado != EXECUTANDO || atual == -1)) {
@@ -602,7 +626,7 @@ static void so_escalona2(so_t *self)
         self->contador_quantum = self->quantum; // reseta contador do quantum para novo processo
     } else if (atual >= 0 && atual < MAX_PROCESSOS &&
                self->tabela_processos[atual].estado != BLOQUEADO &&
-               self->tabela_processos[atual].estado != MORTO) {
+               self->tabela_processos[atual].estado != MORTO && self->contador_quantum> 0) {
         // Se não achou, mas o atual não está bloqueado ou morto, mantém EXECUTANDO
         muda_estado_proc(self, atual, EXECUTANDO);
         self->processo_corrente = atual;
@@ -687,7 +711,7 @@ static void so_trata_irq_desconhecida(so_t *self, int irq);
 
 static void so_trata_irq(so_t *self, int irq)
 { 
-  console_printf("tratando IRQ   ");
+  // console_printf("tratando IRQ   ");
   // verifica o tipo de interrupção que está acontecendo, e atende de acordo
   switch (irq) {
     case IRQ_RESET:
@@ -715,7 +739,7 @@ static void so_trata_irq(so_t *self, int irq)
 // chamada uma única vez, quando a CPU inicializa
 static void so_trata_reset(so_t *self)
 {
-  console_printf("recebi RESET   ");
+  // console_printf("recebi RESET   ");
   // coloca o tratador de interrupção na memória
   // quando a CPU aceita uma interrupção, passa para modo supervisor,
   //   salva seu estado à partir do endereço CPU_END_PC, e desvia para o
@@ -789,7 +813,7 @@ static void so_trata_irq_err_cpu(so_t *self)
 // interrupção gerada quando o timer expira
 static void so_trata_irq_relogio(so_t *self)
 {
-  console_printf("interrupção do relógio   ");
+  // console_printf("interrupção do relógio   ");
   // rearma o interruptor do relógio e reinicializa o timer para a próxima interrupção
   err_t e1, e2;
   e1 = es_escreve(self->es, D_RELOGIO_INTERRUPCAO, 0); // desliga o sinalizador de interrupção
@@ -823,7 +847,7 @@ static void so_chamada_espera_proc(so_t *self);
 
 static void so_trata_irq_chamada_sistema(so_t *self)
 {
-  console_printf("chamada de sistema   ");
+  // console_printf("chamada de sistema   ");
   // a identificação da chamada está no registrador A
   // t2: com processos, o reg A deve estar no descritor do processo corrente
   if (self->processo_corrente < 0 || self->processo_corrente >= MAX_PROCESSOS) {
@@ -832,7 +856,7 @@ static void so_trata_irq_chamada_sistema(so_t *self)
     return;
   }
   int id_chamada = self->tabela_processos[self->processo_corrente].regA;
-  console_printf("SO: chamada de sistema %d", id_chamada);
+  // console_printf("SO: chamada de sistema %d", id_chamada);
   switch (id_chamada) {
     case SO_LE:
       so_chamada_le(self);
@@ -870,7 +894,7 @@ static void so_chamada_le(so_t *self)
   //   return;
   // }
   estado = verifica_estado_dispositivo(self, terminal_teclado);
-  if(verifica_bloqueio_leitura(self, estado, terminal_teclado)){
+  if(verifica_bloqueio_leitura(self, self->processo_corrente, estado, terminal_teclado)){
     int dado;
     if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
       console_printf("SO: problema no acesso ao teclado");
@@ -919,11 +943,13 @@ static void so_chamada_escr(so_t *self)
   int estado;
 
   estado = verifica_estado_dispositivo(self, terminal_tela);
+  console_printf("quer escrever %c no disp %d", self->tabela_processos[self->processo_corrente].regX, terminal_tela);
+  
 
-  if(verifica_bloqueio_leitura(self, estado, terminal_tela)){
+  if(verifica_bloqueio_leitura(self, self->processo_corrente, estado, terminal_tela)){
     int dado;
     dado = self->tabela_processos[self->processo_corrente].regX;
-    console_printf("escrevendo %d no disp %d", dado, terminal_tela);
+    console_printf("escrevendo %c no disp %d", dado, terminal_tela);
     if (es_escreve(self->es, terminal_tela, dado) != ERR_OK) {
       console_printf("SO: problema no acesso à tela do dispositivo %d", terminal_tela);
       self->erro_interno = true;
@@ -932,6 +958,7 @@ static void so_chamada_escr(so_t *self)
     self->tabela_processos[self->processo_corrente].regA = 0;
   }
   else {
+    self->tabela_processos[self->processo_corrente].ultimo_char_para_escrever = self->tabela_processos[self->processo_corrente].regX;
     console_printf("SO: bloqueando processo %d na escrita do dispositivo %d", self->processo_corrente, terminal_tela);
     console_printf("esperando disp %d estado %d", self->tabela_processos[self->processo_corrente].esperando_dispositivo, self->tabela_processos[self->processo_corrente].estado);
   }
@@ -1102,7 +1129,7 @@ static void so_chamada_espera_proc(so_t *self)
 // retorna o endereço de carga ou -1
 static int so_carrega_programa(so_t *self, char *nome_do_executavel)
 {
-  console_printf("carregando programa   ");
+  // console_printf("carregando programa   ");
   // programa para executar na nossa CPU
   programa_t *prog = prog_cria(nome_do_executavel);
   if (prog == NULL) {
