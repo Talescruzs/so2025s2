@@ -137,6 +137,8 @@ struct so_t {
     int ident_escalonador;
 };
 
+
+
 void muda_estado_proc(so_t *self, int processo_id, enum EstadoProcesso novo_estado) {
     processo *proc = &self->tabela_processos[processo_id];
     if(proc->estado == novo_estado) {
@@ -182,6 +184,28 @@ void marca_preempcao(so_t *self, int n_processo) {
     self->metrica->tempo_retorno[n_processo] += tempo_atual;
 }
 
+bool verifica_bloqueio_leitura(so_t *self, int estado, int dispositivo) {
+  console_printf("verificando bloqueio de E/S do dispositivo %d ", dispositivo);
+  if (estado != 0) return true;
+  console_printf("estado zero   ");
+  processo *proc = &self->tabela_processos[self->processo_corrente];
+  muda_estado_proc(self, self->processo_corrente, BLOQUEADO);
+  proc->esperando_dispositivo = dispositivo;
+  return false;
+}
+
+int verifica_estado_dispositivo(so_t *self, int dispositivo) {
+  int estado;
+  int dispositivo_ok = dispositivo + 1; // D_TERM_X + 1 = D_TERM_X_OK
+  if (es_le(self->es, dispositivo_ok, &estado) != ERR_OK) {
+    console_printf("SO: problema no acesso ao estado do dispositivo");
+    self->erro_interno = true;
+    return -1;
+  }
+  console_printf("estado do dispositivo %d: %d   ", dispositivo_ok, estado);
+  return estado;
+}
+
 // protótipos de escalonadores
 static void so_escalona(so_t *self);
 static void so_escalona2(so_t *self);
@@ -194,6 +218,7 @@ static void insere_fila_prontos(so_t *self, int idx_processo);
 
 
 
+
 // função de tratamento de interrupção (entrada no SO)
 static int so_trata_interrupcao(void *argC, int reg_A);
 
@@ -203,6 +228,54 @@ static int so_carrega_programa(so_t *self, char *nome_do_executavel);
 // copia para str da memória do processador, até copiar um 0 (retorna true) ou tam bytes
 static bool copia_str_da_mem(int tam, char str[tam], mem_t *mem, int ender);
 
+
+void criar_processo(so_t *self, int ender_carga, bool eh_filho) {
+  // Procura slot livre (MORTO ou nunca usado)
+  int slot = -1;
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+    if (self->tabela_processos[i].estado == MORTO) {
+      slot = i;
+      break;
+    }
+  }
+  if (slot == -1) {
+    self->tabela_processos[self->processo_corrente].regA = -1;
+    return;
+  }
+  // Inicializa novo processo
+  static int next_pid = 1; // init é 1
+  self->tabela_processos[slot].pid = next_pid++;
+  if(eh_filho) {
+      self->tabela_processos[slot].ppid = self->tabela_processos[self->processo_corrente].pid;
+      // Retorna o PID do novo processo no regA do processo criador
+      self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
+  } else {
+      self->tabela_processos[slot].ppid = 0; // processo init
+  }
+  muda_estado_proc(self, slot, PRONTO);
+  self->tabela_processos[slot].regA = 0;
+  self->tabela_processos[slot].regX = 0;
+  self->tabela_processos[slot].regERRO = 0;
+  self->tabela_processos[slot].regPC = ender_carga;
+  self->tabela_processos[slot].quantum = self->quantum;  // inicializa com quantum completo
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+      self->tabela_processos[slot].esperando_pid[i] = -1;
+  }
+  self->tabela_processos[slot].esperando_dispositivo = -1;
+  self->tabela_processos[slot].memoria_base = 0;
+  self->tabela_processos[slot].memoria_limite = 0;
+  self->tabela_processos[slot].prioridade = 0.0f;  // prioridade inicial máxima
+  int tempo_inicio = 0;
+  es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+  self->metrica->tempo_retorno[slot] = tempo_inicio;
+
+  insere_fila_prontos(self, slot);
+
+  self->tabela_processos[slot].terminal = (self->tabela_processos[slot].pid-1%4)*4; // Associa terminal baseado no slot
+  console_printf("processo criado no slot %d com PID %d e terminal %d   ", slot, self->tabela_processos[slot].pid, self->tabela_processos[slot].terminal);
+
+  self->metrica->n_processos_criados++;
+}
 
 // ---------------------------------------------------------------------
 // CRIAÇÃO {{{1
@@ -379,38 +452,39 @@ static void so_trata_pendencias(so_t *self)
     for (int i = 0; i < MAX_PROCESSOS; i++){
       processo *proc = &self->tabela_processos[i];
       // ex: desbloq processo que espera dispositivo pronto
-      if (proc->estado == BLOQUEADO){
-        if (proc->esperando_dispositivo >= 0) {
-          int disp = proc->esperando_dispositivo;
-          int estado_disp = 0;
-          if (es_le(self->es, disp, &estado_disp) == ERR_OK && estado_disp != 0) {
-                    muda_estado_proc(self, i, PRONTO);
-                    proc->esperando_dispositivo = -1;
-                    proc->quantum = 0;
-                    insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
-
-                }
-        }
-        for (int k = 0; k < MAX_PROCESSOS; k++) {
-          if (proc->esperando_pid[k] > 0){
-            bool terminou = true;
-            for (int j = 0; j < MAX_PROCESSOS; j++){
-              if (self->tabela_processos[j].pid == proc->esperando_pid[k] && self->tabela_processos[j].estado != MORTO) {
-                terminou = false;
-              break;
-            }
-          }
-          if (terminou) {
+      if (proc->estado == BLOQUEADO && proc->esperando_dispositivo >= 0){
+      console_printf("verificando desbloqueio do processo %d   ", i);
+        console_printf("dispositivo %d   ", proc->esperando_dispositivo);
+        // int disp = proc->esperando_dispositivo+1; // D_TERM_X + 1 = D_TERM_X_OK
+        int estado_disp = verifica_estado_dispositivo(self, proc->esperando_dispositivo);
+        if (verifica_bloqueio_leitura(self, estado_disp, proc->esperando_dispositivo)) { // dispositivo pronto
+            console_printf("%d pronto", proc->esperando_dispositivo);
             muda_estado_proc(self, i, PRONTO);
-            for(int m = 0; m < MAX_PROCESSOS; m++) {
-              proc->esperando_pid[m] = -1;
-            }
+            proc->esperando_dispositivo = -1;
             proc->quantum = 0;
             insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
-
-          }
         }
-      }
+      //   // ex: desbloq processo que espera outro processo terminar
+      //   for (int k = 0; k < MAX_PROCESSOS; k++) {
+      //     if (proc->esperando_pid[k] > 0){
+      //       bool terminou = true;
+      //       for (int j = 0; j < MAX_PROCESSOS; j++){
+      //         if (self->tabela_processos[j].pid == proc->esperando_pid[k] && self->tabela_processos[j].estado != MORTO) {
+      //           terminou = false;
+      //         break;
+      //       }
+      //     }
+      //     if (terminou) {
+      //       muda_estado_proc(self, i, PRONTO);
+      //       for(int m = 0; m < MAX_PROCESSOS; m++) {
+      //         proc->esperando_pid[m] = -1;
+      //       }
+      //       proc->quantum = 0;
+      //       insere_fila_prontos(self, i);  // i é o índice do processo desbloqueado
+
+      //     }
+      //   }
+      // }
     }
   } 
 }
@@ -677,26 +751,23 @@ static void so_trata_reset(so_t *self)
     self->erro_interno = true;
     return;
   }
-  self->processo_corrente = 0;
-  self->tabela_processos[0].pid = 1;
-  self->tabela_processos[0].ppid = 0;
-  muda_estado_proc(self, 0, EXECUTANDO);
-  self->tabela_processos[0].regA = 0;
-  self->tabela_processos[0].regX = 0;
-  self->tabela_processos[0].regERRO = 0;
-  self->tabela_processos[0].regPC = ender;
-  self->tabela_processos[0].quantum = self->quantum;  // inicializa com quantum completo
-  for (int i = 0; i < MAX_PROCESSOS; i++) {
-      self->tabela_processos[0].esperando_pid[i] = -1;
-  }
-  self->tabela_processos[0].esperando_dispositivo = -1;
-  self->tabela_processos[0].memoria_base = 0;
-  self->tabela_processos[0].memoria_limite = 0;
-  self->tabela_processos[0].terminal = D_TERM_A_TELA;
-  self->tabela_processos[0].prioridade = 0.0f;  // prioridade inicial máxima
-  self->metrica->n_entradas_estado[0][EXECUTANDO]++;
-  es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_inicio_estado[0][EXECUTANDO]);
-  self->metrica->n_processos_criados++;
+  // self->processo_corrente = 0;
+  // self->tabela_processos[0].pid = 1;
+  // self->tabela_processos[0].ppid = 0;
+  // self->tabela_processos[0].estado = EXECUTANDO;
+  // self->tabela_processos[0].regA = 0;
+  // self->tabela_processos[0].regX = 0;
+  // self->tabela_processos[0].regERRO = 0;
+  // self->tabela_processos[0].regPC = ender;
+  // self->tabela_processos[0].quantum = 0;
+  // for (int i = 0; i < MAX_PROCESSOS; i++) {
+  //     self->tabela_processos[0].esperando_pid[i] = -1;
+  // }
+  // self->tabela_processos[0].esperando_dispositivo = -1;
+  // self->tabela_processos[0].memoria_base = 0;
+  // self->tabela_processos[0].memoria_limite = 0;
+  // self->tabela_processos[0].terminal = D_TERM_A;
+  criar_processo(self, ender, false);
 }
 
 // interrupção gerada quando a CPU identifica um erro
@@ -790,51 +861,81 @@ static void so_trata_irq_chamada_sistema(so_t *self)
 static void so_chamada_le(so_t *self)
 {
   console_printf("chamada de leitura   ");
-  int terminal_teclado = self->tabela_processos[self->processo_corrente].terminal - 2; // D_TERM_X_TELA - 2 = D_TERM_X_TECLADO
-  int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal - 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
-  for (;;) {  // espera ocupada!
-    int estado;
-    if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
-      console_printf("SO: problema no acesso ao estado do teclado");
+  int terminal_teclado = self->tabela_processos[self->processo_corrente].terminal; // D_TERM_X_TELA - 2 = D_TERM_X_TECLADO
+  // int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal - 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
+  int estado;
+  // if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
+  //   console_printf("SO: problema no acesso ao estado do teclado");
+  //   self->erro_interno = true;
+  //   return;
+  // }
+  estado = verifica_estado_dispositivo(self, terminal_teclado);
+  if(verifica_bloqueio_leitura(self, estado, terminal_teclado)){
+    int dado;
+    if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
+      console_printf("SO: problema no acesso ao teclado");
       self->erro_interno = true;
       return;
     }
-    if (estado != 0) break;
-    console_tictac(self->console);
+    self->tabela_processos[self->processo_corrente].regA = dado;
   }
-  int dado;
-  if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
-    console_printf("SO: problema no acesso ao teclado");
-    self->erro_interno = true;
-    return;
-  }
-  self->tabela_processos[self->processo_corrente].regA = dado;
+  // if (estado != 0) break;
+  // console_tictac(self->console);
+  
 }
 
 // implementação da chamada se sistema SO_ESCR
 // escreve o valor do reg X na saída corrente do processo
+
+
+// static void so_chamada_le(so_t *self)
+// {
+//   console_printf("chamada de leitura   ");
+//   int terminal_teclado = self->tabela_processos[self->processo_corrente].terminal; // D_TERM_X_TELA - 2 = D_TERM_X_TECLADO
+//   int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
+//   for (;;) {  // espera ocupada!
+//     int estado;
+//     if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
+//       console_printf("SO: problema no acesso ao estado do teclado");
+//       self->erro_interno = true;
+//       return;
+//     }
+//     if (estado != 0) break;
+//     console_tictac(self->console);
+//   }
+//   int dado;
+//   if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
+//     console_printf("SO: problema no acesso ao teclado");
+//     self->erro_interno = true;
+//     return;
+//   }
+//   self->tabela_processos[self->processo_corrente].regA = dado;
+// }
+
 static void so_chamada_escr(so_t *self)
 {
   console_printf("chamada de escrita   ");
-  int terminal_tela_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA + 1 = D_TERM_X_TELA_OK
-  for (;;) {
-    int estado;
-    if (es_le(self->es, terminal_tela_ok, &estado) != ERR_OK) {
-      console_printf("SO: problema no acesso ao estado da tela");
+  int terminal_tela = self->tabela_processos[self->processo_corrente].terminal+2; // D_TERM_X_TELA = D_TERM_X + 2
+  int estado;
+
+  estado = verifica_estado_dispositivo(self, terminal_tela);
+
+  if(verifica_bloqueio_leitura(self, estado, terminal_tela)){
+    int dado;
+    dado = self->tabela_processos[self->processo_corrente].regX;
+    console_printf("escrevendo %d no disp %d", dado, terminal_tela);
+    if (es_escreve(self->es, terminal_tela, dado) != ERR_OK) {
+      console_printf("SO: problema no acesso à tela do dispositivo %d", terminal_tela);
       self->erro_interno = true;
       return;
     }
-    if (estado != 0) break;
-    console_tictac(self->console);
+    self->tabela_processos[self->processo_corrente].regA = 0;
   }
-  int dado;
-  dado = self->tabela_processos[self->processo_corrente].regX;
-  if (es_escreve(self->es, self->tabela_processos[self->processo_corrente].terminal, dado) != ERR_OK) {
-    console_printf("SO: problema no acesso à tela");
-    self->erro_interno = true;
-    return;
+  else {
+    console_printf("SO: bloqueando processo %d na escrita do dispositivo %d", self->processo_corrente, terminal_tela);
+    console_printf("esperando disp %d estado %d", self->tabela_processos[self->processo_corrente].esperando_dispositivo, self->tabela_processos[self->processo_corrente].estado);
   }
-  self->tabela_processos[self->processo_corrente].regA = 0;
+  
 }
 
 // implementação da chamada se sistema SO_CRIA_PROC
@@ -867,37 +968,37 @@ static void so_chamada_cria_proc(so_t *self)
     self->tabela_processos[self->processo_corrente].regA = -1;
     return;
   }
+  criar_processo(self, ender_carga, true);
+  // // Inicializa novo processo
+  // static int next_pid = 2; // init é 1
+  // self->tabela_processos[slot].pid = next_pid++;
+  // self->tabela_processos[slot].ppid = self->tabela_processos[self->processo_corrente].pid;
+  // muda_estado_proc(self, slot, PRONTO);
+  // self->tabela_processos[slot].regA = 0;
+  // self->tabela_processos[slot].regX = 0;
+  // self->tabela_processos[slot].regERRO = 0;
+  // self->tabela_processos[slot].regPC = ender_carga;
+  // self->tabela_processos[slot].quantum = self->quantum;  // inicializa com quantum completo
+  // for (int i = 0; i < MAX_PROCESSOS; i++) {
+  //     self->tabela_processos[slot].esperando_pid[i] = -1;
+  // }
+  // self->tabela_processos[slot].esperando_dispositivo = -1;
+  // self->tabela_processos[slot].memoria_base = 0;
+  // self->tabela_processos[slot].memoria_limite = 0;
+  // self->tabela_processos[slot].prioridade = 0.0f;  // prioridade inicial máxima
+  // int tempo_inicio = 0;
+  // es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
+  // self->metrica->tempo_retorno[slot] = tempo_inicio;
 
-  // Inicializa novo processo
-  static int next_pid = 2; // init é 1
-  self->tabela_processos[slot].pid = next_pid++;
-  self->tabela_processos[slot].ppid = self->tabela_processos[self->processo_corrente].pid;
-  muda_estado_proc(self, slot, PRONTO);
-  self->tabela_processos[slot].regA = 0;
-  self->tabela_processos[slot].regX = 0;
-  self->tabela_processos[slot].regERRO = 0;
-  self->tabela_processos[slot].regPC = ender_carga;
-  self->tabela_processos[slot].quantum = self->quantum;  // inicializa com quantum completo
-  for (int i = 0; i < MAX_PROCESSOS; i++) {
-      self->tabela_processos[slot].esperando_pid[i] = -1;
-  }
-  self->tabela_processos[slot].esperando_dispositivo = -1;
-  self->tabela_processos[slot].memoria_base = 0;
-  self->tabela_processos[slot].memoria_limite = 0;
-  self->tabela_processos[slot].prioridade = 0.0f;  // prioridade inicial máxima
-  int tempo_inicio = 0;
-  es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
-  self->metrica->tempo_retorno[slot] = tempo_inicio;
 
+  // insere_fila_prontos(self, slot);
 
-  insere_fila_prontos(self, slot);
+  // // Retorna o PID do novo processo no regA do processo criador
+  // self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
 
-  // Retorna o PID do novo processo no regA do processo criador
-  self->tabela_processos[self->processo_corrente].regA = self->tabela_processos[slot].pid;
+  // self->tabela_processos[slot].terminal = ((self->tabela_processos[slot].pid-1)%4)*4; // Associa terminal baseado no slot
 
-  self->tabela_processos[slot].terminal = D_TERM_A_TELA + (self->tabela_processos[slot].pid-1%4)*4; // Associa terminal baseado no slot
-
-  self->metrica->n_processos_criados++;
+  // self->metrica->n_processos_criados++;
 
 }
 
@@ -927,6 +1028,29 @@ static void so_chamada_mata_proc(so_t *self)
 
   muda_estado_proc(self, alvo, MORTO);
   console_printf("chamada de morte de processo   %d", alvo);
+
+  processo *pai = NULL;
+  for (int i = 0; i < MAX_PROCESSOS; i++)
+  {
+    if(self->tabela_processos[i].pid == self->tabela_processos[alvo].ppid){
+      pai = &self->tabela_processos[i];
+      break;
+    }
+  }
+  if (pai != NULL)
+  {
+    pai->regA = 0; // sucesso
+    for (int i = 0; i < MAX_PROCESSOS; i++)
+    {
+      if (pai->esperando_pid[i] == pid_alvo) 
+      {
+        pai->esperando_pid[i] = -1; // nao espera mais esse filho
+      }
+      
+    }
+    
+  }
+  
   // remove_fila_prontos(self);
   
   self->tabela_processos[alvo].regA = -1;
