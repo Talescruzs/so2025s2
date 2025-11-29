@@ -105,8 +105,10 @@ typedef struct processo {
     struct processo *prox;      // ponteiro para próximo processo na fila (lista encadeada)
     float prioridade;
     // possivelmente gambiarra
-    char ultimo_char_para_escrever;
+    int ultimo_char_para_escrever;
     int ultima_instrucao_escrita;
+    int ultimo_pc;
+    int ultimo_erro;
 } processo;
 
 
@@ -399,13 +401,70 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   // esse print polui bastante, recomendo tirar quando estiver com mais confiança
   console_printf("SO: recebi IRQ %d (%s)", irq, irq_nome(irq));
   // salva o estado da cpu no descritor do processo que foi interrompido
-  so_salva_estado_da_cpu(self);
+  int a, pc, erro, x;
+                 mem_le(self->mem, CPU_END_A, &a);
+                 mem_le(self->mem, CPU_END_PC, &pc);
+                 mem_le(self->mem, CPU_END_erro, &erro);
+                 mem_le(self->mem, 59, &x);
+console_printf("ANTES SALVA CPU valores cpu atuais na memoria: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 a,
+                 pc,
+                 erro,
+                 x);
+console_printf("valores cpu atuais na memoria: regX=%c",
+                 x);
+                //  if(self->processo_corrente >= 0 && self->tabela_processos[self->processo_corrente].estado != MORTO && irq != 3)
+                 so_salva_estado_da_cpu(self);
   // faz o atendimento da interrupção
+                 mem_le(self->mem, CPU_END_A, &a);
+                 mem_le(self->mem, CPU_END_PC, &pc);
+                 mem_le(self->mem, CPU_END_erro, &erro);
+                 mem_le(self->mem, 59, &x);
+console_printf("ANTES IRQ valores cpu atuais na memoria: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 a,
+                 pc,
+                 erro,
+                 x);
+console_printf("valores cpu atuais na memoria: regX=%c",
+                 x);
   so_trata_irq(self, irq);
   // faz o processamento independente da interrupção
+                 mem_le(self->mem, CPU_END_A, &a);
+                 mem_le(self->mem, CPU_END_PC, &pc);
+                 mem_le(self->mem, CPU_END_erro, &erro);
+                 mem_le(self->mem, 59, &x);
+console_printf("ANTES PENDENCIA valores cpu atuais na memoria: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 a,
+                 pc,
+                 erro,
+                 x);
+console_printf("valores cpu atuais na memoria: regX=%c",
+                 x);
   so_trata_pendencias(self);
   // usa o escalonador selecionado
+                 mem_le(self->mem, CPU_END_A, &a);
+                 mem_le(self->mem, CPU_END_PC, &pc);
+                 mem_le(self->mem, CPU_END_erro, &erro);
+                 mem_le(self->mem, 59, &x);
+console_printf("ANTES ESCALONA valores cpu atuais na memoria: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 a,
+                 pc,
+                 erro,
+                 x);
+console_printf("valores cpu atuais na memoria: regX=%c",
+                 x);
   if (self->escalonador) self->escalonador(self);
+                 mem_le(self->mem, CPU_END_A, &a);
+                 mem_le(self->mem, CPU_END_PC, &pc);
+                 mem_le(self->mem, CPU_END_erro, &erro);
+                 mem_le(self->mem, 59, &x);
+console_printf("ANTES DESPACHE valores cpu atuais na memoria: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 a,
+                 pc,
+                 erro,
+                 x);
+console_printf("valores cpu atuais na memoria: regX=%c",
+                 x);
   // recupera o estado do processo escolhido
   return so_despacha(self);
 }
@@ -450,6 +509,7 @@ static void so_trata_pendencias(so_t *self)
     if(self->tabela_processos[i].estado != BLOQUEADO && self->tabela_processos[i].estado != MORTO ){
       self->metrica->esta_ocioso = false;
       break;
+    }
   }
   // entrou em ocioso
   if (self->metrica->esta_ocioso == true && metrica_antes == false){
@@ -485,6 +545,11 @@ static void so_trata_pendencias(so_t *self)
             self->erro_interno = true;
             return;
           }
+          proc->regA = 0;
+
+          // proc->regX = proc->ultima_instrucao_escrita;
+          // proc->regPC= proc->ultimo_pc;
+          // proc->regERRO = proc->ultimo_erro;
 
           muda_estado_proc(self, i, PRONTO);
           proc->esperando_dispositivo = -1;
@@ -518,7 +583,6 @@ static void so_trata_pendencias(so_t *self)
       // }
     }
   } 
-}
 }
 
 static void so_escalona(so_t *self)
@@ -678,14 +742,26 @@ if (self->processo_corrente < 0) {
         }
     }
     // Se tem processo PRONTO mas processo_corrente é -1, é um erro
-    if (tem_pronto) {
+    if (tem_pronto > 0) {
         console_printf("Erro fatal: Há processos PRONTOS mas processo_corrente é -1\n");
         self->erro_interno = true;
         return 1;
     }
     // Se não tem nenhum processo PRONTO, retorna 1 para CPU aguardar
     console_printf("Nenhum processo disponível para executar, CPU aguardando...\n");
-    return 1;
+    return 0;
+}
+else{
+  console_printf("Apenas estado atual dos processos...\n");
+  for (int i = 0; i < MAX_PROCESSOS; i++) {
+      if (self->tabela_processos[i].estado != MORTO) {
+          console_printf("  Processo %d (PID %d): estado=%d PC=%d\n",
+                        i,
+                        self->tabela_processos[i].pid,
+                        self->tabela_processos[i].estado,
+                        self->tabela_processos[i].regPC);
+      }
+  }
 }
 // Verifica se processo_corrente está dentro dos limites
 if (self->processo_corrente >= MAX_PROCESSOS) {
@@ -708,17 +784,28 @@ console_printf("valores cpu a escrever: regA=%d, regPC=%d, regERRO=%d, regX=%d",
 console_printf("valores cpu a escrever: regX=%c",
                  self->tabela_processos[self->processo_corrente].regX);
 
-
-
+                 int a, pc, erro, x;
+                 mem_le(self->mem, CPU_END_A, &a);
+                 mem_le(self->mem, CPU_END_PC, &pc);
+                 mem_le(self->mem, CPU_END_erro, &erro);
+                 mem_le(self->mem, 59, &x);
+console_printf("valores cpu atuais na memoria: regA=%d, regPC=%d, regERRO=%d, regX=%d",
+                 a,
+                 pc,
+                 erro,
+                 x);
+console_printf("valores cpu atuais na memoria: regX=%c",
+                 x);
   if (mem_escreve(self->mem, CPU_END_A, self->tabela_processos[self->processo_corrente].regA) != ERR_OK
       || mem_escreve(self->mem, CPU_END_PC, self->tabela_processos[self->processo_corrente].regPC) != ERR_OK
       || mem_escreve(self->mem, CPU_END_erro, self->tabela_processos[self->processo_corrente].regERRO) != ERR_OK
       || mem_escreve(self->mem, 59, self->tabela_processos[self->processo_corrente].regX) != ERR_OK) {
-    console_printf("SO: erro na escrita dos registradores");
-    self->erro_interno = true;
-  }
-  if (self->erro_interno) return 1;
-  else return 0;
+        console_printf("SO: erro na escrita dos registradores");
+        self->erro_interno = true;
+      }
+      if (self->erro_interno) return 1;
+      else return 0;
+  
 }
 
 
@@ -983,7 +1070,12 @@ static void so_chamada_escr(so_t *self)
   }
   else {
     self->tabela_processos[self->processo_corrente].ultimo_char_para_escrever = self->tabela_processos[self->processo_corrente].regX;
-    self->tabela_processos[self->processo_corrente].ultima_instrucao_escrita = self->tabela_processos[self->processo_corrente].regA;
+    // self->tabela_processos[self->processo_corrente].ultima_instrucao_escrita = self->tabela_processos[self->processo_corrente].regA;
+    // self->tabela_processos[self->processo_corrente].ultimo_pc = self->tabela_processos[self->processo_corrente].regPC;
+    // self->tabela_processos[self->processo_corrente].ultimo_erro = self->tabela_processos[self->processo_corrente].regERRO;
+    // muda_estado_proc(self, self->processo_corrente, BLOQUEADO);
+    // self->tabela_processos[self->processo_corrente].esperando_dispositivo = terminal_tela;
+    // self->tabela_processos[self->processo_corrente].quantum = 0;
 
     console_printf("SO: bloqueando processo %d na escrita do dispositivo %d", self->processo_corrente, terminal_tela);
     console_printf("esperando disp %d estado %d", self->tabela_processos[self->processo_corrente].esperando_dispositivo, self->tabela_processos[self->processo_corrente].estado);
