@@ -1,7 +1,5 @@
 criando  
 criei   
-SO: usando escalonador 1 (round-robin)
-Simulador de computador iniciado  
 CMD: 'c'
 SO: recebi IRQ 0 (Reset)
 nenhum processo corrente, nada a salvar   
@@ -56,7 +54,6 @@ muda estado do processo 0 para 1
 SO: diminui quantum do processo 0, valor atual = 49
 APOS ESCALONAR valores cpu: regA=0, regPC=272, regERRO=0, regX=110
 valores cpu: regX=n
-CMD: 'd'
 SO: recebi IRQ 3 (E/S: relógio)
 salvando estado do processo 0   
 valores cpu: regA=0, regPC=272, regERRO=0, regX=110
@@ -89,6 +86,7 @@ muda estado do processo 0 para 1
 SO: diminui quantum do processo 0, valor atual = 47
 APOS ESCALONAR valores cpu: regA=0, regPC=272, regERRO=0, regX=105
 valores cpu: regX=i
+CMD: 'd'
 SO: recebi IRQ 2 (Chamada de sistema)
 salvando estado do processo 0   
 valores cpu: regA=0, regPC=272, regERRO=0, regX=105
@@ -24385,15 +24383,92 @@ interrupção do relógio
 escalonando -1
 APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
 valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+APOS ESCALONAR valores cpu: regA=0, regPC=8256, regERRO=29712, regX=6937
+valores cpu: regX=
 CMD: 'f'
 Fim da execução.
 Métricas do Sistema Operacional:
 processos criados: 4
-tempo total da execucao: 79691
-tempo total da ocioso: 58562
+tempo total da execucao: 80293
+tempo total da ocioso: 59164
 interrupcoes de reset: 1
 interrupcoes de CPU: 0
-interrupcoes de Relogio: 1500
+interrupcoes de Relogio: 1511
 interrupcoes de Sistema: 462
 interrupcoes de teclado: 0
 interrupcoes de tela: 0

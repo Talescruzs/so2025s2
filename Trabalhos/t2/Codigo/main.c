@@ -135,19 +135,8 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  // Seleção do escalonador via argumento: ./main 1 ou ./main 2
-  if (argc > 1) {
-    int id = atoi(argv[1]);
-    if (id != 1 && id != 2) {
-      console_printf("Arg inválido para escalonador (%s). Use 1 ou 2.\n", argv[1]);
-    } else {
-      so_define_escalonador(so, id);
-      console_printf("Simulador de computador iniciado  ");
 
-      // executa o laço principal do controlador
-      controle_laco(hw.controle);
-    }
-  }
+  controle_laco(hw.controle);
 
   // destroi tudo
   so_destroi(so);
