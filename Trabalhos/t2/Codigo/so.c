@@ -107,9 +107,7 @@ typedef struct processo {
     float prioridade;    
     // possivelmente gambiarra
     int ultimo_char_para_escrever;
-    int ultima_instrucao_escrita;
-    int ultimo_pc;
-    int ultimo_erro;
+    bool aguardando_leitura; 
 } processo;
 
 processo *cria_processo() {
@@ -136,9 +134,7 @@ processo *cria_processo() {
     p->prox = NULL;
     p->prioridade = 0.0f;
     p->ultimo_char_para_escrever = 0;
-    p->ultima_instrucao_escrita = 0;
-    p->ultimo_pc = 0;
-    p->ultimo_erro = 0;
+    p->aguardando_leitura = false;
     return p;
 }
 
@@ -519,15 +515,27 @@ static void so_trata_pendencias(so_t *self)
       if (verifica_bloqueio_leitura(self, i, estado_disp, proc->esperando_dispositivo)) { // dispositivo pronto
           console_printf("%d pronto", proc->esperando_dispositivo);
           
-
-          int dado = proc->ultimo_char_para_escrever;
-          console_printf("escrevendo %c no disp %d", dado, proc->esperando_dispositivo);
-          if (es_escreve(self->es, proc->esperando_dispositivo, dado) != ERR_OK) {
-            console_printf("SO: problema no acesso à tela do dispositivo %d", proc->esperando_dispositivo);
-            self->erro_interno = true;
-            return;
+          if(self->tabela_processos[self->processo_corrente].aguardando_leitura == false){
+            int dado = proc->ultimo_char_para_escrever;
+            console_printf("escrevendo %c no disp %d", dado, proc->esperando_dispositivo);
+            if (es_escreve(self->es, proc->esperando_dispositivo, dado) != ERR_OK) {
+              console_printf("SO: problema no acesso à tela do dispositivo %d", proc->esperando_dispositivo);
+              self->erro_interno = true;
+              return;
+            }
+            proc->regA = 0;
           }
-          proc->regA = 0;
+          else{
+            int dado;
+            if (es_le(self->es, proc->esperando_dispositivo, &dado) != ERR_OK) {
+              console_printf("SO: problema no acesso ao teclado do dispositivo %d", proc->esperando_dispositivo);
+              self->erro_interno = true;
+              return;
+            }
+            console_printf("lendo %c do disp %d", dado, proc->esperando_dispositivo);
+            proc->regA = dado;
+            self->tabela_processos[self->processo_corrente].aguardando_leitura = false;
+          }
 
           // proc->regX = proc->ultima_instrucao_escrita;
           // proc->regPC= proc->ultimo_pc;
@@ -1021,40 +1029,16 @@ static void so_chamada_le(so_t *self)
       self->erro_interno = true;
       return;
     }
-    // self->tabela_processos[self->processo_corrente].regA = dado;
+    self->tabela_processos[self->processo_corrente].regA = dado;
   }
-  // if (estado != 0) break;
-  // console_tictac(self->console);
+  else {
+    self->tabela_processos[self->processo_corrente].aguardando_leitura = true;
+  }
   
 }
 
 // implementação da chamada se sistema SO_ESCR
 // escreve o valor do reg X na saída corrente do processo
-
-
-// static void so_chamada_le(so_t *self)
-// {
-//   console_printf("chamada de leitura   ");
-//   int terminal_teclado = self->tabela_processos[self->processo_corrente].terminal; // D_TERM_X_TELA - 2 = D_TERM_X_TECLADO
-//   int terminal_teclado_ok = self->tabela_processos[self->processo_corrente].terminal + 1; // D_TERM_X_TELA - 1 = D_TERM_X_TECLADO_OK
-//   for (;;) {  // espera ocupada!
-//     int estado;
-//     if (es_le(self->es, terminal_teclado_ok, &estado) != ERR_OK) {
-//       console_printf("SO: problema no acesso ao estado do teclado");
-//       self->erro_interno = true;
-//       return;
-//     }
-//     if (estado != 0) break;
-//     console_tictac(self->console);
-//   }
-//   int dado;
-//   if (es_le(self->es, terminal_teclado, &dado) != ERR_OK) {
-//     console_printf("SO: problema no acesso ao teclado");
-//     self->erro_interno = true;
-//     return;
-//   }
-//   self->tabela_processos[self->processo_corrente].regA = dado;
-// }
 
 static void so_chamada_escr(so_t *self)
 {
