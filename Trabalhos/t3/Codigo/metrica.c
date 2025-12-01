@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "metrica.h"
 
 metricas *cria_metrica() {
@@ -70,17 +71,22 @@ void saiu_ocioso(metricas *metri, es_t *relogio) {
 void verifica_ocioso(metricas *metri, processo *tabela_processos, es_t *relogio) {
     bool metrica_antes = metri->esta_ocioso;
     metri->esta_ocioso = true;
-    for (int i = 0; i < MAX_PROCESSOS; i++){
-        if(tabela_processos[i].estado != BLOQUEADO && tabela_processos[i].estado != MORTO ){
-        metri->esta_ocioso = false;
-        break;
+    processo *atual = tabela_processos;
+    
+    while (atual != NULL) {
+        if (atual->estado != BLOQUEADO && atual->estado != MORTO) {
+            metri->esta_ocioso = false;
+            break;
         }
+        
     }
+    
     if (metrica_antes != metri->esta_ocioso && metri->esta_ocioso == true) {
         entrou_ocioso(metri, relogio);
     }
     else if (metrica_antes != metri->esta_ocioso && metri->esta_ocioso == false) {
         saiu_ocioso(metri, relogio);
     }
+    
     
 }

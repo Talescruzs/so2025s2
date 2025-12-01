@@ -48,7 +48,7 @@ typedef struct processo {
 
 processo *processo_cria(int id, int p_id, int pc, int max_quantum);
 
-void insere_novo_processo(processo *self, processo *novo);
+void insere_novo_processo(processo **self, processo *novo);
 
 processo *encontra_processo_por_pid(processo *lista, int pid);
 

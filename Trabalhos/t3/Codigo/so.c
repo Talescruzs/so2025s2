@@ -162,20 +162,9 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
   //   so_trata_interrupcao, com primeiro argumento um ptr para o SO
   cpu_define_chamaC(self->cpu, so_trata_interrupcao, self);
 
-  // // inicializa a tabela de páginas por processo
-  // for (int i = 0; i < MAX_PROCESSOS; i++) {
-  //     self->tabela_processos[i].estado = MORTO; // inicializa todos os processos como mortos
-  //     self->tabela_processos[i].tabpag  = tabpag_cria();
-  //     self->tabela_processos[i].swap_inicio = -1;
-  //     self->tabela_processos[i].n_paginas = 0;
-  //     self->tabela_processos[i].tempo_desbloqueio = 0;
-  //     self->tabela_processos[i].n_faltas_pagina = 0;
-  //     for (int j = 0; j < 100; j++) {
-  //         self->tabela_processos[i].lru_counter[j] = 0;
-  //     }
-  // }
+  self->metrica = cria_metrica();
 
-  self->processo_corrente = 0; // nenhum processo está executando
+  self->processo_corrente = NULL; // nenhum processo está executando
 
   self->quadro_livre_pri = 99 / TAM_PAGINA + 1;
   self->quadro_livre_sec = 0;
@@ -270,11 +259,16 @@ static int so_trata_interrupcao(void *argC, int reg_A)
     return 1;
   }
   // recupera o estado do processo escolhido
-  if (self->tabela_processos[0].estado != MORTO) {
-      int retorno = so_despacha(self);
-      console_printf("RETORNO DESPACHA: %d", retorno);
-      return retorno;
-  }
+  int retorno = so_despacha(self);
+  console_printf("RETORNO DESPACHA: %d, proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
+                    retorno,
+                    self->processo_corrente->pid,
+                    self->processo_corrente->regA,
+                    self->processo_corrente->regPC,
+                    self->processo_corrente->regERRO,
+                    self->processo_corrente->regX,
+                    self->processo_corrente->regX);
+  return retorno;
   return 1;
 }
 
@@ -321,11 +315,14 @@ static void so_trata_pendencias(so_t *self)
 {
   console_printf("tratando pendências   ");
   if (self->tabela_processos == NULL) return;
-  
+
+  // printf("depois verifica ocioso   \n");
   verifica_ocioso(self->metrica, self->tabela_processos, self->es);
+  // printf("depois verifica ocioso   \n");
+
   
   for (int i = 0; i < MAX_PROCESSOS; i++){
-    processo *proc = &self->tabela_processos[i];
+    processo *proc = self->tabela_processos;
     if (proc == NULL){
       return;
     }
@@ -402,7 +399,14 @@ static void ativa_processo(so_t *self, processo *proximo, processo *atual)
 
 static void so_escalona(so_t *self)
 {
-    console_printf("escalonando %d", self->processo_corrente);
+  if (self->processo_corrente == NULL)
+  {
+    console_printf("escalonando sem processo corrente");
+  }
+  else {
+    console_printf("escalonando %d", self->processo_corrente->pid);
+  }
+    
 
     processo *atual = self->processo_corrente;
     
@@ -436,7 +440,7 @@ static void so_escalona(so_t *self)
     // 5. Debug final (com verificação)
     if (self->processo_corrente != NULL) {
         console_printf("APOS ESCALONAR: proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
-                     self->processo_corrente,
+                     self->processo_corrente->pid,
                      self->processo_corrente->regA,
                      self->processo_corrente->regPC,
                      self->processo_corrente->regERRO,
@@ -548,7 +552,7 @@ static void so_trata_reset(so_t *self)
   // }
 
   // Inicializa o processo 0 ANTES de carregar o programa
-  self->processo_corrente = 0;
+  self->processo_corrente = NULL;
   processo *p_init = processo_cria(1, -1, ender, self->quantum);
   
   ender = so_carrega_programa(self, p_init, "init.maq");
@@ -558,9 +562,21 @@ static void so_trata_reset(so_t *self)
     return;
   }
   p_init->regPC = ender;
-  
-  
-  insere_novo_processo(self->tabela_processos, p_init);
+
+  console_printf("processo init criado: proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
+                    p_init->pid,
+                    p_init->regA,
+                    p_init->regPC,
+                    p_init->regERRO,
+                    p_init->regX,
+                    p_init->regX);
+
+  self->processo_corrente = p_init;
+  insere_novo_processo(&self->tabela_processos, p_init);
+
+  if(self->tabela_processos == NULL){
+    console_printf("Tabela de processos nula ao inserir init");
+  }
 }
 
 // funções auxiliares para tratamento de falta de página
@@ -636,26 +652,26 @@ static int so_aloca_quadro(so_t *self)
 // Trata uma falta de página
 static void so_trata_falta_pagina(so_t *self, processo* proc, int pagina)
 {
-  fprintf(stderr, "DEBUG: so_trata_falta_pagina proc=%d pag=%d\n", proc->pid, pagina);
+  console_printf("DEBUG: so_trata_falta_pagina proc=%d pag=%d\n", proc->pid, pagina);
   console_printf("SO: tratando falta de página %d do processo idx=%d", pagina, proc->pid);
   
   // Aloca um quadro (pode fazer substituição)
   int quadro = so_aloca_quadro(self);
   if (quadro < 0) {
-    fprintf(stderr, "DEBUG: erro ao alocar quadro\n");
+    console_printf("DEBUG: erro ao alocar quadro\n");
     console_printf("SO: erro ao alocar quadro");
     proc->estado = MORTO;
     return;
   }
   
-  fprintf(stderr, "DEBUG: quadro alocado=%d\n", quadro);
+  console_printf("DEBUG: quadro alocado=%d\n", quadro);
   
   // Obtém endereço da página na swap
   int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina);
-  fprintf(stderr, "DEBUG: end_swap=%d pid=%d\n", end_swap, proc->pid);
+  console_printf("DEBUG: end_swap=%d pid=%d\n", end_swap, proc->pid);
   
   if (end_swap < 0) {
-    fprintf(stderr, "DEBUG: erro ao obter endereço da página na swap\n");
+    console_printf("DEBUG: erro ao obter endereço da página na swap\n");
     console_printf("SO: erro ao obter endereço da página na swap");
     proc->estado = MORTO;
     return;
@@ -968,7 +984,7 @@ static void so_chamada_cria_proc(so_t *self)
 
   /* inicializa o novo processo no slot */
   proc->regPC = ender_carga;
-  insere_novo_processo(self->tabela_processos, proc);
+  insere_novo_processo(&self->tabela_processos, proc);
 
   /* retorna o PID do novo processo no regA do processo criador */
   self->processo_corrente->regA = proc->pid;
@@ -1113,7 +1129,7 @@ static int so_carrega_programa_na_memoria_virtual(so_t *self,
   int n_paginas = pagina_fim - pagina_ini + 1;
   
   console_printf("SO: carregando programa proc=%d end_virt=%d-%d n_pag=%d",
-                 processo, end_virt_ini, end_virt_fim, n_paginas);
+                 processo->pid, end_virt_ini, end_virt_fim, n_paginas);
   
   // Aloca espaço na swap para todas as páginas do processo
   int swap_inicio = swap_aloca(self->swap, n_paginas, processo->pid);

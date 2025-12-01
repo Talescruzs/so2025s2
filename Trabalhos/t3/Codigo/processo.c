@@ -47,11 +47,11 @@ processo *processo_cria(int id, int p_id, int pc, int max_quantum) {
     return p;
 }
 
-void insere_novo_processo(processo *self, processo *novo) {
-    if (self == NULL) {
-        self = novo;
+void insere_novo_processo(processo **self, processo *novo) {
+    if (*self == NULL) {
+        *self = novo;
     } else {
-        processo *atual = self;
+        processo *atual = *self;
         while (atual->prox != NULL) {
             atual = atual->prox;
         }
