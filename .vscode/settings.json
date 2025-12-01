@@ -4,6 +4,10 @@
         "programa.h": "c",
         "es.h": "c",
         "tabpag.h": "c",
-        "irq.h": "c"
+        "irq.h": "c",
+        "stdlib.h": "c",
+        "memoria.h": "c",
+        "dispositivos.h": "c",
+        "processo.h": "c"
     }
 }
