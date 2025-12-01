@@ -28,8 +28,41 @@ struct swap_t {
     alocacao_t *alocacoes; // Lista de alocações
 };
 
+// UTILIZA A FILA DE ALOCACAO
+
+alocacao_t *cria_alocacao(int processo, int end_inicio, int n_paginas) {
+    console_printf("SWAP: criando alocação proc=%d end=%d pags=%d", processo, end_inicio, n_paginas);
+    alocacao_t *aloc = malloc(sizeof(alocacao_t));
+    assert(aloc != NULL);
+    aloc->processo = processo;
+    aloc->end_inicio = end_inicio;
+    aloc->n_paginas = n_paginas;
+    aloc->prox = NULL;
+    console_printf("SWAP: alocação criada proc=%d end=%d pags=%d", processo, end_inicio, n_paginas);
+    return aloc;
+}
+
+void destroi_alocacao(alocacao_t *aloc) {
+    free(aloc);
+}
+
+void insere_final_alocacao(swap_t *self, alocacao_t *aloc) {
+    console_printf("SWAP: inserindo alocação proc=%d end=%d pags=%d", aloc->processo, aloc->end_inicio, aloc->n_paginas);
+    if(self->alocacoes == NULL) {
+        self->alocacoes = aloc;
+        return;
+    }
+    alocacao_t *atual = self->alocacoes;
+    while(atual->prox != NULL) {
+        atual = atual->prox;
+    }
+    atual->prox = aloc;
+    console_printf("SWAP: alocação inserida proc=%d end=%d pags=%d", aloc->processo, aloc->end_inicio, aloc->n_paginas);
+}
+
 swap_t *swap_cria(int n_paginas, int tam_pagina, relogio_t *relogio)
 {
+    console_printf("SWAP: criando swap com %d páginas de %d palavras", n_paginas, tam_pagina);
     swap_t *self = malloc(sizeof(*self));
     assert(self != NULL);
     
@@ -46,7 +79,7 @@ swap_t *swap_cria(int n_paginas, int tam_pagina, relogio_t *relogio)
     self->relogio = relogio;
     self->disco_livre_em = 0;
     self->alocacoes = NULL;
-    
+    console_printf("SWAP: swap criada com sucesso");
     return self;
 }
 
@@ -69,6 +102,7 @@ void swap_destroi(swap_t *self)
 
 int swap_aloca(swap_t *self, int n_paginas, int processo)
 {
+    console_printf("SWAP: solicitada alocação proc=%d pags=%d", processo, n_paginas);
     if (self->prox_livre + n_paginas > self->n_paginas) {
         console_printf("SWAP: sem espaço para alocar %d páginas", n_paginas);
         return -1;
@@ -78,12 +112,9 @@ int swap_aloca(swap_t *self, int n_paginas, int processo)
     self->prox_livre += n_paginas;
     
     // Registra alocação
-    alocacao_t *aloc = malloc(sizeof(alocacao_t));
-    aloc->processo = processo;
-    aloc->end_inicio = end_inicio;
-    aloc->n_paginas = n_paginas;
-    aloc->prox = self->alocacoes;
-    self->alocacoes = aloc;
+    alocacao_t *aloc = cria_alocacao(processo, end_inicio, n_paginas);
+    
+    insere_final_alocacao(self, aloc);
     
     console_printf("SWAP: alocado proc=%d pags=%d end=%d", processo, n_paginas, end_inicio);
     return end_inicio;

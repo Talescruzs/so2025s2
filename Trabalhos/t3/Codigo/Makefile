@@ -12,8 +12,8 @@ LDLIBS = -lcurses
 # arquivos objeto compilados (.o) que compõem o simulador (main) e o montador
 OBJS_MAIN = cpu.o es.o memoria.o relogio.o console.o terminal.o tela_curses.o \
 		instrucao.o err.o programa.o controle.o main.o \
-		so.o irq.o mmu.o tabpag.o memoria_quadros.o swap.o
-OBJS_MONTADOR = instrucao.o err.o montador.o
+		so.o irq.o mmu.o tabpag.o memoria_quadros.o swap.o metrica.o processo.o
+OBJS_MONTADOR = instrucao.o err.o montador.o 
 OBJS = ${OBJS_MAIN} ${OBJS_MONTADOR}
 # arquivos .maq a gerar, com seus endereços
 MAQS = bios.maq trata_int.maq init.maq ex1.maq ex2.maq ex3.maq ex4.maq ex5.maq ex6.maq p1.maq p2.maq p3.maq

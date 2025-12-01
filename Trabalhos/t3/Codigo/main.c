@@ -136,6 +136,8 @@ int main()
   // cria o sistema operacional
   so = so_cria(hw.cpu, hw.mem, hw.mmu, hw.es, hw.console, hw.relogio);
 
+  console_printf("indo pro laco  ");
+
   // executa o laço principal do controlador
   controle_laco(hw.controle);
 

@@ -59,6 +59,11 @@ struct so_t {
 // protótipos de escalonadores
 static void so_escalona(so_t *self);
 
+// Funções auxiliares do escalonador
+static bool processo_atual_pode_continuar(so_t *self, int atual);
+static void processa_fim_quantum(so_t *self, int atual);
+static int escolhe_proximo_processo(so_t *self);
+static void ativa_processo(so_t *self, int proximo, int atual);
 
 static void insere_fila_prontos(so_t *self, int idx_processo);
 // static int remove_fila_prontos(so_t *self);
@@ -288,67 +293,107 @@ static void so_trata_pendencias(so_t *self)
   } 
 }
 
+// AUXILIARES DE ESCALONADOR  
+// Verifica se o processo atual pode continuar executando
+static bool processo_atual_pode_continuar(so_t *self, int atual)
+{
+    if (atual < 0 || atual >= MAX_PROCESSOS) {
+        return false;
+    }
+
+    processo *proc_atual = &self->tabela_processos[atual];
+    
+    // Pode continuar se está EXECUTANDO, não bloqueou e ainda tem quantum
+    return (proc_atual->estado == EXECUTANDO && self->contador_quantum > 0);
+}
+
+// Processa fim de quantum: recalcula prioridade e coloca processo como PRONTO
+static void processa_fim_quantum(so_t *self, int atual)
+{
+    if (atual < 0 || atual >= MAX_PROCESSOS) {
+        return;
+    }
+
+    processo *proc_atual = &self->tabela_processos[atual];
+    
+    if (proc_atual->estado != EXECUTANDO) {
+        return;
+    }
+
+    // Recalcula prioridade
+    int t_quantum = self->quantum;
+    int t_exec = t_quantum - self->contador_quantum;
+    
+    float prio_antiga = proc_atual->prioridade;
+    float prio_nova = (prio_antiga + ((float)t_exec / t_quantum)) / 2.0f;
+    proc_atual->prioridade = prio_nova;
+    
+    // Coloca como PRONTO e insere na fila
+    muda_estado_proc(proc_atual, self->metrica, self->es, PRONTO);
+    insere_fila_prontos(self, atual);
+}
+
+// Escolhe o próximo processo PRONTO com menor prioridade
+static int escolhe_proximo_processo(so_t *self)
+{
+    int proximo = -1;
+    float menor_prio = 1000.0f;
+    
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+        if (self->tabela_processos[i].estado == PRONTO) {
+            float prio = self->tabela_processos[i].prioridade;
+            if (prio < menor_prio) {
+                menor_prio = prio;
+                proximo = i;
+            }
+        }
+    }
+    
+    return proximo;
+}
+
+// Ativa um processo para execução
+static void ativa_processo(so_t *self, int proximo, int atual)
+{
+    if (proximo < 0 || proximo >= MAX_PROCESSOS) {
+        return;
+    }
+
+    console_printf("SO: escalonador escolheu processo %d com prioridade %.2f", 
+                 proximo, self->tabela_processos[proximo].prioridade);
+    
+    muda_estado_proc(&self->tabela_processos[proximo], self->metrica, self->es, EXECUTANDO);
+    
+    // Marca preempção se trocou de processo
+    if (atual != -1 && atual != proximo) {
+        marca_preempcao(self->metrica, self->es, atual, self->quantum - self->contador_quantum);
+    }
+    
+    self->processo_corrente = proximo;
+    self->contador_quantum = self->quantum; // Reseta quantum
+}
+
 static void so_escalona(so_t *self)
 {
     console_printf("escalonando %d", self->processo_corrente);
 
     int atual = self->processo_corrente;
-    int proximo = -1;
-
+    
     // 1. Verifica se o processo atual pode continuar executando
-    bool atual_pode_continuar = false;
-    if (atual >= 0 && atual < MAX_PROCESSOS) {
-        processo *proc_atual = &self->tabela_processos[atual];
-        
-        // Pode continuar se está EXECUTANDO, não bloqueou e ainda tem quantum
-        if (proc_atual->estado == EXECUTANDO && self->contador_quantum > 0) {
-            atual_pode_continuar = true;
-        }
-        // Se estava executando mas não pode mais continuar, coloca como PRONTO
-        else if (proc_atual->estado == EXECUTANDO) {
-            // Recalcula prioridade antes de colocar como PRONTO
-            int t_quantum = self->quantum;
-            int t_exec = t_quantum - self->contador_quantum;
-            
-            float prio_antiga = proc_atual->prioridade;
-            float prio_nova = (prio_antiga + ((float)t_exec / t_quantum)) / 2.0f;
-            proc_atual->prioridade = prio_nova;
-            
-            muda_estado_proc(proc_atual, self->metrica, self->es, PRONTO);
-            insere_fila_prontos(self, atual);
-            
-            atual_pode_continuar = false;
-        }
+    bool atual_pode_continuar = processo_atual_pode_continuar(self, atual);
+    
+    // 2. Se não pode continuar, processa fim de quantum
+    if (!atual_pode_continuar && atual >= 0 && atual < MAX_PROCESSOS) {
+        processa_fim_quantum(self, atual);
     }
 
-    // 2. Escolhe o próximo processo PRONTO com menor prioridade (se necessário)
+    // 3. Se precisa escolher novo processo
     if (!atual_pode_continuar) {
-        float menor_prio = 1000.0f;
+        int proximo = escolhe_proximo_processo(self);
         
-        for (int i = 0; i < MAX_PROCESSOS; i++) {
-            if (self->tabela_processos[i].estado == PRONTO) {
-                float prio = self->tabela_processos[i].prioridade;
-                if (prio < menor_prio) {
-                    menor_prio = prio;
-                    proximo = i;
-                }
-            }
-        }
-        
-        // 3. Se achou processo PRONTO, coloca para executar
         if (proximo != -1) {
-            console_printf("SO: escalonador escolheu processo %d com prioridade %.2f", 
-                         proximo, self->tabela_processos[proximo].prioridade);
-            
-            muda_estado_proc(&self->tabela_processos[proximo], self->metrica, self->es, EXECUTANDO);
-            
-            // Marca preempção se trocou de processo
-            if (atual != -1 && atual != proximo) {
-                marca_preempcao(self->metrica, self->es, atual, self->quantum - self->contador_quantum);
-            }
-            
-            self->processo_corrente = proximo;
-            self->contador_quantum = self->quantum; // Reseta quantum
+            // Ativa o próximo processo
+            ativa_processo(self, proximo, atual);
         } else {
             // Nenhum processo pronto
             self->processo_corrente = -1;
