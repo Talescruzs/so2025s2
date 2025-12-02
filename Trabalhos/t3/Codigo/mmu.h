@@ -38,6 +38,8 @@ void mmu_destroi(mmu_t *self);
 // se tabpag for NULL, os acessos serão repassados à memória sem alteração
 void mmu_define_tabpag(mmu_t *self, tabpag_t *tabpag);
 
+err_t mmu__traduz(mmu_t *self, int endvirt, int *pendfis);
+
 // coloca na posição apontada por 'pvalor' o valor que está na memória
 //   no endereço físico correspondente ao endereço virtual 'endvirt'
 // marca a página como acessada se o acesso for bem sucedido

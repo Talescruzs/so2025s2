@@ -12,7 +12,7 @@
 typedef struct swap_t swap_t;
 
 // Tempo de transferência de uma página entre memória principal e secundária
-#define TEMPO_ACESSO_DISCO 100
+#define TEMPO_ACESSO_DISCO 10
 
 // Cria uma memória secundária com capacidade para 'n_paginas' páginas
 swap_t *swap_cria(int n_paginas, int tam_pagina, relogio_t *relogio);

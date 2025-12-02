@@ -41,7 +41,7 @@ void mmu_define_tabpag(mmu_t *self, tabpag_t *tabpag)
 // traduz o endereço virtual 'endvirt', colocando o endereço físico
 //   correspondente em 'pendfis'.
 // retorna ERR_OK ou um erro se a tradução não for possível
-static err_t mmu__traduz(mmu_t *self, int endvirt, int *pendfis)
+err_t mmu__traduz(mmu_t *self, int endvirt, int *pendfis)
 {
   int pagina = endvirt / TAM_PAGINA;
   int deslocamento = endvirt % TAM_PAGINA;

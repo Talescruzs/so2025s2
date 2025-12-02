@@ -36,7 +36,7 @@
 #define INTERVALO_INTERRUPCAO 50   // em instruções executadas
 
 #define QUANTUM 50
-#define MEM_TAM 200 // tamanho da memória principal
+#define MEM_TAM 2000 // tamanho da memória principal
 
 
 // Não tem processos nem memória virtual, mas é preciso usar a paginação,
@@ -68,6 +68,7 @@
 typedef struct so_t {
   cpu_t *cpu;
   mem_t *mem;
+  mem_t *disco;
   mmu_t *mmu;
   es_t *es;
   console_t *console;
@@ -75,9 +76,10 @@ typedef struct so_t {
 
   int regA, regX, regPC, regERRO, regComplemento; // cópia do estado da CPU
 
-  processo *processo_corrente; // índice do processo corrente na tabela de processos
+  processo *processo_corrente; 
 
   processo *tabela_processos;
+
 
   metricas *metrica;
 
@@ -100,10 +102,13 @@ typedef struct so_t {
   int quadro_livre_pri;
   int quadro_livre_sec;
 
+  int proximo_end_livre_disco;
+
 
   // Memória secundária e relógio
   swap_t *swap;
   relogio_t *relogio;
+
 
 } so_t;
 
@@ -122,8 +127,8 @@ static int so_trata_interrupcao(void *argC, int reg_A);
 // no t3, foi adicionado o 'processo' aos argumentos dessas funções 
 // carrega o programa contido no arquivo para memória virtual de um processo
 // retorna o endereço virtual inicial de execução
-static int so_carrega_programa(so_t *self, processo *processo,
-                               char *nome_do_executavel);
+static int so_carrega_programa(so_t *self, char *nome_do_executavel, processo *processo, int* enderFim, int* tamanho, int* end_disco);
+
 // copia para str da memória do processo, até copiar um 0 (retorna true) ou tam bytes
 static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
                                      int end_virt, processo* processo);
@@ -133,7 +138,7 @@ static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
 // CRIAÇÃO {{{1
 // ---------------------------------------------------------------------
 
-so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
+so_t *so_cria(cpu_t *cpu, mem_t *mem, mem_t *disco, mmu_t *mmu,
               es_t *es, console_t *console, relogio_t *relogio)
 {
   console_printf("criando  ");
@@ -152,6 +157,7 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
 
   self->cpu = cpu;
   self->mem = mem;
+  self->disco = disco;
   self->mmu = mmu;
   self->es = es;
   self->console = console;
@@ -173,6 +179,8 @@ so_t *so_cria(cpu_t *cpu, mem_t *mem, mmu_t *mmu,
   
   // Cria memória secundária (swap) - tamanho generoso para todos os processos
   self->swap = swap_cria(1000, TAM_PAGINA, relogio);
+
+  self->proximo_end_livre_disco = 0;
 
   console_printf("criei   ");
 
@@ -240,12 +248,8 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   so_t *self = argC;
   irq_t irq = reg_A;
   
-  // esse print polui bastante, recomendo tirar quando estiver com mais confiança
   console_printf("SO: recebi IRQ %d (%s)", irq, irq_nome(irq));
-  if(irq == 1){
-    console_printf("A = %d, X = %d, PC = %d", self->regA, self->regX, self->regPC);
-
-  }
+  
   // salva o estado da cpu no descritor do processo que foi interrompido
   so_salva_estado_da_cpu(self);
   // faz o atendimento da interrupção
@@ -254,22 +258,47 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   so_trata_pendencias(self);
   // escolhe o próximo processo a executar
   so_escalona(self);
+  
   if(self->tabela_processos == NULL){
     console_printf("Tabela de processos nula");
     return 1;
   }
+  
   // recupera o estado do processo escolhido
   int retorno = so_despacha(self);
+  console_printf("depois despacha   ");
+  
+  // TESTE: Verifica tradução do PC
+  if (self->processo_corrente != NULL) {
+    int pagina_pc = self->processo_corrente->regPC / TAM_PAGINA;
+    int quadro_pc;
+    err_t err_traduz = tabpag_traduz(self->processo_corrente->tabpag, pagina_pc, &quadro_pc);
+    
+    if (err_traduz == ERR_OK) {
+      int end_fis = quadro_pc * TAM_PAGINA + (self->processo_corrente->regPC % TAM_PAGINA);
+      int valor_fis;
+      mem_le(self->mem, end_fis, &valor_fis);
+      console_printf("Teste tradução: PC=%d página=%d quadro=%d end_fis=%d valor=%d",
+                     self->processo_corrente->regPC, pagina_pc, quadro_pc, end_fis, valor_fis);
+    } else {
+      console_printf("Teste tradução: FALHOU - PC=%d página=%d err=%d (FALTA DE PÁGINA!)",
+                     self->processo_corrente->regPC, pagina_pc, err_traduz);
+    }
+  }
+  int a, pc, erro, x;
+  mem_le(self->mem, CPU_END_PC, &pc);
+  mem_le(self->mem, CPU_END_A, &a);
+  mem_le(self->mem, CPU_END_erro, &erro);
+  mem_le(self->mem, 59, &x);
   console_printf("RETORNO DESPACHA: %d, proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
-                    retorno,
-                    self->processo_corrente->pid,
-                    self->processo_corrente->regA,
-                    self->processo_corrente->regPC,
-                    self->processo_corrente->regERRO,
-                    self->processo_corrente->regX,
-                    self->processo_corrente->regX);
+                 retorno,
+                 self->processo_corrente->pid,
+                 a,
+                 pc,
+                 erro,
+                 x,
+                 x);
   return retorno;
-  return 1;
 }
 
 static void so_chamada_mata_proc(so_t *self);
@@ -277,38 +306,38 @@ static void so_chamada_mata_proc(so_t *self);
 
 static void so_salva_estado_da_cpu(so_t *self)
 {
-  // t2: salva os registradores que compõem o estado da cpu no descritor do
-  //   processo corrente. os valores dos registradores foram colocados pela
-  //   CPU na memória, nos endereços CPU_END_PC etc. O registrador X foi salvo
-  //   pelo tratador de interrupção (ver trata_irq.asm) no endereço 59
-  // se não houver processo corrente, não faz nada
-  if (self->tabela_processos == NULL || self->processo_corrente->estado != EXECUTANDO){
+  // Se não houver processo corrente, não faz nada
+  if (self->tabela_processos == NULL || self->processo_corrente == NULL) {
     console_printf("nenhum processo corrente, nada a salvar   ");
     return;
   }
+  
+  // IMPORTANTE: Lê da MEMÓRIA FÍSICA onde a CPU salvou os registradores
   int a, pc, erro, x;
   if (mem_le(self->mem, CPU_END_A, &a) != ERR_OK
       || mem_le(self->mem, CPU_END_PC, &pc) != ERR_OK
       || mem_le(self->mem, CPU_END_erro, &erro) != ERR_OK
-      || mem_le(self->mem, 59, &x)) {
+      || mem_le(self->mem, 59, &x) != ERR_OK) {
     console_printf("SO: erro na leitura dos registradores");
     self->erro_interno = true;
+    return;
   }
-  // para quem disser que isso é gambiarra, eu concordo
-  if (
-    a == 1 &&
-  pc == 71 &&
-  erro == 1 &&
-  x == 32) {
+  
+  // Gambiarra para morte de processo
+  if (a == 1 && pc == 71 && erro == 1 && x == 32) {
     self->processo_corrente->regX = self->processo_corrente->pid;
-      so_chamada_mata_proc(self);
-      return;
+    so_chamada_mata_proc(self);
+    return;
   }
 
+  // SALVA no descritor do processo
   self->processo_corrente->regA = a;
   self->processo_corrente->regPC = pc;
   self->processo_corrente->regERRO = erro;
   self->processo_corrente->regX = x;
+  
+  console_printf("SO: salvou estado proc=%d A=%d PC=%d X=%d erro=%d",
+                 self->processo_corrente->pid, a, pc, x, erro);
 }
 
 static void so_trata_pendencias(so_t *self)
@@ -397,8 +426,7 @@ static void ativa_processo(so_t *self, processo *proximo, processo *atual)
     self->contador_quantum = self->quantum; // Reseta quantum
 }
 
-static void so_escalona(so_t *self)
-{
+static void so_escalona(so_t *self) {
   if (self->processo_corrente == NULL)
   {
     console_printf("escalonando sem processo corrente");
@@ -444,40 +472,74 @@ static void so_escalona(so_t *self)
                      self->processo_corrente->regA,
                      self->processo_corrente->regPC,
                      self->processo_corrente->regERRO,
-                     self->processo_corrente->regX,
                      self->processo_corrente->regX);
     }
 }
 
 static int so_despacha(so_t *self)
 {
-  // t2: se houver processo corrente, coloca o estado desse processo onde ele
-  //   será recuperado pela CPU (em CPU_END_PC etc. e 59) e retorna 0,
-  //   senão retorna 1
-  // o valor retornado será o valor de retorno de CHAMAC, e será colocado no 
-  //   registrador A para o tratador de interrupção (ver trata_irq.asm).
-  
+  // Verifica se há processo corrente válido
   if (self->processo_corrente == NULL) {
+    console_printf("SO: sem processo para despachar");
     return 1;
   }
   
   if (self->processo_corrente->estado == MORTO) {
+    console_printf("SO: processo %d está morto", self->processo_corrente->pid);
     return 1;
   }
   
-  // Configura a MMU com a tabela de páginas do processo corrente
+  // DIAGNÓSTICO: Antes de configurar MMU
+  console_printf("SO: despachando proc=%d PC=%d (virtual)", 
+                 self->processo_corrente->pid, self->processo_corrente->regPC);
+  
+  // Verifica tabela de páginas
+  if (self->processo_corrente->tabpag == NULL) {
+    console_printf("SO: ERRO - tabela de páginas NULL!");
+    self->erro_interno = true;
+    return 1;
+  }
+  
+  // Configura MMU com tabela de páginas do processo
   mmu_define_tabpag(self->mmu, self->processo_corrente->tabpag);
   
+  console_printf("SO: MMU configurada com tabpag do processo %d", 
+                 self->processo_corrente->pid);
+// TESTE: Verifica tradução do PC
+  int pagina_pc = self->processo_corrente->regPC / TAM_PAGINA;
+  int quadro_pc;
+  int end_fis;
+  err_t err_traduz = tabpag_traduz(self->processo_corrente->tabpag, pagina_pc, &quadro_pc);
+  
+  if (err_traduz == ERR_OK) {
+    end_fis = quadro_pc * TAM_PAGINA + (self->processo_corrente->regPC % TAM_PAGINA);
+    int valor_fis;
+    mem_le(self->mem, end_fis, &valor_fis);
+    console_printf("Teste tradução: PC=%d página=%d quadro=%d end_fis=%d valor=%d",
+                    self->processo_corrente->regPC, pagina_pc, quadro_pc, end_fis, valor_fis);
+  } else {
+    console_printf("Teste tradução: FALHOU - PC=%d página=%d err=%d (FALTA DE PÁGINA!)",
+                    self->processo_corrente->regPC, pagina_pc, err_traduz);
+  }
+  
+  // Escreve na MEMÓRIA FÍSICA de onde a CPU vai ler
   if (mem_escreve(self->mem, CPU_END_A, self->processo_corrente->regA) != ERR_OK
       || mem_escreve(self->mem, CPU_END_PC, self->processo_corrente->regPC) != ERR_OK
       || mem_escreve(self->mem, CPU_END_erro, self->processo_corrente->regERRO) != ERR_OK
-      || mem_escreve(self->mem, 59, self->processo_corrente->regX)) {
+      || mem_escreve(self->mem, 59, self->processo_corrente->regX) != ERR_OK) {
     console_printf("SO: erro na escrita dos registradores");
     self->erro_interno = true;
+    return 1;
   }
   
-  if (self->erro_interno) return 1;
-  else return 0;
+  console_printf("SO: despachou proc=%d PC=%d A=%d X=%d erro=%d",
+                 self->processo_corrente->pid,
+                 self->processo_corrente->regPC,
+                 self->processo_corrente->regA,
+                 self->processo_corrente->regX,
+                 self->processo_corrente->regERRO);
+  
+  return (self->erro_interno) ? 1 : 0;
 }
 
 // ---------------------------------------------------------------------
@@ -513,10 +575,16 @@ static void so_trata_irq(so_t *self, int irq)
   }
 }
 
+
+static void diagnostico_memoria_virtual(so_t *self, processo *proc, const char *contexto);
+
+static int so_aloca_quadro(so_t *self); 
+
 // chamada uma única vez, quando a CPU inicializa
 static void so_trata_reset(so_t *self)
 {
   console_printf("recebi RESET   ");
+  
   // coloca o tratador de interrupção na memória
   // quando a CPU aceita uma interrupção, passa para modo supervisor,
   //   salva seu estado à partir do endereço CPU_END_PC, e desvia para o
@@ -525,56 +593,132 @@ static void so_trata_reset(so_t *self)
   //   de interrupção (escrito em asm). esse programa deve conter a
   //   instrução CHAMAC, que vai chamar so_trata_interrupcao (como
   //   foi definido na inicialização do SO)
-  int ender = so_carrega_programa(self, NENHUM_PROCESSO, "trata_int.maq");
-  if (ender != CPU_END_TRATADOR) {
+  int tam_trata = 0;
+  int temp = -1;
+  int ender_trata = so_carrega_programa(self, "trata_int.maq", NENHUM_PROCESSO, NULL, &tam_trata, &temp);
+  if (ender_trata != CPU_END_TRATADOR) {
     console_printf("SO: problema na carga do programa de tratamento de interrupção");
     self->erro_interno = true;
+    return;
   }
   
-  // programa o relógio para gerar uma interrupção após INTERVALO_INTERRUPCAO
+  // Programa relógio
   if (es_escreve(self->es, D_RELOGIO_TIMER, INTERVALO_INTERRUPCAO) != ERR_OK) {
     console_printf("SO: problema na programação do timer");
     self->erro_interno = true;
   }
-  // define o primeiro quadro livre de memória como o seguinte àquele que
-  //   contém o endereço final da memória protegida (que não podem ser usadas
-  //   por programas de usuário)
-  // t3: o controle de memória livre deve ser mais aprimorado que isso
-  
-  // teste
 
-    self->next_quadro_livre = CPU_END_FIM_PROT / TAM_PAGINA + 1;
-  // opcional: inicializar também os quadro_livre de cada processo como 0
-
-  
-  // for (int i = 0; i < MAX_PROCESSOS; i++) {
-  //     self->tabela_processos[i].quadro_livre = 0;
-  // }
-
-  // Inicializa o processo 0 ANTES de carregar o programa
+  // Inicializa o processo init
   self->processo_corrente = NULL;
-  processo *p_init = processo_cria(1, -1, ender, self->quantum);
+  processo *p_init = processo_cria(1, -1, 0, self->quantum);
+
+  tam_trata = 0;
+  temp = -1;
   
-  ender = so_carrega_programa(self, p_init, "init.maq");
+  int ender = so_carrega_programa(self, "init.maq", p_init, NULL, &tam_trata, &temp);
   if (ender == -1) {
-    console_printf("SO: problema na carga do programa inicial, ender = %d", ender);
+    console_printf("SO: problema na carga do programa inicial");
     self->erro_interno = true;
     return;
   }
+  
+  // IMPORTANTE: Inicializa TODOS os registradores do novo processo
   p_init->regPC = ender;
+  p_init->regA = 0;
+  p_init->regX = 0;
+  p_init->regERRO = ERR_OK;
+  p_init->estado = PRONTO;
+  console_printf("SO: init criado PC=%d A=%d X=%d erro=%d",
+                 p_init->regPC, p_init->regA, p_init->regX, p_init->regERRO);
 
-  console_printf("processo init criado: proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
-                    p_init->pid,
-                    p_init->regA,
-                    p_init->regPC,
-                    p_init->regERRO,
-                    p_init->regX,
-                    p_init->regX);
+  // CRUCIAL: Carrega a primeira página na memória física ANTES de executar
+  int pagina_inicial = ender / TAM_PAGINA;
+  
+  console_printf("SO: carregando página inicial %d do init na memória física", pagina_inicial);
+  
+  // Aloca quadro
+  int quadro = so_aloca_quadro(self);
+  if (quadro < 0) {
+    console_printf("SO: ERRO - não conseguiu alocar quadro para página inicial!");
+    self->erro_interno = true;
+    return;
+  }
+  
+  // Lê da swap
+  int end_swap = swap_endereco_pagina(self->swap, p_init->pid, pagina_inicial);
+  int dados[TAM_PAGINA];
+  int tempo_bloqueio;
+  
+  err_t err = swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio);
+  if (err != ERR_OK) {
+    console_printf("SO: ERRO ao ler página inicial da swap err=%d", err);
+    self->erro_interno = true;
+    return;
+  }
+  
+  console_printf("SO: lido da swap - primeira instrução: %d (esperado: 2 para NOP ou CARGI)", dados[0]);
+  
+  // Escreve na memória física
+  int end_fis = quadro * TAM_PAGINA;
+  for (int i = 0; i < TAM_PAGINA; i++) {
+    if (mem_escreve(self->mem, end_fis + i, dados[i]) != ERR_OK) {
+      console_printf("SO: ERRO ao escrever na memória física offset=%d", i);
+      self->erro_interno = true;
+      return;
+    }
+  }
+  
+  console_printf("SO: página escrita na memória física quadro=%d end_fis=%d", quadro, end_fis);
+  
+  // Mapeia na tabela de páginas
+  tabpag_define_quadro(p_init->tabpag, pagina_inicial, quadro);
+  
+  // VERIFICA se o mapeamento funcionou usando tabpag_traduz
+  int quadro_verificado;
+  err_t err_verif = tabpag_traduz(p_init->tabpag, pagina_inicial, &quadro_verificado);
+  
+  console_printf("SO: verificação mapeamento - página=%d quadro_esperado=%d quadro_obtido=%d err=%d", 
+                 pagina_inicial, quadro, quadro_verificado, err_verif);
+  
+  if (err_verif != ERR_OK || quadro_verificado != quadro) {
+    console_printf("SO: ERRO - mapeamento falhou!");
+    self->erro_interno = true;
+    return;
+  }
+  int pagina = ender / TAM_PAGINA;
+  // Registra quadro como ocupado
+  mem_quadros_muda_estado(self->quadros, quadro, false, p_init->pid, pagina);
+  
+  console_printf("SO: página inicial mapeada com sucesso");
+  
+  // Teste de leitura direta da memória física
+  int teste_fis;
+  mem_le(self->mem, end_fis, &teste_fis);
+  console_printf("SO: teste leitura física end=%d valor=%d", end_fis, teste_fis);
+
+  // CRUCIAL: Configura a MMU com a tabela de páginas do processo ANTES de despachar
+  mmu_define_tabpag(self->mmu, p_init->tabpag);
+  console_printf("SO: MMU configurada com tabpag do processo %d", p_init->pid);
+  
+  // Testa leitura via MMU VIRTUAL
+  int valor_virt;
+  err_t err_mmu = mmu_le(self->mmu, 0, &valor_virt, supervisor);
+  console_printf("SO: teste leitura MMU end_virt=0 valor=%d err=%d (esperado: 2)", 
+                 valor_virt, err_mmu);
+  
+  if (err_mmu != ERR_OK || valor_virt != 2) {
+    console_printf("SO: ERRO - MMU não está funcionando corretamente!");
+    self->erro_interno = true;
+    return;
+  }
 
   self->processo_corrente = p_init;
   insere_novo_processo(&self->tabela_processos, p_init);
 
-  if(self->tabela_processos == NULL){
+  // DIAGNÓSTICO: Verifica após tudo pronto
+  diagnostico_memoria_virtual(self, p_init, "APÓS CARGA E MAPEAMENTO INIT");
+
+  if (self->tabela_processos == NULL) {
     console_printf("Tabela de processos nula ao inserir init");
   }
 }
@@ -589,6 +733,11 @@ static int so_aloca_quadro(so_t *self)
   
   if (quadro >= 0) {
     console_printf("SO: quadro %d alocado (livre)", quadro);
+    
+    // IMPORTANTE: Marca o quadro como OCUPADO imediatamente
+    // para que não seja alocado novamente antes de ser usado
+    mem_quadros_muda_estado(self->quadros, quadro, false, -1, -1);
+    
     return quadro;
   }
   
@@ -652,27 +801,36 @@ static int so_aloca_quadro(so_t *self)
 // Trata uma falta de página
 static void so_trata_falta_pagina(so_t *self, processo* proc, int pagina)
 {
-  console_printf("DEBUG: so_trata_falta_pagina proc=%d pag=%d\n", proc->pid, pagina);
-  console_printf("SO: tratando falta de página %d do processo idx=%d", pagina, proc->pid);
+  console_printf("\n========== TRATANDO FALTA DE PÁGINA ==========");
+  console_printf("SO: falta de página %d do processo %d", pagina, proc->pid);
   
-  // Aloca um quadro (pode fazer substituição)
-  int quadro = so_aloca_quadro(self);
-  if (quadro < 0) {
-    console_printf("DEBUG: erro ao alocar quadro\n");
-    console_printf("SO: erro ao alocar quadro");
+  // DIAGNÓSTICO antes de alocar quadro
+  console_printf("Swap: inicio=%d n_paginas=%d", proc->swap_inicio, proc->n_paginas);
+  
+  // Verifica se a página é válida para o processo
+  if (pagina < 0 || pagina >= proc->n_paginas) {
+    console_printf("SO: ERRO - página %d inválida (processo tem %d páginas)", 
+                   pagina, proc->n_paginas);
     proc->estado = MORTO;
     return;
   }
   
-  console_printf("DEBUG: quadro alocado=%d\n", quadro);
+  // Aloca um quadro (pode fazer substituição)
+  int quadro = so_aloca_quadro(self);
+  if (quadro < 0) {
+    console_printf("SO: ERRO ao alocar quadro");
+    proc->estado = MORTO;
+    return;
+  }
+  
+  console_printf("SO: quadro %d alocado para página %d", quadro, pagina);
   
   // Obtém endereço da página na swap
   int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina);
-  console_printf("DEBUG: end_swap=%d pid=%d\n", end_swap, proc->pid);
+  console_printf("SO: endereço na swap=%d", end_swap);
   
   if (end_swap < 0) {
-    console_printf("DEBUG: erro ao obter endereço da página na swap\n");
-    console_printf("SO: erro ao obter endereço da página na swap");
+    console_printf("SO: ERRO ao obter endereço da página na swap");
     proc->estado = MORTO;
     return;
   }
@@ -680,23 +838,64 @@ static void so_trata_falta_pagina(so_t *self, processo* proc, int pagina)
   // Lê a página da swap
   int dados[TAM_PAGINA];
   int tempo_bloqueio;
-  if (swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio) != ERR_OK) {
-    console_printf("SO: erro ao ler página da swap");
+  err_t err = swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio);
+  
+  console_printf("SO: leitura swap err=%d tempo=%d", err, tempo_bloqueio);
+  
+  if (err != ERR_OK) {
+    console_printf("SO: ERRO ao ler página da swap");
     proc->estado = MORTO;
     return;
   }
   
+  // Mostra o que foi lido
+  console_printf("SO: dados lidos da swap: %d %d %d %d...", 
+                 dados[0], dados[1], dados[2], dados[3]);
+  
   // Escreve os dados no quadro da memória principal
   int end_fis = quadro * TAM_PAGINA;
+  console_printf("SO: escrevendo página %d no quadro %d (end_fis=%d)", 
+                 pagina, quadro, end_fis);
+  
   for (int i = 0; i < TAM_PAGINA; i++) {
-    mem_escreve(self->mem, end_fis + i, dados[i]);
+    err_t err_mem = mem_escreve(self->mem, end_fis + i, dados[i]);
+    if (err_mem != ERR_OK) {
+      console_printf("SO: ERRO ao escrever na memória offset=%d err=%d", i, err_mem);
+      proc->estado = MORTO;
+      return;
+    }
   }
   
+  console_printf("SO: dados escritos na memória");
+  
   // Atualiza a tabela de páginas
+  console_printf("SO: mapeando página %d -> quadro %d", pagina, quadro);
   tabpag_define_quadro(proc->tabpag, pagina, quadro);
   
-  // Registra o quadro como ocupado
+  // Verifica se foi realmente mapeado usando tabpag_traduz
+  int quadro_mapeado;
+  err_t err_verif = tabpag_traduz(proc->tabpag, pagina, &quadro_mapeado);
+  
+  console_printf("SO: verificação - err=%d quadro_esperado=%d quadro_obtido=%d", 
+                 err_verif, quadro, quadro_mapeado);
+  
+  if (err_verif != ERR_OK || quadro_mapeado != quadro) {
+    console_printf("SO: ERRO - mapeamento falhou!");
+    proc->estado = MORTO;
+    return;
+  }
+  
+  // Agora sim registra o quadro como ocupado com as informações corretas
   mem_quadros_muda_estado(self->quadros, quadro, false, proc->pid, pagina);
+  
+  // Testa leitura via MMU
+  console_printf("SO: testando leitura via MMU");
+  mmu_define_tabpag(self->mmu, proc->tabpag);
+  int end_virt_teste = pagina * TAM_PAGINA;
+  int valor_teste;
+  err_t err_mmu = mmu_le(self->mmu, end_virt_teste, &valor_teste, supervisor);
+  console_printf("SO: leitura MMU end_virt=%d valor=%d err=%d (esperado: %d)", 
+                 end_virt_teste, valor_teste, err_mmu, dados[0]);
   
   // Bloqueia o processo até que a operação de disco termine
   proc->estado = BLOQUEADO;
@@ -704,9 +903,9 @@ static void so_trata_falta_pagina(so_t *self, processo* proc, int pagina)
   
   console_printf("SO: página %d mapeada no quadro %d, processo bloqueado até %d", 
                  pagina, quadro, tempo_bloqueio);
+  console_printf("========== FIM TRATAMENTO FALTA ==========\n");
 }
 
-// interrupção gerada quando a CPU identifica um erro
 
 static void so_trata_irq_err_cpu(so_t *self)
 {
@@ -835,7 +1034,6 @@ static void so_trata_irq_desconhecida(so_t *self, int irq)
   self->erro_interno = true;
 }
 
-
 // ---------------------------------------------------------------------
 // CHAMADAS DE SISTEMA {{{1
 // ---------------------------------------------------------------------
@@ -951,46 +1149,78 @@ static void so_chamada_cria_proc(so_t *self)
 {
   console_printf("chamada de criação de processo   ");
 
-  /* valida processo corrente */
   if (self->processo_corrente == NULL) {
     console_printf("SO: processo_corrente inválido em cria_proc\n");
     self->erro_interno = true;
     return;
   }
 
-  /* obter endereço virtual (no regX do processo chamador) que aponta para o nome */
   int ender_proc = self->processo_corrente->regX;
   char nome[100];
+  int tamanho = 0;
 
-  /* copia string do espaço do processo chamador */
   if (!so_copia_str_do_processo(self, 100, nome, ender_proc,
                                 self->processo_corrente)) {
-    /* falha ao copiar: retorna erro para o chamador */
     self->processo_corrente->regA = -1;
     return;
   }
 
-  static int next_pid = 2; /* init já é 1 */
+  static int next_pid = 2;
 
   processo *proc = processo_cria(next_pid++, self->processo_corrente->pid, 0, self->quantum);
+  int enderFim = -1;
+  int end_disco_ini = -1;
 
-  /* carrega o programa no slot correto (so_carrega_programa usa 'processo' para decidir) */
-  int ender_carga = so_carrega_programa(self, proc, nome);
+  int ender_carga = so_carrega_programa(self, nome, proc, &enderFim, &tamanho, &end_disco_ini);
   if (ender_carga <= 0) {
-    /* falha na carga */
     self->processo_corrente->regA = -1;
     return;
   }
 
-  /* inicializa o novo processo no slot */
+  // IMPORTANTE: Inicializa TODOS os registradores do novo processo
   proc->regPC = ender_carga;
+  proc->regA = 0;
+  proc->regX = 0;
+  proc->regERRO = ERR_OK;
+  proc->estado = PRONTO;
+
+  // CRUCIAL: Carrega a primeira página do programa na memória física
+  int pagina_inicial = ender_carga / TAM_PAGINA;
+  
+  console_printf("SO: carregando página inicial %d do proc=%d", pagina_inicial, proc->pid);
+  
+  // Aloca um quadro para a primeira página
+  int quadro = so_aloca_quadro(self);
+  if (quadro >= 0) {
+    // Lê a primeira página da swap
+    int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina_inicial);
+    int dados[TAM_PAGINA];
+    int tempo_bloqueio;
+    
+    err_t err = swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio);
+    if (err == ERR_OK) {
+      // Escreve a página na memória física
+      int end_fis = quadro * TAM_PAGINA;
+      for (int i = 0; i < TAM_PAGINA; i++) {
+        mem_escreve(self->mem, end_fis + i, dados[i]);
+      }
+      
+      // Mapeia a página na tabela de páginas
+      tabpag_define_quadro(proc->tabpag, pagina_inicial, quadro);
+      
+      // Registra o quadro como ocupado
+      mem_quadros_muda_estado(self->quadros, quadro, false, proc->pid, pagina_inicial);
+      
+      console_printf("SO: página inicial mapeada - proc=%d pag=%d quadro=%d", 
+                     proc->pid, pagina_inicial, quadro);
+    }
+  }
+
+  console_printf("SO: criado proc=%d PC=%d A=%d X=%d",
+                 proc->pid, proc->regPC, proc->regA, proc->regX);
+
   insere_novo_processo(&self->tabela_processos, proc);
-
-  /* retorna o PID do novo processo no regA do processo criador */
   self->processo_corrente->regA = proc->pid;
-
-  console_printf("SO: processo criado pid=%d pc=%d",
-                 proc->pid, proc->regPC);
 }
 
 
@@ -1061,9 +1291,9 @@ static int so_carrega_programa_na_memoria_virtual(so_t *self,
 // se processo for NENHUM_PROCESSO, carrega o programa na memória física
 //   senão, carrega na memória virtual do processo
 // retorna o endereço de carga ou -1
-static int so_carrega_programa(so_t *self, processo* processo,
-                               char *nome_do_executavel)
+static int so_carrega_programa(so_t *self, char *nome_do_executavel, processo *processo, int* enderFim, int* tamanho, int* end_disco)
 {
+
   console_printf("SO: carga de '%s'", nome_do_executavel);
 
   programa_t *programa = prog_cria(nome_do_executavel);
@@ -1079,9 +1309,7 @@ static int so_carrega_programa(so_t *self, processo* processo,
     end_carga = so_carrega_programa_na_memoria_virtual(self, programa, processo);
   }
 
-
   prog_destroi(programa);
-
   return end_carga;
 }
 
@@ -1101,85 +1329,170 @@ static int so_carrega_programa_na_memoria_fisica(so_t *self, programa_t *program
   return end_ini;
 }
 
+// Protótipos das funções auxiliares de carga
+static bool valida_processo_e_programa(processo *processo, programa_t *programa, int *end_virt_ini);
+static bool calcula_info_paginacao(int end_virt_ini, programa_t *programa, 
+                                   int *pagina_ini, int *pagina_fim, int *n_paginas);
+static int aloca_espaco_swap(so_t *self, processo *processo, int n_paginas);
+static bool carrega_pagina_na_swap(so_t *self, programa_t *programa, processo *processo,
+                                   int pag, int pagina_ini, int end_virt_ini, int end_virt_fim);
+
+// Valida processo e programa, retorna endereço inicial
+static bool valida_processo_e_programa(processo *processo, programa_t *programa, int *end_virt_ini)
+{
+  if (processo == NULL) {
+    console_printf("SO: processo inválido");
+    return false;
+  }
+  
+  *end_virt_ini = prog_end_carga(programa);
+  
+  // O programa deve iniciar no início de uma página
+  if ((*end_virt_ini % TAM_PAGINA) != 0) {
+    console_printf("SO: programa deve iniciar no início de uma página (end=%d)", *end_virt_ini);
+    return false;
+  }
+  
+  return true;
+}
+
+// Calcula informações de paginação do programa
+static bool calcula_info_paginacao(int end_virt_ini, programa_t *programa,
+                                   int *pagina_ini, int *pagina_fim, int *n_paginas)
+{
+  int tamanho = prog_tamanho(programa);
+  
+  if (tamanho <= 0) {
+    console_printf("SO: programa com tamanho inválido (%d)", tamanho);
+    return false;
+  }
+  
+  int end_virt_fim = end_virt_ini + tamanho - 1;
+  *pagina_ini = end_virt_ini / TAM_PAGINA;
+  *pagina_fim = end_virt_fim / TAM_PAGINA;
+  *n_paginas = *pagina_fim - *pagina_ini + 1;
+  
+  if (*n_paginas <= 0 || *n_paginas > 1000) {
+    console_printf("SO: número de páginas inválido (%d)", *n_paginas);
+    return false;
+  }
+  
+  return true;
+}
+
+// Aloca espaço na swap e atualiza processo
+static int aloca_espaco_swap(so_t *self, processo *processo, int n_paginas)
+{
+  int swap_inicio = swap_aloca(self->swap, n_paginas, processo->pid);
+  
+  if (swap_inicio < 0) {
+    console_printf("SO: erro ao alocar %d páginas na swap para proc=%d", 
+                   n_paginas, processo->pid);
+    return -1;
+  }
+  
+  // Atualiza informações do processo
+  processo->swap_inicio = swap_inicio;
+  processo->n_paginas = n_paginas;
+  
+  console_printf("SO: alocado swap[%d..%d] para proc=%d (%d páginas)",
+                 swap_inicio, swap_inicio + n_paginas - 1, processo->pid, n_paginas);
+  
+  return swap_inicio;
+}
+
+// Prepara e carrega uma página na swap
+static bool carrega_pagina_na_swap(so_t *self, programa_t *programa, processo *processo,
+                                   int pag, int pagina_ini, int end_virt_ini, int end_virt_fim)
+{
+  int dados[TAM_PAGINA];
+  
+  // Inicializa buffer com zeros
+  memset(dados, 0, sizeof(dados));
+  
+  // Calcula endereços da página
+  int end_virt_pag_ini = (pagina_ini + pag) * TAM_PAGINA;
+  int end_virt_pag_fim = end_virt_pag_ini + TAM_PAGINA - 1;
+  
+  // Copia dados do programa para o buffer
+  for (int end_virt = end_virt_pag_ini; end_virt <= end_virt_pag_fim; end_virt++) {
+    if (end_virt >= end_virt_ini && end_virt <= end_virt_fim) {
+      int offset = end_virt - end_virt_pag_ini;
+      
+      if (offset >= 0 && offset < TAM_PAGINA) {
+        dados[offset] = prog_dado(programa, end_virt);
+      }
+    }
+  }
+  
+  // Escreve a página na swap
+  int end_swap = processo->swap_inicio + pag;
+  int tempo_bloqueio;
+  
+  err_t err = swap_escreve_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio);
+  
+  if (err != ERR_OK) {
+    console_printf("SO: erro ao escrever página %d na swap[%d] (err=%d)", 
+                   pag, end_swap, err);
+    return false;
+  }
+  
+  return true;
+}
+
 static int so_carrega_programa_na_memoria_virtual(so_t *self,
                                                   programa_t *programa,
                                                   processo *processo)
 {
   // t3: Implementação com paginação sob demanda
   // Carrega o programa inteiro na memória secundária (swap)
-  // Não aloca nenhum quadro de memória principal
-  // As páginas serão trazidas para memória principal por demanda (falta de página)
+  // As páginas serão trazidas para memória principal por demanda
   
-  if (processo == NULL) {
-    console_printf("SO: processo inválido %d", processo);
+  // 1. Validação inicial
+  int end_virt_ini;
+  if (!valida_processo_e_programa(processo, programa, &end_virt_ini)) {
     return -1;
   }
   
-  int end_virt_ini = prog_end_carga(programa);
-  
-  // O código só funciona se o programa iniciar no início de uma página
-  if ((end_virt_ini % TAM_PAGINA) != 0) {
-    console_printf("SO: programa deve iniciar no início de uma página");
+  // 2. Calcula informações de paginação
+  int pagina_ini, pagina_fim, n_paginas;
+  if (!calcula_info_paginacao(end_virt_ini, programa, &pagina_ini, &pagina_fim, &n_paginas)) {
     return -1;
   }
   
   int end_virt_fim = end_virt_ini + prog_tamanho(programa) - 1;
-  int pagina_ini = end_virt_ini / TAM_PAGINA;
-  int pagina_fim = end_virt_fim / TAM_PAGINA;
-  int n_paginas = pagina_fim - pagina_ini + 1;
   
   console_printf("SO: carregando programa proc=%d end_virt=%d-%d n_pag=%d",
                  processo->pid, end_virt_ini, end_virt_fim, n_paginas);
   
-  // Aloca espaço na swap para todas as páginas do processo
-  int swap_inicio = swap_aloca(self->swap, n_paginas, processo->pid);
+  // 3. Aloca espaço na swap
+  int swap_inicio = aloca_espaco_swap(self, processo, n_paginas);
   if (swap_inicio < 0) {
-    console_printf("SO: erro ao alocar espaço na swap");
     return -1;
   }
   
-  // Salva informações no processo
-  processo->swap_inicio = swap_inicio;
-  processo->n_paginas = n_paginas;
-  
-  // Carrega cada página do programa na swap
+  // 4. Carrega cada página do programa na swap
   for (int pag = 0; pag < n_paginas; pag++) {
-    int dados[TAM_PAGINA];
-    
-    // Inicializa com zeros
-    for (int i = 0; i < TAM_PAGINA; i++) {
-      dados[i] = 0;
-    }
-    
-    // Copia dados do programa para o buffer
-    int end_virt_pag_ini = (pagina_ini + pag) * TAM_PAGINA;
-    int end_virt_pag_fim = end_virt_pag_ini + TAM_PAGINA - 1;
-    
-    for (int end_virt = end_virt_pag_ini; end_virt <= end_virt_pag_fim; end_virt++) {
-      if (end_virt >= end_virt_ini && end_virt <= end_virt_fim) {
-        dados[end_virt - end_virt_pag_ini] = prog_dado(programa, end_virt);
-      }
-    }
-    
-    // Escreve a página na swap
-    int end_swap = swap_inicio + pag;
-    int tempo_bloqueio;
-    
-    if (swap_escreve_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio) != ERR_OK) {
-      console_printf("SO: erro ao escrever página %d na swap", pag);
+    if (!carrega_pagina_na_swap(self, programa, processo, pag, 
+                                pagina_ini, end_virt_ini, end_virt_fim)) {
+      // Em caso de erro, libera swap alocado
+      swap_libera_processo(self->swap, processo->pid);
+      processo->swap_inicio = -1;
+      processo->n_paginas = 0;
       return -1;
     }
     
-    console_printf("SO: página %d carregada na swap[%d]", pag, end_swap);
+    if (pag == 0 || pag == n_paginas - 1 || pag % 10 == 0) {
+      console_printf("SO: página %d/%d carregada na swap[%d]", 
+                     pag + 1, n_paginas, swap_inicio + pag);
+    }
   }
   
-  // NÃO mapeia nenhuma página na tabela de páginas
-  // As páginas serão mapeadas sob demanda quando houver falta de página
+  // 5. Sucesso - páginas serão mapeadas sob demanda (falta de página)
   console_printf("SO: programa carregado na swap, %d páginas, paginação sob demanda", n_paginas);
   
   return end_virt_ini;
 }
-
 
 
 // ---------------------------------------------------------------------
@@ -1253,16 +1566,63 @@ static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
   return false;
 }
 
-
-
- 
-// static int remove_fila_prontos(so_t *self) {
-//     if (self->inicio_fila == self->fim_fila) {
-//         return -1; // fila vazia
-//     }
-//     int idx = self->fila_prontos[self->inicio_fila];
-//     self->inicio_fila = (self->inicio_fila + 1) % MAX_PROCESSOS;
-//     return idx;
-// }
+// Função de diagnóstico para verificar a configuração de memória virtual
+static void diagnostico_memoria_virtual(so_t *self, processo *proc, const char *contexto)
+{
+  console_printf("\n========== DIAGNÓSTICO: %s ==========", contexto);
+  console_printf("Processo PID=%d PC=%d", proc->pid, proc->regPC);
+  console_printf("Swap: inicio=%d n_paginas=%d", proc->swap_inicio, proc->n_paginas);
+  
+  // Verifica tabela de páginas
+  if (proc->tabpag == NULL) {
+    console_printf("ERRO: tabela de páginas é NULL!");
+    return;
+  }
+  
+  // Tenta acessar a primeira página (onde está o PC)
+  int pagina_pc = proc->regPC / TAM_PAGINA;
+  console_printf("PC=%d está na página %d", proc->regPC, pagina_pc);
+  
+  // Usa tabpag_traduz para verificar se a página está mapeada
+  int quadro_pc;
+  err_t err_traduz = tabpag_traduz(proc->tabpag, pagina_pc, &quadro_pc);
+  
+  if (err_traduz == ERR_OK) {
+    console_printf("Página %d VÁLIDA - mapeada no quadro %d", pagina_pc, quadro_pc);
+    
+    // Lê diretamente da memória física usando o quadro
+    int end_fis = quadro_pc * TAM_PAGINA + (proc->regPC % TAM_PAGINA);
+    int valor_fis;
+    err_t err_mem = mem_le(self->mem, end_fis, &valor_fis);
+    console_printf("Leitura física: end=%d valor=%d err=%d", end_fis, valor_fis, err_mem);
+    
+    // Mostra primeiros valores do quadro
+    int val0, val1, val2, val3;
+    mem_le(self->mem, quadro_pc * TAM_PAGINA + 0, &val0);
+    mem_le(self->mem, quadro_pc * TAM_PAGINA + 1, &val1);
+    mem_le(self->mem, quadro_pc * TAM_PAGINA + 2, &val2);
+    mem_le(self->mem, quadro_pc * TAM_PAGINA + 3, &val3);
+    console_printf("Primeiros valores no quadro físico: %d %d %d %d", val0, val1, val2, val3);
+  } else {
+    console_printf("Página %d AUSENTE (err=%d) - está apenas na swap", pagina_pc, err_traduz);
+  }
+  
+  // Verifica swap
+  int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina_pc);
+  console_printf("Endereço na swap: %d", end_swap);
+  
+  if (end_swap >= 0) {
+    int dados[TAM_PAGINA];
+    int tempo;
+    err_t err = swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo);
+    console_printf("Leitura swap: err=%d primeiro_valor=%d", err, dados[0]);
+    
+    // Mostra primeiros valores
+    console_printf("Primeiros valores na swap: %d %d %d %d", 
+                   dados[0], dados[1], dados[2], dados[3]);
+  }
+  
+  console_printf("========== FIM DIAGNÓSTICO ==========\n");
+}
 
 // vim: foldmethod=marker

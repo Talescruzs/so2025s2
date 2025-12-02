@@ -1,0 +1,117 @@
+criando  
+SWAP: criando swap com 1000 páginas de 10 palavras
+SWAP: swap criada com sucesso
+criei   
+indo pro laco  
+CMD: '1'
+Executando opcode 02 (CARGI)
+CMD: '1'
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 0 (Reset)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+recebi RESET   
+SO: carga de 'trata_int.maq'
+SO: carga na memória física 60-72
+SO: carga de 'init.maq'
+SO: carregando programa proc=1 end_virt=0-169 n_pag=17
+SWAP: solicitada alocação proc=1 pags=17
+SWAP: criando alocação proc=1 end=0 pags=17
+SWAP: alocação criada proc=1 end=0 pags=17
+SWAP: inserindo alocação proc=1 end=0 pags=17
+SWAP: alocado proc=1 pags=17 end=0
+SO: alocado swap[0..16] para proc=1 (17 páginas)
+SWAP: escrita end=0 tam=10 bloq_ate=11
+SO: página 1/17 carregada na swap[0]
+SWAP: escrita end=1 tam=10 bloq_ate=21
+SWAP: escrita end=2 tam=10 bloq_ate=31
+SWAP: escrita end=3 tam=10 bloq_ate=41
+SWAP: escrita end=4 tam=10 bloq_ate=51
+SWAP: escrita end=5 tam=10 bloq_ate=61
+SWAP: escrita end=6 tam=10 bloq_ate=71
+SWAP: escrita end=7 tam=10 bloq_ate=81
+SWAP: escrita end=8 tam=10 bloq_ate=91
+SWAP: escrita end=9 tam=10 bloq_ate=101
+SWAP: escrita end=10 tam=10 bloq_ate=111
+SO: página 11/17 carregada na swap[10]
+SWAP: escrita end=11 tam=10 bloq_ate=121
+SWAP: escrita end=12 tam=10 bloq_ate=131
+SWAP: escrita end=13 tam=10 bloq_ate=141
+SWAP: escrita end=14 tam=10 bloq_ate=151
+SWAP: escrita end=15 tam=10 bloq_ate=161
+SWAP: escrita end=16 tam=10 bloq_ate=171
+SO: página 17/17 carregada na swap[16]
+SO: programa carregado na swap, 17 páginas, paginação sob demanda
+SO: init criado PC=0 A=0 X=0 erro=0
+SO: carregando página inicial 0 do init na memória física
+SO: quadro 10 alocado (livre)
+SWAP: leitura end=0 tam=10 bloq_ate=181
+SO: lido da swap - primeira instrução: 2 (esperado: 2 para NOP ou CARGI)
+SO: página escrita na memória física quadro=10 end_fis=100
+SO: verificação mapeamento - página=0 quadro_esperado=10 quadro_obtido=10 err=0
+SO: página inicial mapeada com sucesso
+SO: teste leitura física end=100 valor=2
+SO: MMU configurada com tabpag do processo 1
+SO: teste leitura MMU end_virt=0 valor=2 err=0 (esperado: 2)
+
+========== DIAGNÓSTICO: APÓS CARGA E MAPEAMENTO INIT ==========
+Processo PID=1 PC=0
+Swap: inicio=0 n_paginas=17
+PC=0 está na página 0
+Página 0 VÁLIDA - mapeada no quadro 10
+Leitura física: end=100 valor=2 err=0
+Primeiros valores no quadro físico: 2 66 21 143
+Endereço na swap: 0
+SWAP: leitura end=0 tam=10 bloq_ate=191
+Leitura swap: err=0 primeiro_valor=2
+Primeiros valores na swap: 2 66 21 143
+========== FIM DIAGNÓSTICO ==========
+tratando pendências   
+escalonando 1
+SO: escalonador escolheu processo 1 com prioridade 0,50
+muda estado do processo 0 para 1   
+APOS ESCALONAR: proc=1 regA=0 regPC=0 regERRO=0 regX=0(�)
+SO: despachando proc=1 PC=0 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=0 página=0 quadro=10 end_fis=100 valor=2
+SO: despachou proc=1 PC=0 A=0 X=0 erro=0
+depois despacha   
+Teste tradução: PC=0 página=0 quadro=10 end_fis=100 valor=2
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=0 regERRO=0 regX=0(
+CMD: '1'
+Executando opcode 18 (DESVNZ)
+CMD: '1'
+Executando opcode 26 (RETI)
+CMD: '1'
+Executando opcode 02 (CARGI)
+CMD: '1'
+Executando opcode 21 (CHAMA)
+CMD: '1'
+Executando opcode 07 (TRAX)
+CMD: '1'
+Executando opcode 05 (ARMM)
+CMD: '1'
+Executando opcode 07 (TRAX)
+CMD: '1'
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+tratando IRQ   
+erro na CPU   
+SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
+SO: falta de página 14 do processo 1
+
+========== TRATANDO FALTA DE PÁGINA ==========
+SO: falta de página 14 do processo 1
+Swap: inicio=0 n_paginas=17
+SO: quadro 11 alocado (livre)
+SO: quadro 11 alocado para página 14
+SO: endereço na swap=14
+SWAP: leitura end=14 tam=10 bloq_ate=201
+SO: leitura swap err=0 tempo=201
+SO: dados lidos da swap: 33 32 0 0...
+SO: escrevendo página 14 no quadro 11 (end_fis=110)
+SO: dados escritos na memória
+SO: mapeando pági

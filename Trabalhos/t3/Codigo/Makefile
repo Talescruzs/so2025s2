@@ -13,7 +13,8 @@ LDLIBS = -lcurses
 OBJS_MAIN = cpu.o es.o memoria.o relogio.o console.o terminal.o tela_curses.o \
 		instrucao.o err.o programa.o controle.o main.o \
 		so.o irq.o mmu.o tabpag.o memoria_quadros.o swap.o metrica.o processo.o
-OBJS_MONTADOR = instrucao.o err.o montador.o 
+OBJS_MONTADOR = instrucao.o err.o montador.o
+OBJS_TESTE_MMU = mmu.o tabpag.o memoria.o err.o teste_mmu.o
 OBJS = ${OBJS_MAIN} ${OBJS_MONTADOR}
 # arquivos .maq a gerar, com seus endereços
 MAQS = bios.maq trata_int.maq init.maq ex1.maq ex2.maq ex3.maq ex4.maq ex5.maq ex6.maq p1.maq p2.maq p3.maq
@@ -28,6 +29,11 @@ montador: ${OBJS_MONTADOR}
 
 # para gerar o programa principal, precisa de todos os .o do main
 main: ${OBJS_MAIN}
+
+# para gerar e executar o teste da MMU
+teste_mmu: ${OBJS_TESTE_MMU}
+	${CC} ${CFLAGS} -o teste_mmu ${OBJS_TESTE_MMU}
+	./teste_mmu
 
 # para transformar um .asm em .maq, precisamos do montador
 # monta os programas de usuário nos endereços equivalentes em ENDS
@@ -49,7 +55,7 @@ main: ${OBJS_MAIN}
 
 # apaga os arquivos gerados
 clean:
-	rm -f ${OBJS} ${TARGETS} ${MAQS} ${OBJS:.o=.d}
+	rm -f ${OBJS} ${TARGETS} ${MAQS} ${OBJS:.o=.d} teste_mmu ${OBJS_TESTE_MMU}
 
 # para calcular as dependências de cada arquivo .c (e colocar no .d)
 %.d: %.c

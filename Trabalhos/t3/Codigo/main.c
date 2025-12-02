@@ -24,6 +24,7 @@
 // estrutura com os componentes do computador simulado
 typedef struct {
   mem_t *mem;
+  mem_t *disco;
   mmu_t *mmu;
   cpu_t *cpu;
   relogio_t *relogio;
@@ -80,10 +81,18 @@ static void inicializa_rom(mem_t *mem)
   prog_destroi(prog);
 }
 
+static void inicializa_disco(mem_t *disco) {
+  for(int i = 0; i < mem_tam(disco); i++) mem_escreve(disco, i, 0);
+}
+
 static void cria_hardware(hardware_t *hw)
 {
   // cria a memória
   hw->mem = mem_cria(MEM_TAM);
+  // cria o disco
+  hw->disco = mem_cria(MEM_TAM);
+  inicializa_disco(hw->disco);
+  // inicializa a ROM
   inicializa_rom(hw->mem);
   // cria a MMU
   hw->mmu = mmu_cria(hw->mem);
@@ -134,7 +143,7 @@ int main()
   // cria o hardware
   cria_hardware(&hw);
   // cria o sistema operacional
-  so = so_cria(hw.cpu, hw.mem, hw.mmu, hw.es, hw.console, hw.relogio);
+  so = so_cria(hw.cpu, hw.mem, hw.disco, hw.mmu, hw.es, hw.console, hw.relogio);
 
   console_printf("indo pro laco  ");
 
