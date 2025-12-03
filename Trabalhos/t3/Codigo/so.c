@@ -257,7 +257,9 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   // faz o atendimento da interrupção
   so_trata_irq(self, irq);
   // faz o processamento independente da interrupção
+  
   so_trata_pendencias(self);
+  
   // escolhe o próximo processo a executar
   so_escalona(self);
   
@@ -344,13 +346,13 @@ static void so_salva_estado_da_cpu(so_t *self)
 
 static void so_trata_pendencias(so_t *self)
 {
+
+  
   console_printf("tratando pendências   ");
   if (self->tabela_processos == NULL) return;
-
-  // printf("depois verifica ocioso   \n");
+  
   verifica_ocioso(self->metrica, self->tabela_processos, self->es);
-  // printf("depois verifica ocioso   \n");
-
+  
   
   for (int i = 0; i < MAX_PROCESSOS; i++){
     processo *proc = self->tabela_processos;
@@ -1138,7 +1140,7 @@ static int so_carrega_programa(so_t *self, char *nome_do_executavel)
   if (strcmp(nome_do_executavel, "trata_int.maq") == 0) {
     for (int end = end_virt_ini; end < end_virt_fim; end++) {
       if (mem_escreve(self->mem, end, prog_dado(prog, end)) != ERR_OK) {
-        console_printf("SO: erro na carga física da memória, end=%d", end);
+        console_printf("SO: erro na carga do programa de interrupção");
         prog_destroi(prog);
         return -1;
       }
@@ -1543,20 +1545,33 @@ static void so_chamada_mata_proc(so_t *self)
 // espera o fim do processo com pid X
 static void so_chamada_espera_proc(so_t *self)
 {
-  console_printf("chamada de espera de processo   ");
   int pid_esperado = self->processo_corrente->regX;
   processo *alvo = encontra_processo_por_pid(self->tabela_processos, pid_esperado);
+  
+  console_printf("SO: chamada de espera de processo %d \n", pid_esperado);
+  
   if (alvo == NULL || alvo->estado == MORTO) {
-    console_printf("SO: processo esperado já terminou ou não existe %d", pid_esperado);
+    console_printf("SO: processo esperado já terminou ou não existe %d \n", pid_esperado);
     self->processo_corrente->regA = -1;
     return;
   }
+  
+  // Bloqueia o processo corrente
   muda_estado_proc(self->processo_corrente, self->metrica, self->es, BLOQUEADO);
   
+  // Registra métricas
   self->metrica->n_entradas_estado[self->processo_corrente->pid-1][BLOQUEADO]++;
   es_le(self->es, D_RELOGIO_INSTRUCOES, &self->metrica->tempo_estado[self->processo_corrente->pid-1][BLOQUEADO]);
+  
+  // Marca que está esperando o processo
   self->processo_corrente->esperando_pid[self->processo_corrente->indice_esperando_pid] = pid_esperado;
   self->processo_corrente->indice_esperando_pid++;
+  
+  // CRUCIAL: Anula processo_corrente para forçar escalonamento
+  self->processo_corrente = NULL;
+  
+  console_printf("SO: processo %d bloqueado esperando processo %d \n", 
+                 self->tabela_processos ? self->tabela_processos->pid : -1, pid_esperado);
 }
 
 // Função de diagnóstico para verificar a configuração de memória virtual

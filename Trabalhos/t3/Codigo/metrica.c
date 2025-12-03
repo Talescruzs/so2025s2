@@ -69,6 +69,7 @@ void saiu_ocioso(metricas *metri, es_t *relogio) {
 }
 
 void verifica_ocioso(metricas *metri, processo *tabela_processos, es_t *relogio) {
+    
     bool metrica_antes = metri->esta_ocioso;
     metri->esta_ocioso = true;
     processo *atual = tabela_processos;
@@ -78,6 +79,7 @@ void verifica_ocioso(metricas *metri, processo *tabela_processos, es_t *relogio)
             metri->esta_ocioso = false;
             break;
         }
+        atual = atual->prox;
         
     }
     
