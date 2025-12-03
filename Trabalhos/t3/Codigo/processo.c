@@ -97,7 +97,7 @@ void muda_estado_proc(processo *proc, metricas *metri, es_t *relogio, enum Estad
     if(proc->estado == novo_estado) {
         return;
     }
-    console_printf("muda estado do processo %d para %d   ", pid-1, novo_estado);
+    console_printf("muda estado do processo %d para %d   ", pid, novo_estado);
 
     // Marca tempo atual
     int tempo_atual = 0, tempo_inicio = 0;

@@ -858,9 +858,10 @@ static void so_trata_irq_err_cpu(so_t *self)
     return;
   }
   
-  // Outros erros - mata o processo
+  // Outros erros - mata o processo (gambiarra absurda aqui, mas oq somos nos alem de um amontoado de gambiarras?)
   console_printf("SO: erro fatal %s - matando processo", err_nome(err));
-  proc->estado = MORTO;
+  self->processo_corrente->regX = self->processo_corrente->pid;
+  so_chamada_mata_proc(self);
 }
 
 
@@ -1029,6 +1030,7 @@ static void so_trata_irq_chamada_sistema(so_t *self)
       so_chamada_cria_proc(self);
       break;
     case SO_MATA_PROC:
+      console_printf("chamada de mata proc   ");
       so_chamada_mata_proc(self);
       break;
     case SO_ESPERA_PROC:
@@ -1500,6 +1502,10 @@ static bool so_copia_str_do_processo(so_t *self, int tam, char str[tam],
 static void so_chamada_mata_proc(so_t *self)
 {
   int pid_alvo = self->processo_corrente->regX;
+  if(pid_alvo == 0) {
+    pid_alvo = self->processo_corrente->pid;
+  }
+  console_printf("SO: chamada de mata processo %d \n", pid_alvo);
   processo *alvo = encontra_processo_por_pid(self->tabela_processos, pid_alvo);
   
   if (alvo == NULL || alvo->estado == MORTO) {
