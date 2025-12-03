@@ -12,7 +12,7 @@ SO: carga de 'init.maq' em 100-279
 muda estado do processo 0 para 0   
 processo criado no slot 0 com PID 1 e terminal 0   
 escalonando -1
-SO: escalonador escolheu processo 0 com prioridade 0,00
+SO: escalonador escolheu processo 0 com prioridade 0.00
 muda estado do processo 0 para 1   
 APOS ESCALONAR: proc=0 regA=0 regPC=100 regERRO=0 regX=0(
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -113,7 +113,6 @@ escrevendo n no disp 2
 escalonando 0
 SO: processo 0 continua executando (quantum=48)
 APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=110(n)
-CMD: 'd1'
 SO: recebi IRQ 3 (E/S: relógio)
 tratando IRQ   
 interrupção do relógio   
@@ -164,6 +163,7 @@ escrevendo i no disp 2
 escalonando 0
 SO: processo 0 continua executando (quantum=46)
 APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=105(i)
+CMD: 'd0'
 SO: recebi IRQ 2 (Chamada de sistema)
 tratando IRQ   
 chamada de sistema   
@@ -399,7 +399,7 @@ SO: chamada de sistema 9
 chamada de espera de processo   
 muda estado do processo 0 para 2   
 escalonando 0
-SO: escalonador escolheu processo 1 com prioridade 0,00
+SO: escalonador escolheu processo 1 com prioridade 0.00
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=0 regPC=7000 regERRO=0 regX=0(
 SO: recebi IRQ 3 (E/S: relógio)
@@ -1687,7 +1687,7 @@ interrupção do relógio
 quantum restante do processo 1: 0
 escalonando 1
 muda estado do processo 1 para 0   
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8000 regERRO=0 regX=0(
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -2951,7 +2951,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9000 regERRO=0 regX=0(
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4215,7 +4215,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=53(5)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4319,7 +4319,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4378,7 +4378,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -4404,7 +4404,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,50
+SO: escalonador escolheu processo 1 com prioridade 0.50
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=74 regPC=7124 regERRO=0 regX=74(J)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4780,7 +4780,7 @@ interrupção do relógio
 quantum restante do processo 1: 0
 escalonando 1
 muda estado do processo 1 para 0   
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4848,7 +4848,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4900,7 +4900,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=53(5)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -4938,7 +4938,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,75
+SO: escalonador escolheu processo 1 com prioridade 0.75
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=389 regPC=7126 regERRO=0 regX=389(�)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5118,7 +5118,7 @@ estado do dispositivo 7: 0
 verificando bloqueio de E/S do dispositivo 6 
 estado zero   
 escalonando 1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5198,7 +5198,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5257,7 +5257,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -5283,7 +5283,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,75
+SO: escalonador escolheu processo 1 com prioridade 0.75
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=0 regPC=7160 regERRO=0 regX=48(0)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5347,7 +5347,7 @@ estado do dispositivo 7: 0
 verificando bloqueio de E/S do dispositivo 6 
 estado zero   
 escalonando 1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=48(0)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5385,7 +5385,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5439,7 +5439,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5526,7 +5526,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5585,7 +5585,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -5611,7 +5611,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,75
+SO: escalonador escolheu processo 1 com prioridade 0.75
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=0 regPC=7160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -5987,7 +5987,7 @@ interrupção do relógio
 quantum restante do processo 1: 0
 escalonando 1
 muda estado do processo 1 para 0   
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=53(5)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -6074,7 +6074,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6126,7 +6126,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=53(5)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6164,7 +6164,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,88
+SO: escalonador escolheu processo 1 com prioridade 0.88
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=315 regPC=7126 regERRO=0 regX=815(/)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6421,7 +6421,7 @@ estado do dispositivo 7: 0
 verificando bloqueio de E/S do dispositivo 6 
 estado zero   
 escalonando 1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=48(0)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6525,7 +6525,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6584,7 +6584,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=55(7)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -6610,7 +6610,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,88
+SO: escalonador escolheu processo 1 com prioridade 0.88
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=0 regPC=7160 regERRO=0 regX=48(0)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6674,7 +6674,7 @@ estado do dispositivo 7: 0
 verificando bloqueio de E/S do dispositivo 6 
 estado zero   
 escalonando 1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=53(5)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6712,7 +6712,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -6770,7 +6770,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6838,7 +6838,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6897,7 +6897,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -6923,7 +6923,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 1 com prioridade 0,88
+SO: escalonador escolheu processo 1 com prioridade 0.88
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=0 regPC=7160 regERRO=0 regX=48(0)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -6987,7 +6987,7 @@ estado do dispositivo 7: 0
 verificando bloqueio de E/S do dispositivo 6 
 estado zero   
 escalonando 1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=48(0)
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7025,7 +7025,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7083,7 +7083,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=32( )
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7104,7 +7104,7 @@ estado do dispositivo 11: 0
 verificando bloqueio de E/S do dispositivo 10 
 estado zero   
 escalonando 2
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7163,7 +7163,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando 3
-SO: escalonador escolheu processo 2 com prioridade 0,00
+SO: escalonador escolheu processo 2 com prioridade 0.00
 muda estado do processo 2 para 1   
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=93(])
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7179,7 +7179,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando -1
-SO: escalonador escolheu processo 1 com prioridade 0,88
+SO: escalonador escolheu processo 1 com prioridade 0.88
 muda estado do processo 1 para 1   
 APOS ESCALONAR: proc=1 regA=0 regPC=7160 regERRO=0 regX=93(])
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7196,7 +7196,7 @@ estado do dispositivo 15: 0
 verificando bloqueio de E/S do dispositivo 14 
 estado zero   
 escalonando -1
-SO: escalonador escolheu processo 0 com prioridade 0,00
+SO: escalonador escolheu processo 0 com prioridade 0.00
 muda estado do processo 0 para 1   
 APOS ESCALONAR: proc=0 regA=0 regPC=138 regERRO=0 regX=2()
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7233,7 +7233,7 @@ SO: chamada de sistema 9
 chamada de espera de processo   
 muda estado do processo 0 para 2   
 escalonando 0
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7278,7 +7278,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7319,7 +7319,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7364,7 +7364,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7409,7 +7409,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7450,7 +7450,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7495,7 +7495,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7540,7 +7540,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7581,7 +7581,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7626,7 +7626,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 5 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7671,7 +7671,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7712,7 +7712,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7757,7 +7757,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 6 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7802,7 +7802,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7843,7 +7843,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7888,7 +7888,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 7 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -7933,7 +7933,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -7974,7 +7974,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8019,7 +8019,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 8 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8064,7 +8064,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8105,7 +8105,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8150,7 +8150,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 9 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8195,7 +8195,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8236,7 +8236,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8281,7 +8281,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 0 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8326,7 +8326,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8367,7 +8367,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8412,7 +8412,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8457,7 +8457,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8498,7 +8498,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8543,7 +8543,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8588,7 +8588,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8629,7 +8629,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8674,7 +8674,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8719,7 +8719,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8760,7 +8760,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8805,7 +8805,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8850,7 +8850,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -8891,7 +8891,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8936,7 +8936,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 5 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -8981,7 +8981,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9022,7 +9022,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9067,7 +9067,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 6 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9112,7 +9112,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9153,7 +9153,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9198,7 +9198,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 7 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9243,7 +9243,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9284,7 +9284,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9329,7 +9329,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 8 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9374,7 +9374,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9415,7 +9415,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9460,7 +9460,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 9 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9505,7 +9505,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9546,7 +9546,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9591,7 +9591,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 0 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9636,7 +9636,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9677,7 +9677,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9722,7 +9722,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9767,7 +9767,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9808,7 +9808,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9853,7 +9853,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9898,7 +9898,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -9939,7 +9939,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -9984,7 +9984,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10029,7 +10029,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10070,7 +10070,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10115,7 +10115,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10160,7 +10160,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10201,7 +10201,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10246,7 +10246,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 5 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10291,7 +10291,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10332,7 +10332,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10377,7 +10377,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 6 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10422,7 +10422,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10463,7 +10463,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10508,7 +10508,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 7 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10553,7 +10553,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10594,7 +10594,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10639,7 +10639,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 8 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10684,7 +10684,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10725,7 +10725,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10770,7 +10770,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 9 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10815,7 +10815,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10856,7 +10856,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10901,7 +10901,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 0 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -10946,7 +10946,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -10987,7 +10987,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11032,7 +11032,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 1 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11077,7 +11077,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11118,7 +11118,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11163,7 +11163,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 2 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11208,7 +11208,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11249,7 +11249,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11294,7 +11294,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 3 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11339,7 +11339,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11380,7 +11380,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11425,7 +11425,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11470,7 +11470,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11511,7 +11511,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11556,7 +11556,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 5 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11601,7 +11601,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11642,7 +11642,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11687,7 +11687,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 6 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11732,7 +11732,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11773,7 +11773,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11818,7 +11818,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 7 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11863,7 +11863,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -11904,7 +11904,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11949,7 +11949,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 8 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -11994,7 +11994,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -12035,7 +12035,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 4 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12080,7 +12080,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 9 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12125,7 +12125,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 3 (E/S: relógio)
@@ -12166,7 +12166,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 5 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12211,7 +12211,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo 0 no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12256,7 +12256,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo   no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12301,7 +12301,7 @@ verificando bloqueio de E/S do dispositivo 14
 escrevendo ] no disp 14
 muda estado do processo 3 para 0   
 escalonando -1
-SO: escalonador escolheu processo 3 com prioridade 0,00
+SO: escalonador escolheu processo 3 com prioridade 0.00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=93(])
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12313,7 +12313,7 @@ chamada de morte de processo   3
 dados do processo RegA 8, RegX 0, PC 9086, erro 0
 muda estado do processo 0 para 0   
 escalonando -1
-SO: escalonador escolheu processo 0 com prioridade 0,00
+SO: escalonador escolheu processo 0 com prioridade 0.00
 muda estado do processo 0 para 1   
 APOS ESCALONAR: proc=0 regA=0 regPC=150 regERRO=0 regX=4()
 SO: recebi IRQ 2 (Chamada de sistema)
@@ -12596,158 +12596,61 @@ muda estado do processo 0 para 3
 chamada de morte de processo   0
 dados do processo RegA 8, RegX 0, PC 160, erro 0
 escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do relógio   
-escalonando -1
-SO: nenhum processo pronto para executar
-SO: recebi IRQ 3 (E/S: relógio)
-nenhum processo corrente, nada a salvar   
-tratando IRQ   
-interrupção do r
+SO: todos os processos morreram, encerrando o SO
+Métricas do Sistema Operacional:
+processos criados: 4
+tempo total da execucao: 0
+tempo total da ocioso: 11869
+interrupcoes de reset: 1
+interrupcoes de CPU: 0
+interrupcoes de Relogio: 595
+interrupcoes de Sistema: 462
+interrupcoes de teclado: 152
+interrupcoes de tela: 0
+interrupcoes desconhecidas: 0
+numero de preempcoes: 39
+processo 0: tempo de retorno: 12750, numero de preempcoes: 2
+processo 1: tempo de retorno: 220, numero de preempcoes: 8
+processo 2: tempo de retorno: 117, numero de preempcoes: 19
+processo 3: tempo de retorno: 12358, numero de preempcoes: 10
+processo 0: entradas em estados - pronto: 3, bloqueado: 4, executando: 3
+processo 1: entradas em estados - pronto: 9, bloqueado: 5, executando: 9
+processo 2: entradas em estados - pronto: 20, bloqueado: 19, executando: 20
+processo 3: entradas em estados - pronto: 129, bloqueado: 128, executando: 129
+processo 0: tempo em estados - pronto: 0, bloqueado: 31338, executando: 1086
+processo 1: tempo em estados - pronto: 7458, bloqueado: 332, executando: 10671
+processo 2: tempo em estados - pronto: 13277, bloqueado: 923, executando: 4785
+processo 3: tempo em estados - pronto: 15416, bloqueado: 0, executando: 7305
+processo 0: tempo tempo medio de resposta: 7834
+processo 1: tempo tempo medio de resposta: 66
+processo 2: tempo tempo medio de resposta: 48
+processo 3: tempo tempo medio de resposta: 0
+Fim da execução.
+Métricas do Sistema Operacional:
+processos criados: 4
+tempo total da execucao: 31799
+tempo total da ocioso: 11870
+interrupcoes de reset: 1
+interrupcoes de CPU: 0
+interrupcoes de Relogio: 595
+interrupcoes de Sistema: 462
+interrupcoes de teclado: 152
+interrupcoes de tela: 0
+interrupcoes desconhecidas: 0
+numero de preempcoes: 39
+processo 0: tempo de retorno: 12750, numero de preempcoes: 2
+processo 1: tempo de retorno: 220, numero de preempcoes: 8
+processo 2: tempo de retorno: 117, numero de preempcoes: 19
+processo 3: tempo de retorno: 12358, numero de preempcoes: 10
+processo 0: entradas em estados - pronto: 3, bloqueado: 4, executando: 3
+processo 1: entradas em estados - pronto: 9, bloqueado: 5, executando: 9
+processo 2: entradas em estados - pronto: 20, bloqueado: 19, executando: 20
+processo 3: entradas em estados - pronto: 129, bloqueado: 128, executando: 129
+processo 0: tempo em estados - pronto: 0, bloqueado: 31338, executando: 1086
+processo 1: tempo em estados - pronto: 7458, bloqueado: 332, executando: 10671
+processo 2: tempo em estados - pronto: 13277, bloqueado: 923, executando: 4785
+processo 3: tempo em estados - pronto: 15416, bloqueado: 0, executando: 7305
+processo 0: tempo tempo medio de resposta: 7834
+processo 1: tempo tempo medio de resposta: 66
+processo 2: tempo tempo medio de resposta: 48
+processo 3: tempo tempo medio de resposta: 0

@@ -375,7 +375,30 @@ static void ativa_processo(so_t *self, int proximo, int atual)
 
 static void so_escalona(so_t *self)
 {
-    console_printf("escalonando %d", self->processo_corrente);
+  console_printf("escalonando %d", self->processo_corrente);
+
+  // verifica se TODOS os processos estão mortos -> encerrar a simulação
+  bool todos_mortos = true;
+  if (self->tabela_processos != NULL) {
+    for (int i = 0; i < MAX_PROCESSOS; i++) {
+      if (self->tabela_processos[i].estado != MORTO) {
+        todos_mortos = false;
+        break;
+      }
+    }
+  } else {
+    todos_mortos = true;
+  }
+  if (todos_mortos) {
+    console_printf("SO: todos os processos morreram, encerrando o SO");
+    if (self->metrica != NULL) {
+      mostra_metricas(self->metrica);
+    }
+    if (self->console != NULL) {
+      console_insere_comando_externo(self->console, 'F');
+    }
+    return;
+  }
 
     int atual = self->processo_corrente;
     

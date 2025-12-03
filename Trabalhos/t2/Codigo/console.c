@@ -226,6 +226,12 @@ static void insere_comando_externo(console_t *self, char c)
   }
 }
 
+// wrapper público para permitir que outros módulos insiram comandos
+void console_insere_comando_externo(console_t *self, char c)
+{
+  insere_comando_externo(self, c);
+}
+
 static char remove_comando_externo(console_t *self)
 {
   char *p = self->fila_de_comandos_externos;
