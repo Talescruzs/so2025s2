@@ -3,9 +3,8 @@ SWAP: criando swap com 1000 páginas de 10 palavras
 SWAP: swap criada com sucesso
 criei   
 indo pro laco  
-CMD: '1'
+CMD: 'c'
 Executando opcode 02 (CARGI)
-CMD: '1'
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 0 (Reset)
@@ -13,9 +12,9 @@ nenhum processo corrente, nada a salvar
 tratando IRQ   
 recebi RESET   
 SO: carga de 'trata_int.maq'
-SO: carga na memória física 60-72
-SO: carga de 'init.maq'
-SO: carregando programa proc=1 end_virt=0-169 n_pag=17
+SO: programa 'trata_int.maq' end_virt=60-72 tamanho=12
+SO: carga física de 'trata_int.maq' em 60-72
+SO: carregando programa 'init.maq' proc=1 end_virt=-10--10 n_pag=0
 SWAP: solicitada alocação proc=1 pags=17
 SWAP: criando alocação proc=1 end=0 pags=17
 SWAP: alocação criada proc=1 end=0 pags=17
@@ -23,7 +22,6 @@ SWAP: inserindo alocação proc=1 end=0 pags=17
 SWAP: alocado proc=1 pags=17 end=0
 SO: alocado swap[0..16] para proc=1 (17 páginas)
 SWAP: escrita end=0 tam=10 bloq_ate=11
-SO: página 1/17 carregada na swap[0]
 SWAP: escrita end=1 tam=10 bloq_ate=21
 SWAP: escrita end=2 tam=10 bloq_ate=31
 SWAP: escrita end=3 tam=10 bloq_ate=41
@@ -33,8 +31,8 @@ SWAP: escrita end=6 tam=10 bloq_ate=71
 SWAP: escrita end=7 tam=10 bloq_ate=81
 SWAP: escrita end=8 tam=10 bloq_ate=91
 SWAP: escrita end=9 tam=10 bloq_ate=101
+SO: página 10/17 carregada na swap[9]
 SWAP: escrita end=10 tam=10 bloq_ate=111
-SO: página 11/17 carregada na swap[10]
 SWAP: escrita end=11 tam=10 bloq_ate=121
 SWAP: escrita end=12 tam=10 bloq_ate=131
 SWAP: escrita end=13 tam=10 bloq_ate=141
@@ -46,6 +44,7 @@ SO: programa carregado na swap, 17 páginas, paginação sob demanda
 SO: init criado PC=0 A=0 X=0 erro=0
 SO: carregando página inicial 0 do init na memória física
 SO: quadro 10 alocado (livre)
+SO: quadro 10 alocado (livre)
 SWAP: leitura end=0 tam=10 bloq_ate=181
 SO: lido da swap - primeira instrução: 2 (esperado: 2 para NOP ou CARGI)
 SO: página escrita na memória física quadro=10 end_fis=100
@@ -54,24 +53,11 @@ SO: página inicial mapeada com sucesso
 SO: teste leitura física end=100 valor=2
 SO: MMU configurada com tabpag do processo 1
 SO: teste leitura MMU end_virt=0 valor=2 err=0 (esperado: 2)
-
-========== DIAGNÓSTICO: APÓS CARGA E MAPEAMENTO INIT ==========
-Processo PID=1 PC=0
-Swap: inicio=0 n_paginas=17
-PC=0 está na página 0
-Página 0 VÁLIDA - mapeada no quadro 10
-Leitura física: end=100 valor=2 err=0
-Primeiros valores no quadro físico: 2 66 21 143
-Endereço na swap: 0
-SWAP: leitura end=0 tam=10 bloq_ate=191
-Leitura swap: err=0 primeiro_valor=2
-Primeiros valores na swap: 2 66 21 143
-========== FIM DIAGNÓSTICO ==========
 tratando pendências   
 escalonando 1
 SO: escalonador escolheu processo 1 com prioridade 0,50
 muda estado do processo 0 para 1   
-APOS ESCALONAR: proc=1 regA=0 regPC=0 regERRO=0 regX=0(�)
+APOS ESCALONAR: proc=1 regA=0 regPC=0 regERRO=0 regX=0(0)
 SO: despachando proc=1 PC=0 (virtual)
 SO: MMU configurada com tabpag do processo 1
 Teste tradução: PC=0 página=0 quadro=10 end_fis=100 valor=2
@@ -79,171 +65,184 @@ SO: despachou proc=1 PC=0 A=0 X=0 erro=0
 depois despacha   
 Teste tradução: PC=0 página=0 quadro=10 end_fis=100 valor=2
 RETORNO DESPACHA: 0, proc=1 regA=0 regPC=0 regERRO=0 regX=0(
-CMD: '1'
 Executando opcode 18 (DESVNZ)
-CMD: '1'
 Executando opcode 26 (RETI)
-CMD: '1'
 Executando opcode 02 (CARGI)
-CMD: '1'
 Executando opcode 21 (CHAMA)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 05 (ARMM)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
 SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
+SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=2 pc=2147483647
 SO: falta de página 14 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
 SO: falta de página 14 do processo 1
 SO: quadro 11 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=201
+SO: quadro 11 alocado para página 14
+SWAP: leitura end=14 tam=10 bloq_ate=191
 SO: dados lidos: 33 32 0 0
 SO: página 14 mapeada no quadro 11
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
+SO: processo 653794944 continua executando (quantum=50)
+APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=0 regX=0(0)
 SO: despachando proc=1 PC=2 (virtual)
 SO: MMU configurada com tabpag do processo 1
 Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+SO: despachou proc=1 PC=2 A=66 X=0 erro=0
 depois despacha   
 Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-CMD: '1'
+RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=0 regX=0(
 Executando opcode 18 (DESVNZ)
-CMD: '1'
 Executando opcode 03 (CARGM)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 26 (RETI)
-CMD: '1'
+Executando opcode 21 (CHAMA)
 Executando opcode 07 (TRAX)
-CMD: '1'
+Executando opcode 04 (CARGX)
+Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: salvou estado proc=1 A=0 PC=145 X=66 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+SO: IRQ de ERRO na CPU: Página ausente (complemento=66) proc_idx=1 pid=145 pc=2147483647
+SO: falta de página 6 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 6 do processo 1
 SO: quadro 12 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=211
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 12
+SO: quadro 12 alocado para página 6
+SWAP: leitura end=6 tam=10 bloq_ate=201
+SO: dados lidos: 2 131 21 143
+SO: página 6 mapeada no quadro 12
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=50)
+APOS ESCALONAR: proc=1 regA=0 regPC=145 regERRO=0 regX=66(0)
+SO: despachando proc=1 PC=145 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+SO: despachou proc=1 PC=145 A=0 X=66 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-CMD: '1'
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=145 regERRO=0 regX=66(B)
 Executando opcode 18 (DESVNZ)
-CMD: '1'
 Executando opcode 03 (CARGM)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 26 (RETI)
-CMD: '1'
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 05 (ARMM)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: salvou estado proc=1 A=105 PC=149 X=66 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+SO: IRQ de ERRO na CPU: Página ausente (complemento=150) proc_idx=1 pid=149 pc=2147483647
+SO: falta de página 15 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 15 do processo 1
 SO: quadro 13 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=221
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 13
+SO: quadro 13 alocado para página 15
+SWAP: leitura end=15 tam=10 bloq_ate=211
+SO: dados lidos: 156 9 16 145
+SO: página 15 mapeada no quadro 13
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=50)
+APOS ESCALONAR: proc=1 regA=105 regPC=149 regERRO=0 regX=66(0)
+SO: despachando proc=1 PC=149 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=149 página=14 quadro=11 end_fis=119 valor=21
+SO: despachou proc=1 PC=149 A=105 X=66 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-CMD: '1'
+Teste tradução: PC=149 página=14 quadro=11 end_fis=119 valor=21
+RETORNO DESPACHA: 0, proc=1 regA=105 regPC=149 regERRO=0 regX=66(B)
 Executando opcode 18 (DESVNZ)
-CMD: '1'
 Executando opcode 03 (CARGM)
-CMD: '1'
 Executando opcode 07 (TRAX)
-CMD: '1'
 Executando opcode 26 (RETI)
-CMD: 'c'
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: salvou estado proc=1 A=66 PC=158 X=105 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+SO: IRQ de ERRO na CPU: Página ausente (complemento=169) proc_idx=1 pid=158 pc=2147483647
+SO: falta de página 16 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 16 do processo 1
 SO: quadro 14 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=231
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 14
+SO: quadro 14 alocado para página 16
+SWAP: leitura end=16 tam=10 bloq_ate=221
+SO: dados lidos: 2 2 25 7
+SO: página 16 mapeada no quadro 14
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=50)
+APOS ESCALONAR: proc=1 regA=66 regPC=158 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=158 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=158 página=15 quadro=13 end_fis=138 valor=5
+SO: despachou proc=1 PC=158 A=66 X=105 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=158 página=15 quadro=13 end_fis=138 valor=5
+RETORNO DESPACHA: 0, proc=1 regA=66 regPC=158 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=105 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=50)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
@@ -253,31 +252,254 @@ Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=163 X=105 erro=0
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=49)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=110 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever n no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo n no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=49)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=110(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=110 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=110(n)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=105 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=49)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=167 X=68 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=48)
+APOS ESCALONAR: proc=1 regA=0 regPC=167 regERRO=0 regX=68(0)
+SO: despachando proc=1 PC=167 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=167 página=16 quadro=14 end_fis=147 valor=22
+SO: despachou proc=1 PC=167 A=0 X=68 erro=0
+depois despacha   
+Teste tradução: PC=167 página=16 quadro=14 end_fis=147 valor=22
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=167 regERRO=0 regX=68(D)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=116 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever t no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo t no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=48)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=116(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=116 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=116(t)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+SO: salvou estado proc=1 A=0 PC=145 X=70 erro=8
+tratando IRQ   
+SO: IRQ de ERRO na CPU: Página ausente (complemento=70) proc_idx=1 pid=145 pc=2147483647
+SO: falta de página 7 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 7 do processo 1
 SO: quadro 15 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=241
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 15
+SO: quadro 15 alocado para página 7
+SWAP: leitura end=7 tam=10 bloq_ate=231
+SO: dados lidos: 32 105 110 105
+SO: página 7 mapeada no quadro 15
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=48)
+APOS ESCALONAR: proc=1 regA=0 regPC=145 regERRO=0 regX=70(0)
+SO: despachando proc=1 PC=145 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+SO: despachou proc=1 PC=145 A=0 X=70 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=145 regERRO=0 regX=70(F)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=32 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever   no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo   no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=48)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=32(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=32 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=32( )
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
@@ -287,31 +509,968 @@ Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=163 X=32 erro=0
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=47)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=32(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=32 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=32( )
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=105 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=47)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=110 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever n no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo n no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=47)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=110(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=110 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=110(n)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=167 X=72 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=46)
+APOS ESCALONAR: proc=1 regA=0 regPC=167 regERRO=0 regX=72(0)
+SO: despachando proc=1 PC=167 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=167 página=16 quadro=14 end_fis=147 valor=22
+SO: despachou proc=1 PC=167 A=0 X=72 erro=0
+depois despacha   
+Teste tradução: PC=167 página=16 quadro=14 end_fis=147 valor=22
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=167 regERRO=0 regX=72(H)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=105 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=46)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=99 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever c no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo c no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=46)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=99(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=99 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=99(c)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=145 X=75 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=45)
+APOS ESCALONAR: proc=1 regA=0 regPC=145 regERRO=0 regX=75(0)
+SO: despachando proc=1 PC=145 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+SO: despachou proc=1 PC=145 A=0 X=75 erro=0
+depois despacha   
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=145 regERRO=0 regX=75(K)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=105 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=45)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=97 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever a no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo a no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=45)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=97(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=97 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=97(a)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=108 PC=157 X=77 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=44)
+APOS ESCALONAR: proc=1 regA=108 regPC=157 regERRO=0 regX=77(0)
+SO: despachando proc=1 PC=157 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=157 página=15 quadro=13 end_fis=137 valor=7
+SO: despachou proc=1 PC=157 A=108 X=77 erro=0
+depois despacha   
+Teste tradução: PC=157 página=15 quadro=13 end_fis=137 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=108 regPC=157 regERRO=0 regX=77(M)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=108 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever l no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo l no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=44)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=108(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=108 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=108(l)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=105 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=44)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=105(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=105 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=105(i)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=2 PC=162 X=122 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=43)
+APOS ESCALONAR: proc=1 regA=2 regPC=162 regERRO=0 regX=122(0)
+SO: despachando proc=1 PC=162 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=162 página=16 quadro=14 end_fis=142 valor=25
+SO: despachou proc=1 PC=162 A=2 X=122 erro=0
+depois despacha   
+Teste tradução: PC=162 página=16 quadro=14 end_fis=142 valor=25
+RETORNO DESPACHA: 0, proc=1 regA=2 regPC=162 regERRO=0 regX=122(z)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=122 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever z no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo z no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=43)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=122(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=122 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=122(z)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+SO: salvou estado proc=1 A=0 PC=145 X=80 erro=8
+tratando IRQ   
+SO: IRQ de ERRO na CPU: Página ausente (complemento=80) proc_idx=1 pid=145 pc=2147483647
+SO: falta de página 8 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 8 do processo 1
 SO: quadro 16 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=251
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 16
+SO: quadro 16 alocado para página 8
+SWAP: leitura end=8 tam=10 bloq_ate=416
+SO: dados lidos: 97 110 100 111
+SO: página 8 mapeada no quadro 16
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=43)
+APOS ESCALONAR: proc=1 regA=0 regPC=145 regERRO=0 regX=80(0)
+SO: despachando proc=1 PC=145 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+SO: despachou proc=1 PC=145 A=0 X=80 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=145 regERRO=0 regX=80(P)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=97 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever a no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo a no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=43)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=97(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=97 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=97(a)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=145 X=81 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=42)
+APOS ESCALONAR: proc=1 regA=0 regPC=145 regERRO=0 regX=81(0)
+SO: despachando proc=1 PC=145 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+SO: despachou proc=1 PC=145 A=0 X=81 erro=0
+depois despacha   
+Teste tradução: PC=145 página=14 quadro=11 end_fis=115 valor=4
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=145 regERRO=0 regX=81(Q)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=110 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever n no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo n no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=42)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=110(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=110 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=110(n)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=100 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever d no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo d no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=42)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=100(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=100 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=100(d)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=111 PC=157 X=83 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=41)
+APOS ESCALONAR: proc=1 regA=111 regPC=157 regERRO=0 regX=83(0)
+SO: despachando proc=1 PC=157 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=157 página=15 quadro=13 end_fis=137 valor=7
+SO: despachou proc=1 PC=157 A=111 X=83 erro=0
+depois despacha   
+Teste tradução: PC=157 página=15 quadro=13 end_fis=137 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=111 regPC=157 regERRO=0 regX=83(S)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=111 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever o no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo o no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=41)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=111(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=111 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=111(o)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=46 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever . no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo . no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=41)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=46(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=46 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=46(.)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=2 PC=162 X=46 erro=0
+tratando IRQ   
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=40)
+APOS ESCALONAR: proc=1 regA=2 regPC=162 regERRO=0 regX=46(0)
+SO: despachando proc=1 PC=162 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=162 página=16 quadro=14 end_fis=142 valor=25
+SO: despachou proc=1 PC=162 A=2 X=46 erro=0
+depois despacha   
+Teste tradução: PC=162 página=16 quadro=14 end_fis=142 valor=25
+RETORNO DESPACHA: 0, proc=1 regA=2 regPC=162 regERRO=0 regX=46(.)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=46 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever . no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo . no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=40)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=46(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=46 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=46(.)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=46 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever . no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo . no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=40)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=46(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=46 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=46(.)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 09 (INCX)
+Executando opcode 16 (DESV)
+Executando opcode 04 (CARGX)
+Executando opcode 17 (DESVZ)
+Executando opcode 22 (RET)
+Executando opcode 02 (CARGI)
+Executando opcode 21 (CHAMA)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=2 PC=163 X=10 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever 
+ no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo 
+ no disp 2
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=40)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=10(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=10 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=10(
+)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
@@ -321,133 +1480,223 @@ Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=0 PC=163 X=10 erro=0
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=39)
+APOS ESCALONAR: proc=1 regA=0 regPC=163 regERRO=0 regX=10(0)
+SO: despachando proc=1 PC=163 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+SO: despachou proc=1 PC=163 A=0 X=10 erro=0
+depois despacha   
+Teste tradução: PC=163 página=16 quadro=14 end_fis=143 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=0 regPC=163 regERRO=0 regX=10(
+)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 07 (TRAX)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 22 (RET)
+Executando opcode 02 (CARGI)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+SO: salvou estado proc=1 A=88 PC=10 X=87 erro=8
+tratando IRQ   
+SO: IRQ de ERRO na CPU: Página ausente (complemento=10) proc_idx=1 pid=10 pc=2147483647
+SO: falta de página 1 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 1 do processo 1
 SO: quadro 17 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=261
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 17
+SO: quadro 17 alocado para página 1
+SWAP: leitura end=1 tam=10 bloq_ate=626
+SO: dados lidos: 7 2 7 25
+SO: página 1 mapeada no quadro 17
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=39)
+APOS ESCALONAR: proc=1 regA=88 regPC=10 regERRO=0 regX=87(0)
+SO: despachando proc=1 PC=10 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=10 página=1 quadro=17 end_fis=170 valor=7
+SO: despachou proc=1 PC=10 A=88 X=87 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=10 página=1 quadro=17 end_fis=170 valor=7
+RETORNO DESPACHA: 0, proc=1 regA=88 regPC=10 regERRO=0 regX=87(W)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
 Executando opcode 26 (RETI)
 Executando opcode 07 (TRAX)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=7 PC=14 X=88 erro=0
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+chamada de sistema   
+SO: chamada de sistema 7
+chamada de criação de processo   
+SO: falta de página em copia_str (pag=9)
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 9 do processo 1
 SO: quadro 18 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=271
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 18
+SO: quadro 18 alocado para página 9
+SWAP: leitura end=9 tam=10 bloq_ate=637
+SO: dados lidos: 46 109 97 113
+SO: página 9 mapeada no quadro 18
 ========== FIM TRATAMENTO FALTA ==========
+SO: carregando programa 'p1.maq' proc=2 end_virt=-10--10 n_pag=0
+SWAP: solicitada alocação proc=2 pags=25
+SWAP: criando alocação proc=2 end=17 pags=25
+SWAP: alocação criada proc=2 end=17 pags=25
+SWAP: inserindo alocação proc=2 end=17 pags=25
+SWAP: alocação inserida proc=2 end=17 pags=25
+SWAP: alocado proc=2 pags=25 end=17
+SO: alocado swap[17..41] para proc=2 (25 páginas)
+SWAP: escrita end=17 tam=10 bloq_ate=647
+SWAP: escrita end=18 tam=10 bloq_ate=657
+SWAP: escrita end=19 tam=10 bloq_ate=667
+SWAP: escrita end=20 tam=10 bloq_ate=677
+SWAP: escrita end=21 tam=10 bloq_ate=687
+SWAP: escrita end=22 tam=10 bloq_ate=697
+SWAP: escrita end=23 tam=10 bloq_ate=707
+SWAP: escrita end=24 tam=10 bloq_ate=717
+SWAP: escrita end=25 tam=10 bloq_ate=727
+SWAP: escrita end=26 tam=10 bloq_ate=737
+SO: página 10/25 carregada na swap[26]
+SWAP: escrita end=27 tam=10 bloq_ate=747
+SWAP: escrita end=28 tam=10 bloq_ate=757
+SWAP: escrita end=29 tam=10 bloq_ate=767
+SWAP: escrita end=30 tam=10 bloq_ate=777
+SWAP: escrita end=31 tam=10 bloq_ate=787
+SWAP: escrita end=32 tam=10 bloq_ate=797
+SWAP: escrita end=33 tam=10 bloq_ate=807
+SWAP: escrita end=34 tam=10 bloq_ate=817
+SWAP: escrita end=35 tam=10 bloq_ate=827
+SWAP: escrita end=36 tam=10 bloq_ate=837
+SO: página 20/25 carregada na swap[36]
+SWAP: escrita end=37 tam=10 bloq_ate=847
+SWAP: escrita end=38 tam=10 bloq_ate=857
+SWAP: escrita end=39 tam=10 bloq_ate=867
+SWAP: escrita end=40 tam=10 bloq_ate=877
+SWAP: escrita end=41 tam=10 bloq_ate=887
+SO: página 25/25 carregada na swap[41]
+SO: programa carregado na swap, 25 páginas, paginação sob demanda
+SO: processo 2 criado com sucesso (filho de 1)
+
+========== DIAGNÓSTICO: após criação do processo ==========
+Processo PID=2 PC=0
+Swap: inicio=17 n_paginas=25
+PC=0 está na página 0
+Página 0 AUSENTE (err=8) - está apenas na swap
+Endereço na swap: 17
+SWAP: leitura end=17 tam=10 bloq_ate=897
+Leitura swap: err=0 primeiro_valor=16
+Primeiros valores na swap: 16 70 112 49
+========== FIM DIAGNÓSTICO ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=39)
+APOS ESCALONAR: proc=1 regA=2 regPC=14 regERRO=0 regX=88(0)
+SO: despachando proc=1 PC=14 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=14 página=1 quadro=17 end_fis=174 valor=5
+SO: despachou proc=1 PC=14 A=2 X=88 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=14 página=1 quadro=17 end_fis=174 valor=5
+RETORNO DESPACHA: 0, proc=1 regA=2 regPC=14 regERRO=0 regX=88(X)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
 Executando opcode 26 (RETI)
+Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: salvou estado proc=1 A=2 PC=14 X=88 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+SO: IRQ de ERRO na CPU: Página ausente (complemento=109) proc_idx=1 pid=14 pc=2147483647
+SO: falta de página 10 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 10 do processo 1
 SO: quadro 19 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=281
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 19
+SO: quadro 19 alocado para página 10
+SWAP: leitura end=10 tam=10 bloq_ate=907
+SO: dados lidos: 113 0 112 51
+SO: página 10 mapeada no quadro 19
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=39)
+APOS ESCALONAR: proc=1 regA=2 regPC=14 regERRO=0 regX=88(0)
+SO: despachando proc=1 PC=14 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=14 página=1 quadro=17 end_fis=174 valor=5
+SO: despachou proc=1 PC=14 A=2 X=88 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=14 página=1 quadro=17 end_fis=174 valor=5
+RETORNO DESPACHA: 0, proc=1 regA=2 regPC=14 regERRO=0 regX=88(X)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
 Executando opcode 26 (RETI)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 07 (TRAX)
+Executando opcode 02 (CARGI)
 Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: salvou estado proc=1 A=88 PC=19 X=95 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+SO: IRQ de ERRO na CPU: Página ausente (complemento=20) proc_idx=1 pid=19 pc=2147483647
+SO: falta de página 2 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 2 do processo 1
 SO: quadro 20 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=291
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 20
+SO: quadro 20 alocado para página 2
+SWAP: leitura end=2 tam=10 bloq_ate=917
+SO: dados lidos: 7 25 5 110
+SO: página 2 mapeada no quadro 20
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=39)
+APOS ESCALONAR: proc=1 regA=88 regPC=19 regERRO=0 regX=95(0)
+SO: despachando proc=1 PC=19 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=19 página=1 quadro=17 end_fis=179 valor=2
+SO: despachou proc=1 PC=19 A=88 X=95 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=19 página=1 quadro=17 end_fis=179 valor=2
+RETORNO DESPACHA: 0, proc=1 regA=88 regPC=19 regERRO=0 regX=95(_)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
@@ -457,31 +1706,214 @@ Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=88 PC=19 X=95 erro=0
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=38)
+APOS ESCALONAR: proc=1 regA=88 regPC=19 regERRO=0 regX=95(0)
+SO: despachando proc=1 PC=19 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=19 página=1 quadro=17 end_fis=179 valor=2
+SO: despachou proc=1 PC=19 A=88 X=95 erro=0
+depois despacha   
+Teste tradução: PC=19 página=1 quadro=17 end_fis=179 valor=2
+RETORNO DESPACHA: 0, proc=1 regA=88 regPC=19 regERRO=0 regX=95(_)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=7 PC=22 X=95 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 7
+chamada de criação de processo   
+SO: carregando programa 'p2.maq' proc=3 end_virt=-10--10 n_pag=0
+SWAP: solicitada alocação proc=3 pags=25
+SWAP: criando alocação proc=3 end=42 pags=25
+SWAP: alocação criada proc=3 end=42 pags=25
+SWAP: inserindo alocação proc=3 end=42 pags=25
+SWAP: alocação inserida proc=3 end=42 pags=25
+SWAP: alocado proc=3 pags=25 end=42
+SO: alocado swap[42..66] para proc=3 (25 páginas)
+SWAP: escrita end=42 tam=10 bloq_ate=927
+SWAP: escrita end=43 tam=10 bloq_ate=937
+SWAP: escrita end=44 tam=10 bloq_ate=947
+SWAP: escrita end=45 tam=10 bloq_ate=957
+SWAP: escrita end=46 tam=10 bloq_ate=967
+SWAP: escrita end=47 tam=10 bloq_ate=977
+SWAP: escrita end=48 tam=10 bloq_ate=987
+SWAP: escrita end=49 tam=10 bloq_ate=997
+SWAP: escrita end=50 tam=10 bloq_ate=1007
+SWAP: escrita end=51 tam=10 bloq_ate=1017
+SO: página 10/25 carregada na swap[51]
+SWAP: escrita end=52 tam=10 bloq_ate=1027
+SWAP: escrita end=53 tam=10 bloq_ate=1037
+SWAP: escrita end=54 tam=10 bloq_ate=1047
+SWAP: escrita end=55 tam=10 bloq_ate=1057
+SWAP: escrita end=56 tam=10 bloq_ate=1067
+SWAP: escrita end=57 tam=10 bloq_ate=1077
+SWAP: escrita end=58 tam=10 bloq_ate=1087
+SWAP: escrita end=59 tam=10 bloq_ate=1097
+SWAP: escrita end=60 tam=10 bloq_ate=1107
+SWAP: escrita end=61 tam=10 bloq_ate=1117
+SO: página 20/25 carregada na swap[61]
+SWAP: escrita end=62 tam=10 bloq_ate=1127
+SWAP: escrita end=63 tam=10 bloq_ate=1137
+SWAP: escrita end=64 tam=10 bloq_ate=1147
+SWAP: escrita end=65 tam=10 bloq_ate=1157
+SWAP: escrita end=66 tam=10 bloq_ate=1167
+SO: página 25/25 carregada na swap[66]
+SO: programa carregado na swap, 25 páginas, paginação sob demanda
+SO: processo 3 criado com sucesso (filho de 1)
+
+========== DIAGNÓSTICO: após criação do processo ==========
+Processo PID=3 PC=0
+Swap: inicio=42 n_paginas=25
+PC=0 está na página 0
+Página 0 AUSENTE (err=8) - está apenas na swap
+Endereço na swap: 42
+SWAP: leitura end=42 tam=10 bloq_ate=1177
+Leitura swap: err=0 primeiro_valor=16
+Primeiros valores na swap: 16 72 112 50
+========== FIM DIAGNÓSTICO ==========
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=38)
+APOS ESCALONAR: proc=1 regA=3 regPC=22 regERRO=0 regX=95(0)
+SO: despachando proc=1 PC=22 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: PC=22 página=2 quadro=20 end_fis=202 valor=5
+SO: despachou proc=1 PC=22 A=3 X=95 erro=0
+depois despacha   
+Teste tradução: PC=22 página=2 quadro=20 end_fis=202 valor=5
+RETORNO DESPACHA: 0, proc=1 regA=3 regPC=22 regERRO=0 regX=95(_)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 1 (Erro de execução)
+SO: salvou estado proc=1 A=3 PC=22 X=95 erro=8
+tratando IRQ   
+SO: IRQ de ERRO na CPU: Página ausente (complemento=110) proc_idx=1 pid=22 pc=2147483647
+SO: falta de página 11 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 11 do processo 1
 SO: quadro 21 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=301
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 21
+SO: quadro 21 alocado para página 11
+SWAP: leitura end=11 tam=10 bloq_ate=1187
+SO: dados lidos: 0 0 105 110
+SO: página 11 mapeada no quadro 21
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=38)
+APOS ESCALONAR: proc=1 regA=3 regPC=22 regERRO=0 regX=95(0)
+SO: despachando proc=1 PC=22 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=22 página=2 quadro=20 end_fis=202 valor=5
+SO: despachou proc=1 PC=22 A=3 X=95 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=22 página=2 quadro=20 end_fis=202 valor=5
+RETORNO DESPACHA: 0, proc=1 regA=3 regPC=22 regERRO=0 regX=95(_)
+Executando opcode 18 (DESVNZ)
+Executando opcode 03 (CARGM)
+Executando opcode 07 (TRAX)
+Executando opcode 26 (RETI)
+Executando opcode 05 (ARMM)
+Executando opcode 02 (CARGI)
+Executando opcode 07 (TRAX)
+Executando opcode 02 (CARGI)
+Executando opcode 25 (CHAMAS)
+Executando opcode 07 (TRAX)
+Executando opcode 05 (ARMM)
+Executando opcode 07 (TRAX)
+Executando opcode 27 (CHAMAC)
+interrompido   
+SO: recebi IRQ 2 (Chamada de sistema)
+SO: salvou estado proc=1 A=7 PC=30 X=102 erro=0
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 7
+chamada de criação de processo   
+SO: carregando programa 'p3.maq' proc=4 end_virt=-10--10 n_pag=0
+SWAP: solicitada alocação proc=4 pags=25
+SWAP: criando alocação proc=4 end=67 pags=25
+SWAP: alocação criada proc=4 end=67 pags=25
+SWAP: inserindo alocação proc=4 end=67 pags=25
+SWAP: alocação inserida proc=4 end=67 pags=25
+SWAP: alocado proc=4 pags=25 end=67
+SO: alocado swap[67..91] para proc=4 (25 páginas)
+SWAP: escrita end=67 tam=10 bloq_ate=1197
+SWAP: escrita end=68 tam=10 bloq_ate=1207
+SWAP: escrita end=69 tam=10 bloq_ate=1217
+SWAP: escrita end=70 tam=10 bloq_ate=1227
+SWAP: escrita end=71 tam=10 bloq_ate=1237
+SWAP: escrita end=72 tam=10 bloq_ate=1247
+SWAP: escrita end=73 tam=10 bloq_ate=1257
+SWAP: escrita end=74 tam=10 bloq_ate=1267
+SWAP: escrita end=75 tam=10 bloq_ate=1277
+SWAP: escrita end=76 tam=10 bloq_ate=1287
+SO: página 10/25 carregada na swap[76]
+SWAP: escrita end=77 tam=10 bloq_ate=1297
+SWAP: escrita end=78 tam=10 bloq_ate=1307
+SWAP: escrita end=79 tam=10 bloq_ate=1317
+SWAP: escrita end=80 tam=10 bloq_ate=1327
+SWAP: escrita end=81 tam=10 bloq_ate=1337
+SWAP: escrita end=82 tam=10 bloq_ate=1347
+SWAP: escrita end=83 tam=10 bloq_ate=1357
+SWAP: escrita end=84 tam=10 bloq_ate=1367
+SWAP: escrita end=85 tam=10 bloq_ate=1377
+SWAP: escrita end=86 tam=10 bloq_ate=1387
+SO: página 20/25 carregada na swap[86]
+SWAP: escrita end=87 tam=10 bloq_ate=1397
+SWAP: escrita end=88 tam=10 bloq_ate=1407
+SWAP: escrita end=89 tam=10 bloq_ate=1417
+SWAP: escrita end=90 tam=10 bloq_ate=1427
+SWAP: escrita end=91 tam=10 bloq_ate=1437
+SO: página 25/25 carregada na swap[91]
+SO: programa carregado na swap, 25 páginas, paginação sob demanda
+SO: processo 4 criado com sucesso (filho de 1)
+
+========== DIAGNÓSTICO: após criação do processo ==========
+Processo PID=4 PC=0
+Swap: inicio=67 n_paginas=25
+PC=0 está na página 0
+Página 0 AUSENTE (err=8) - está apenas na swap
+Endereço na swap: 67
+SWAP: leitura end=67 tam=10 bloq_ate=1447
+Leitura swap: err=0 primeiro_valor=16
+Primeiros valores na swap: 16 70 112 51
+========== FIM DIAGNÓSTICO ==========
+tratando pendências   
+escalonando 1
+SO: processo 653794944 continua executando (quantum=38)
+APOS ESCALONAR: proc=1 regA=4 regPC=30 regERRO=0 regX=102(0)
+SO: despachando proc=1 PC=30 (virtual)
+SO: MMU configurada com tabpag do processo 1
+Teste tradução: FALHOU - PC=30 página=3 err=8 (FALTA DE PÁGINA!)
+SO: despachou proc=1 PC=30 A=4 X=102 erro=0
+depois despacha   
+Teste tradução: FALHOU - PC=30 página=3 err=8 (FALTA DE PÁGINA!)
+RETORNO DESPACHA: 0, proc=1 regA=4 regPC=30 regERRO=0 regX=102(f)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
@@ -492,2361 +1924,53 @@ Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
 SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: salvou estado proc=1 A=4 PC=30 X=102 erro=8
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
+SO: IRQ de ERRO na CPU: Página ausente (complemento=30) proc_idx=1 pid=30 pc=2147483647
+SO: falta de página 3 do processo 1
 
 ========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
+SO: falta de página 3 do processo 1
 SO: quadro 22 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=311
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 22
+SO: quadro 22 alocado para página 3
+SWAP: leitura end=3 tam=10 bloq_ate=1457
+SO: dados lidos: 5 111 3 109
+SO: página 3 mapeada no quadro 22
 ========== FIM TRATAMENTO FALTA ==========
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=38)
+APOS ESCALONAR: proc=1 regA=4 regPC=30 regERRO=0 regX=102(0)
+SO: despachando proc=1 PC=30 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
+Teste tradução: PC=30 página=3 quadro=22 end_fis=220 valor=5
+SO: despachou proc=1 PC=30 A=4 X=102 erro=0
 depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
+Teste tradução: PC=30 página=3 quadro=22 end_fis=220 valor=5
+RETORNO DESPACHA: 0, proc=1 regA=4 regPC=30 regERRO=0 regX=102(f)
 Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
 Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 23 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=321
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 23
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 24 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=331
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 24
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 25 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=341
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 25
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 26 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=351
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 26
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 27 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=361
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 27
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 28 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=371
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 28
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 29 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=381
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 29
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 30 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=391
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 30
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 31 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=401
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 31
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 32 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=411
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 32
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 33 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=421
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 33
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 34 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=431
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 34
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 35 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=441
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 35
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 36 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=451
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 36
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 37 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=461
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 37
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 38 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=471
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 38
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 39 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=481
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 39
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 40 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=491
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 40
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 41 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=501
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 41
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 42 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=511
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 42
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 43 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=521
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 43
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 44 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=531
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 44
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 45 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=541
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 45
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 46 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=551
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 46
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 47 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=561
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 47
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 48 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=571
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 48
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 49 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=581
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 49
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 50 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=591
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 50
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 51 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=601
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 51
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 52 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=611
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 52
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 53 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=621
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 53
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 54 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=631
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 54
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 55 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=641
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 55
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 56 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=651
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 56
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 57 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=661
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 57
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 58 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=671
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 58
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 59 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=681
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 59
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 60 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=691
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 60
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 61 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=701
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 61
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 62 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=711
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 62
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 63 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=721
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 63
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 64 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=731
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 64
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 65 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=741
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 65
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 66 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=751
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 66
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 67 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=761
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 67
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 68 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=771
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 68
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 69 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=781
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 69
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 70 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=791
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 70
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 71 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=801
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 71
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 72 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=811
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 72
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 73 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=821
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 73
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 74 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=831
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 74
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 75 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=841
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 75
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 76 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=851
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 76
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 77 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=861
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 77
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 78 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=871
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 78
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 79 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=881
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 79
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 80 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=891
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 80
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 81 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=901
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 81
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 82 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=911
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 82
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 83 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=921
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 83
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 84 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=931
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 84
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 85 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=941
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 85
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 86 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=951
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 86
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 87 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=961
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 87
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 88 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=971
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 88
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 89 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=981
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 89
-========== FIM TRATAMENTO FALTA ==========
-tratando pendências   
-escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
-SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
 Executando opcode 03 (CARGM)
 Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
+Executando opcode 02 (CARGI)
 Executando opcode 07 (TRAX)
 Executando opcode 05 (ARMM)
 Executando opcode 07 (TRAX)
 Executando opcode 27 (CHAMAC)
 interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
+SO: recebi IRQ 3 (E/S: relógio)
+SO: salvou estado proc=1 A=9 PC=37 X=2 erro=0
 tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 90 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=991
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadro 90
-========== FIM TRATAMENTO FALTA ==========
+interrupção do relógio   
+SO: interrupção do relógio (não tratada)
 tratando pendências   
 escalonando 1
-SO: processo 853003536 continua executando (quantum=50)
-APOS ESCALONAR: proc=1 regA=66 regPC=2 regERRO=8 regX=0(�)
-SO: despachando proc=1 PC=2 (virtual)
+SO: processo 653794944 continua executando (quantum=37)
+APOS ESCALONAR: proc=1 regA=9 regPC=37 regERRO=0 regX=2(0)
+SO: despachando proc=1 PC=37 (virtual)
 SO: MMU configurada com tabpag do processo 1
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-SO: despachou proc=1 PC=2 A=66 X=0 erro=8
-depois despacha   
-Teste tradução: PC=2 página=0 quadro=10 end_fis=102 valor=21
-RETORNO DESPACHA: 0, proc=1 regA=66 regPC=2 regERRO=8 regX=0(
-Executando opcode 18 (DESVNZ)
-Executando opcode 03 (CARGM)
-Executando opcode 07 (TRAX)
-Executando opcode 26 (RETI)
-Executando opcode 07 (TRAX)
-Executando opcode 05 (ARMM)
-Executando opcode 07 (TRAX)
-Executando opcode 27 (CHAMAC)
-interrompido   
-SO: recebi IRQ 1 (Erro de execução)
-SO: salvou estado proc=1 A=66 PC=2 X=0 erro=8
-tratando IRQ   
-erro na CPU   
-SO: IRQ de ERRO na CPU: Página ausente (complemento=143) proc_idx=1 pid=1 pc=2
-SO: falta de página 14 do processo 1
-
-========== TRATANDO FALTA DE PÁGINA ==========
-SO: falta de página 14 do processo 1
-SO: quadro 91 alocado (livre)
-SWAP: leitura end=14 tam=10 bloq_ate=1001
-SO: dados lidos: 33 32 0 0
-SO: página 14 mapeada no quadr
+Teste tradução: PC=37 página=3 quadro=22 end_fis=227 valor=25
+SO: despachou proc=1
