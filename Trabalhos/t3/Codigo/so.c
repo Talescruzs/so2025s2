@@ -194,13 +194,7 @@ void so_destroi(so_t *self)
   
   // Imprime estatísticas antes de destruir
   console_printf("\n========== ESTATÍSTICAS DO SISTEMA ==========\n");
-  for (int i = 0; i < MAX_PROCESSOS; i++) {
-    if (self->tabela_processos[i].pid > 0) {
-      console_printf("Processo PID=%d: %d faltas de página\n",
-                     self->tabela_processos[i].pid,
-                     self->tabela_processos[i].n_faltas_pagina);
-    }
-  }
+  
   console_printf("Tamanho da memória principal: %d palavras (%d páginas)\n",
                  mem_tam(self->mem), mem_tam(self->mem) / TAM_PAGINA);
   console_printf("Tamanho de página: %d palavras\n", TAM_PAGINA);
@@ -410,6 +404,23 @@ static void so_escalona(so_t *self) {
   if (self->processo_corrente == NULL)
   {
     console_printf("escalonando sem processo corrente");
+    processo *proximo = self->tabela_processos;
+    bool acabou = true;
+    while (proximo != NULL)
+    {
+      if(proximo->estado != MORTO)
+      {
+        acabou = false;
+        break;
+      }
+      proximo = proximo->prox;
+    }
+    if (acabou)
+    {
+      // AQUI TU PARA O SO E MOSTRA AS METRICAS
+      console_printf("SO: todos os processos morreram, encerrando o SO");
+    }
+    
   }
   else {
     console_printf("escalonando %d", self->processo_corrente->pid);
@@ -852,7 +863,6 @@ static void so_trata_irq_err_cpu(so_t *self)
   }
   
 }
-
 
 // Aloca um quadro livre ou libera um ocupado usando substituição de páginas
 static int so_aloca_quadro(so_t *self)
