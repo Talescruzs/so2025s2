@@ -801,109 +801,64 @@ static int so_aloca_quadro(so_t *self)
 // Trata uma falta de página
 static void so_trata_falta_pagina(so_t *self, processo* proc, int pagina)
 {
-  console_printf("\n========== TRATANDO FALTA DE PÁGINA ==========");
-  console_printf("SO: falta de página %d do processo %d", pagina, proc->pid);
-  
-  // DIAGNÓSTICO antes de alocar quadro
-  console_printf("Swap: inicio=%d n_paginas=%d", proc->swap_inicio, proc->n_paginas);
-  
-  // Verifica se a página é válida para o processo
-  if (pagina < 0 || pagina >= proc->n_paginas) {
-    console_printf("SO: ERRO - página %d inválida (processo tem %d páginas)", 
-                   pagina, proc->n_paginas);
-    proc->estado = MORTO;
-    return;
-  }
-  
-  // Aloca um quadro (pode fazer substituição)
-  int quadro = so_aloca_quadro(self);
-  if (quadro < 0) {
-    console_printf("SO: ERRO ao alocar quadro");
-    proc->estado = MORTO;
-    return;
-  }
-  
-  console_printf("SO: quadro %d alocado para página %d", quadro, pagina);
-  
-  // Obtém endereço da página na swap
-  int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina);
-  console_printf("SO: endereço na swap=%d", end_swap);
-  
-  if (end_swap < 0) {
-    console_printf("SO: ERRO ao obter endereço da página na swap");
-    proc->estado = MORTO;
-    return;
-  }
-  
-  // Lê a página da swap
-  int dados[TAM_PAGINA];
-  int tempo_bloqueio;
-  err_t err = swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio);
-  
-  console_printf("SO: leitura swap err=%d tempo=%d", err, tempo_bloqueio);
-  
-  if (err != ERR_OK) {
-    console_printf("SO: ERRO ao ler página da swap");
-    proc->estado = MORTO;
-    return;
-  }
-  
-  // Mostra o que foi lido
-  console_printf("SO: dados lidos da swap: %d %d %d %d...", 
-                 dados[0], dados[1], dados[2], dados[3]);
-  
-  // Escreve os dados no quadro da memória principal
-  int end_fis = quadro * TAM_PAGINA;
-  console_printf("SO: escrevendo página %d no quadro %d (end_fis=%d)", 
-                 pagina, quadro, end_fis);
-  
-  for (int i = 0; i < TAM_PAGINA; i++) {
-    err_t err_mem = mem_escreve(self->mem, end_fis + i, dados[i]);
-    if (err_mem != ERR_OK) {
-      console_printf("SO: ERRO ao escrever na memória offset=%d err=%d", i, err_mem);
-      proc->estado = MORTO;
-      return;
+    console_printf("\n========== TRATANDO FALTA DE PÁGINA ==========");
+    console_printf("SO: falta de página %d do processo %d", pagina, proc->pid);
+    
+    // 1. Validação
+    if (pagina < 0 || pagina >= proc->n_paginas) {
+        console_printf("SO: ERRO - página inválida");
+        proc->estado = MORTO;
+        return;
     }
-  }
-  
-  console_printf("SO: dados escritos na memória");
-  
-  // Atualiza a tabela de páginas
-  console_printf("SO: mapeando página %d -> quadro %d", pagina, quadro);
-  tabpag_define_quadro(proc->tabpag, pagina, quadro);
-  
-  // Verifica se foi realmente mapeado usando tabpag_traduz
-  int quadro_mapeado;
-  err_t err_verif = tabpag_traduz(proc->tabpag, pagina, &quadro_mapeado);
-  
-  console_printf("SO: verificação - err=%d quadro_esperado=%d quadro_obtido=%d", 
-                 err_verif, quadro, quadro_mapeado);
-  
-  if (err_verif != ERR_OK || quadro_mapeado != quadro) {
-    console_printf("SO: ERRO - mapeamento falhou!");
-    proc->estado = MORTO;
-    return;
-  }
-  
-  // Agora sim registra o quadro como ocupado com as informações corretas
-  mem_quadros_muda_estado(self->quadros, quadro, false, proc->pid, pagina);
-  
-  // Testa leitura via MMU
-  console_printf("SO: testando leitura via MMU");
-  mmu_define_tabpag(self->mmu, proc->tabpag);
-  int end_virt_teste = pagina * TAM_PAGINA;
-  int valor_teste;
-  err_t err_mmu = mmu_le(self->mmu, end_virt_teste, &valor_teste, supervisor);
-  console_printf("SO: leitura MMU end_virt=%d valor=%d err=%d (esperado: %d)", 
-                 end_virt_teste, valor_teste, err_mmu, dados[0]);
-  
-  // Bloqueia o processo até que a operação de disco termine
-  proc->estado = BLOQUEADO;
-  proc->tempo_desbloqueio = tempo_bloqueio;
-  
-  console_printf("SO: página %d mapeada no quadro %d, processo bloqueado até %d", 
-                 pagina, quadro, tempo_bloqueio);
-  console_printf("========== FIM TRATAMENTO FALTA ==========\n");
+    
+    // 2. Aloca quadro
+    int quadro = so_aloca_quadro(self);
+    if (quadro < 0) {
+        console_printf("SO: ERRO ao alocar quadro");
+        proc->estado = MORTO;
+        return;
+    }
+    
+    // 3. CRUCIAL: Marca quadro como ocupado IMEDIATAMENTE
+    mem_quadros_muda_estado(self->quadros, quadro, false, proc->pid, pagina);
+    
+    // 4. Lê da swap
+    int end_swap = swap_endereco_pagina(self->swap, proc->pid, pagina);
+    int dados[TAM_PAGINA];
+    int tempo_bloqueio;
+    
+    err_t err = swap_le_pagina(self->swap, end_swap, dados, TAM_PAGINA, &tempo_bloqueio);
+    if (err != ERR_OK) {
+        console_printf("SO: ERRO ao ler swap");
+        proc->estado = MORTO;
+        return;
+    }
+    
+    console_printf("SO: dados lidos: %d %d %d %d", dados[0], dados[1], dados[2], dados[3]);
+    
+    // 5. Escreve na memória física
+    int end_fis = quadro * TAM_PAGINA;
+    for (int i = 0; i < TAM_PAGINA; i++) {
+        mem_escreve(self->mem, end_fis + i, dados[i]);
+    }
+    
+    // 6. Mapeia na tabela de páginas
+    tabpag_define_quadro(proc->tabpag, pagina, quadro);
+    
+    // 7. Verifica
+    int quadro_verif;
+    if (tabpag_traduz(proc->tabpag, pagina, &quadro_verif) != ERR_OK) {
+        console_printf("SO: ERRO - mapeamento falhou!");
+        proc->estado = MORTO;
+        return;
+    }
+    
+    console_printf("SO: página %d mapeada no quadro %d", pagina, quadro);
+    
+    // 8. NÃO bloqueia - página já está disponível!
+    // Se swap for assíncrona, bloquear aqui. Se for síncrona (atual), não bloqueia.
+    
+    console_printf("========== FIM TRATAMENTO FALTA ==========\n");
 }
 
 
