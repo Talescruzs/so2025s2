@@ -1,6 +1,5 @@
 criando  
 criei   
-CMD: 'd1'
 CMD: 'c'
 SO: recebi IRQ 0 (Reset)
 nenhum processo corrente, nada a salvar   
@@ -114,6 +113,7 @@ escrevendo n no disp 2
 escalonando 0
 SO: processo 0 continua executando (quantum=48)
 APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=110(n)
+CMD: 'd1'
 SO: recebi IRQ 3 (E/S: relógio)
 tratando IRQ   
 interrupção do relógio   
@@ -4301,7 +4301,6 @@ escrevendo 5 no disp 10
 escalonando 2
 SO: processo 2 continua executando (quantum=44)
 APOS ESCALONAR: proc=2 regA=0 regPC=8162 regERRO=0 regX=53(5)
-CMD: 'd10'
 SO: recebi IRQ 2 (Chamada de sistema)
 tratando IRQ   
 chamada de sistema   
@@ -4425,7 +4424,6 @@ estado zero
 escalonando 1
 SO: processo 1 continua executando (quantum=49)
 APOS ESCALONAR: proc=1 regA=74 regPC=7126 regERRO=0 regX=74(J)
-CMD: 'd5'
 SO: recebi IRQ 3 (E/S: relógio)
 tratando IRQ   
 interrupção do relógio   
@@ -4615,7 +4613,6 @@ quantum restante do processo 1: 24
 escalonando 1
 SO: processo 1 continua executando (quantum=24)
 APOS ESCALONAR: proc=1 regA=-766 regPC=7123 regERRO=0 regX=235(�)
-CMD: 'd2'
 SO: recebi IRQ 3 (E/S: relógio)
 tratando IRQ   
 interrupção do relógio   
@@ -7793,7 +7790,6 @@ verificando bloqueio de E/S do dispositivo 14
 estado zero   
 escalonando -1
 SO: nenhum processo pronto para executar
-CMD: 'd10'
 SO: recebi IRQ 3 (E/S: relógio)
 nenhum processo corrente, nada a salvar   
 tratando IRQ   
@@ -7981,33 +7977,4777 @@ escalonando -1
 SO: escalonador escolheu processo 3 com prioridade 0,00
 muda estado do processo 3 para 1   
 APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
-CMD: 'f'
-Fim da execução.
-Métricas do Sistema Operacional:
-processos criados: 4
-tempo total da execucao: 20844
-tempo total da ocioso: 1791
-interrupcoes de reset: 1
-interrupcoes de CPU: 0
-interrupcoes de Relogio: 389
-interrupcoes de Sistema: 343
-interrupcoes de teclado: 53
-interrupcoes de tela: 0
-interrupcoes desconhecidas: 0
-numero de preempcoes: 39
-processo 0: tempo de retorno: 19048, numero de preempcoes: 2
-processo 1: tempo de retorno: 220, numero de preempcoes: 8
-processo 2: tempo de retorno: 117, numero de preempcoes: 19
-processo 3: tempo de retorno: 18980, numero de preempcoes: 10
-processo 0: entradas em estados - pronto: 2, bloqueado: 4, executando: 2
-processo 1: entradas em estados - pronto: 9, bloqueado: 5, executando: 9
-processo 2: entradas em estados - pronto: 20, bloqueado: 19, executando: 20
-processo 3: entradas em estados - pronto: 30, bloqueado: 29, executando: 30
-processo 0: tempo em estados - pronto: 0, bloqueado: 19048, executando: 626
-processo 1: tempo em estados - pronto: 7458, bloqueado: 332, executando: 10671
-processo 2: tempo em estados - pronto: 13277, bloqueado: 923, executando: 4785
-processo 3: tempo em estados - pronto: 15416, bloqueado: 1181, executando: 3600
-processo 0: tempo tempo medio de resposta: 4762
-processo 1: tempo tempo medio de resposta: 66
-processo 2: tempo tempo medio de resposta: 48
-processo 3: tempo tempo medio de resposta: 40
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 8 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 8 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=49 regPC=9221 regERRO=0 regX=19()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 1 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 1 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 9 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 9 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=20()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 0 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 0 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=21()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 1 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 1 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=22()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=23()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=24()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=25()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 5 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 5 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=26()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 6 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 6 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=27()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 7 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 7 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=28()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 8 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 8 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=50 regPC=9221 regERRO=0 regX=29()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 9 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 9 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=30()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 0 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 0 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=31()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 1 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 1 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=32( )
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=33(!)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=34(")
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=35(#)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 5 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 5 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=36($)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 6 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 6 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=37(%)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 7 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 7 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=38(&)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 8 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 8 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=51 regPC=9221 regERRO=0 regX=39(')
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 9 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 9 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=40(()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 0 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 0 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=41())
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 1 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 1 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=49(1)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=42(*)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 2 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 2 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=43(+)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 3 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 3 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=51(3)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=44(,)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=45(-)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 5 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 5 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=46(.)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 6 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 6 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=54(6)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=47(/)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 7 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 7 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=55(7)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=48(0)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 8 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 8 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=56(8)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=52 regPC=9221 regERRO=0 regX=49(1)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 4 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 4 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=52(4)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 9 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 9 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=57(9)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 3: 49
+escalonando 3
+SO: processo 3 continua executando (quantum=49)
+APOS ESCALONAR: proc=3 regA=53 regPC=9221 regERRO=0 regX=50(2)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 5 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 5 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=53(5)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever 0 no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo 0 no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=48(0)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever   no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo   no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=32( )
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 15: 0   
+quer escrever ] no disp 14
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+muda estado do processo 3 para 2   
+SO: bloqueando processo 3 na escrita do dispositivo 14
+esperando disp 14 estado 2
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando 3
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 0   
+verificando bloqueio de E/S do dispositivo 14 
+estado zero   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+verificando desbloqueio do processo 3   
+dispositivo 14   
+estado do dispositivo 15: 1   
+verificando bloqueio de E/S do dispositivo 14 
+14 pronto
+escrevendo ] no disp 14
+muda estado do processo 3 para 0   
+escalonando -1
+SO: escalonador escolheu processo 3 com prioridade 0,00
+muda estado do processo 3 para 1   
+APOS ESCALONAR: proc=3 regA=0 regPC=9160 regERRO=0 regX=93(])
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 8
+muda estado do processo 3 para 3   
+chamada de morte de processo   3
+dados do processo RegA 8, RegX 0, PC 9086, erro 0
+muda estado do processo 0 para 0   
+escalonando -1
+SO: escalonador escolheu processo 0 com prioridade 0,00
+muda estado do processo 0 para 1   
+APOS ESCALONAR: proc=0 regA=0 regPC=150 regERRO=0 regX=4()
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=50)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=105(i)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 49
+escalonando 0
+SO: processo 0 continua executando (quantum=49)
+APOS ESCALONAR: proc=0 regA=110 regPC=266 regERRO=0 regX=222(�)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever n no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo n no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=49)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=110(n)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=49)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=105(i)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 48
+escalonando 0
+SO: processo 0 continua executando (quantum=48)
+APOS ESCALONAR: proc=0 regA=2 regPC=271 regERRO=0 regX=116(t)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever t no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo t no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=48)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=116(t)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever   no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo   no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=48)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=32( )
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever t no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo t no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=48)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=116(t)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 47
+escalonando 0
+SO: processo 0 continua executando (quantum=47)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=116(t)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever e no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo e no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=47)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=101(e)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever r no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo r no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=47)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=114(r)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 46
+escalonando 0
+SO: processo 0 continua executando (quantum=46)
+APOS ESCALONAR: proc=0 regA=0 regPC=276 regERRO=0 regX=228(�)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever m no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo m no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=46)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=109(m)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever i no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo i no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=46)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=105(i)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 45
+escalonando 0
+SO: processo 0 continua executando (quantum=45)
+APOS ESCALONAR: proc=0 regA=0 regPC=254 regERRO=0 regX=231(�)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever n no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo n no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=45)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=110(n)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever a no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo a no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=45)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=97(a)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 44
+escalonando 0
+SO: processo 0 continua executando (quantum=44)
+APOS ESCALONAR: proc=0 regA=110 regPC=266 regERRO=0 regX=233(�)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever n no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo n no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=44)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=110(n)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever d no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo d no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=44)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=100(d)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 43
+escalonando 0
+SO: processo 0 continua executando (quantum=43)
+APOS ESCALONAR: proc=0 regA=2 regPC=271 regERRO=0 regX=111(o)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever o no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo o no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=43)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=111(o)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever . no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo . no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=43)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=46(.)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever . no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo . no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=43)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=46(.)
+SO: recebi IRQ 3 (E/S: relógio)
+tratando IRQ   
+interrupção do relógio   
+quantum restante do processo 0: 42
+escalonando 0
+SO: processo 0 continua executando (quantum=42)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=46(.)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 2
+chamada de escrita   
+estado do dispositivo 3: 1   
+quer escrever . no disp 2
+verificando bloqueio de E/S do dispositivo 2 
+escrevendo . no disp 2
+escalonando 0
+SO: processo 0 continua executando (quantum=42)
+APOS ESCALONAR: proc=0 regA=0 regPC=272 regERRO=0 regX=46(.)
+SO: recebi IRQ 2 (Chamada de sistema)
+tratando IRQ   
+chamada de sistema   
+SO: chamada de sistema 8
+muda estado do processo 0 para 3   
+chamada de morte de processo   0
+dados do processo RegA 8, RegX 0, PC 160, erro 0
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do relógio   
+escalonando -1
+SO: nenhum processo pronto para executar
+SO: recebi IRQ 3 (E/S: relógio)
+nenhum processo corrente, nada a salvar   
+tratando IRQ   
+interrupção do r

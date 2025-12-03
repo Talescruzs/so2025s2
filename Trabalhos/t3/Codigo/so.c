@@ -254,10 +254,11 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   
   // salva o estado da cpu no descritor do processo que foi interrompido
   so_salva_estado_da_cpu(self);
+  
   // faz o atendimento da interrupção
   so_trata_irq(self, irq);
-  // faz o processamento independente da interrupção
   
+  // faz o processamento independente da interrupção
   so_trata_pendencias(self);
   
   // escolhe o próximo processo a executar
@@ -272,36 +273,20 @@ static int so_trata_interrupcao(void *argC, int reg_A)
   int retorno = so_despacha(self);
   console_printf("depois despacha   ");
   
-  // TESTE: Verifica tradução do PC
+  // Debug final - USA OS VALORES DO PROCESSO CORRENTE, NÃO DA MEMÓRIA
   if (self->processo_corrente != NULL) {
-    int pagina_pc = self->processo_corrente->regPC / TAM_PAGINA;
-    int quadro_pc;
-    err_t err_traduz = tabpag_traduz(self->processo_corrente->tabpag, pagina_pc, &quadro_pc);
-    
-    if (err_traduz == ERR_OK) {
-      int end_fis = quadro_pc * TAM_PAGINA + (self->processo_corrente->regPC % TAM_PAGINA);
-      int valor_fis;
-      mem_le(self->mem, end_fis, &valor_fis);
-      console_printf("Teste tradução: PC=%d página=%d quadro=%d end_fis=%d valor=%d",
-                     self->processo_corrente->regPC, pagina_pc, quadro_pc, end_fis, valor_fis);
-    } else {
-      console_printf("Teste tradução: FALHOU - PC=%d página=%d err=%d (FALTA DE PÁGINA!)",
-                     self->processo_corrente->regPC, pagina_pc, err_traduz);
-    }
+    console_printf("RETORNO DESPACHA: %d, proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
+                   retorno,
+                   self->processo_corrente->pid,
+                   self->processo_corrente->regA,
+                   self->processo_corrente->regPC,
+                   self->processo_corrente->regERRO,
+                   self->processo_corrente->regX,
+                   self->processo_corrente->regX);
+  } else {
+    console_printf("RETORNO DESPACHA: %d (sem processo corrente)", retorno);
   }
-  int a, pc, erro, x;
-  mem_le(self->mem, CPU_END_PC, &pc);
-  mem_le(self->mem, CPU_END_A, &a);
-  mem_le(self->mem, CPU_END_erro, &erro);
-  mem_le(self->mem, 59, &x);
-  console_printf("RETORNO DESPACHA: %d, proc=%d regA=%d regPC=%d regERRO=%d regX=%d(%c)",
-                 retorno,
-                 self->processo_corrente->pid,
-                 a,
-                 pc,
-                 erro,
-                 x,
-                 x);
+  
   return retorno;
 }
 
@@ -485,6 +470,7 @@ static int so_despacha(so_t *self)
     console_printf("SO: sem processo para despachar");
     return 1;
   }
+  
   
   if (self->processo_corrente->estado == MORTO) {
     console_printf("SO: processo %d está morto", self->processo_corrente->pid);
@@ -1520,22 +1506,46 @@ static void so_chamada_mata_proc(so_t *self)
     self->processo_corrente->regA = -1;
     return;
   }
+  
   int tempo_inicio = 0;
   es_le(self->es, D_RELOGIO_INSTRUCOES, &tempo_inicio);
   self->metrica->tempo_retorno[alvo->pid-1] = tempo_inicio - self->metrica->tempo_retorno[alvo->pid-1];
 
+  console_printf("SO: matando processo %d", alvo->pid);
   muda_estado_proc(alvo, self->metrica, self->es, MORTO);
   
-  console_printf("chamada de morte de processo   %d", alvo->pid);
-  console_printf("dados do processo RegA %d, RegX %d, PC %d, erro %d", alvo->regA, alvo->regX, alvo->regPC, alvo->regERRO);
-  self->processo_corrente = NULL; // força escalonamento na próxima vez
-
+  // CRUCIAL: Se matou a si mesmo, anula processo_corrente
+  if (alvo == self->processo_corrente) {
+    console_printf("SO: processo %d se matou, anulando processo_corrente", alvo->pid);
+    self->processo_corrente = NULL;
+  }
+  
+  // Desbloqueia processo pai se estava esperando
   processo *pai = encontra_processo_por_pid(self->tabela_processos, alvo->ppid);
-  if (pai != NULL)
-  {
-
-    pai->esperando_pid[alvo->pid-1] = -1; // nao espera mais esse filho
-    
+  if (pai != NULL) {
+    // Verifica se o pai estava esperando este filho
+    for (int i = 0; i < pai->indice_esperando_pid; i++) {
+      if (pai->esperando_pid[i] == alvo->pid) {
+        pai->esperando_pid[i] = -1; // não espera mais esse filho
+        
+        // Se o pai estava bloqueado esperando, desbloqueia
+        if (pai->estado == BLOQUEADO) {
+          bool ainda_esperando = false;
+          for (int j = 0; j < pai->indice_esperando_pid; j++) {
+            if (pai->esperando_pid[j] > 0) {
+              ainda_esperando = true;
+              break;
+            }
+          }
+          
+          if (!ainda_esperando) {
+            console_printf("SO: desbloqueando pai %d", pai->pid);
+            muda_estado_proc(pai, self->metrica, self->es, PRONTO);
+          }
+        }
+        break;
+      }
+    }
   }
 }
 

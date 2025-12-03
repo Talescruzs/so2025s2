@@ -493,7 +493,7 @@ void cpu_executa_1(cpu_t *self)
 
   int opcode;
   if (pega_opcode(self, &opcode)) {
-    console_printf("Executando opcode %02d (%s)", opcode, instrucao_nome(opcode));
+    // console_printf("Executando opcode %02d (%s)", opcode, instrucao_nome(opcode));
     executa_a_instrucao(self, opcode);
   }
 
