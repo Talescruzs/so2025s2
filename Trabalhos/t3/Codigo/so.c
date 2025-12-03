@@ -353,17 +353,15 @@ static void so_trata_pendencias(so_t *self)
   
   verifica_ocioso(self->metrica, self->tabela_processos, self->es);
   
-  
-  for (int i = 0; i < MAX_PROCESSOS; i++){
-    processo *proc = self->tabela_processos;
-    if (proc == NULL){
-      return;
-    }
+  processo *proc = self->tabela_processos;
+  while (proc != NULL)
+  {
     if (proc->esperando_dispositivo >= 0){
       trata_bloqueio_disp(proc, self->metrica, self->es, &self->erro_interno);
     }
-  } 
-
+    proc = proc->prox;
+  }
+  
 }
 
 // AUXILIARES DE ESCALONADOR  
@@ -1002,7 +1000,7 @@ static void so_chamada_escr(so_t *self)
   else {
     self->metrica->n_interrupcoes_tipo[IRQ_TECLADO]++;
     self->processo_corrente->ultimo_char_para_escrever = self->processo_corrente->regX;
-    console_printf("SO: bloqueando processo %d na escrita do dispositivo %d", self->processo_corrente, terminal_tela);
+    console_printf("SO: bloqueando processo %d na escrita do dispositivo %d\n", self->processo_corrente->pid, terminal_tela);
     console_printf("esperando disp %d estado %d", self->processo_corrente->esperando_dispositivo, self->processo_corrente->estado);
   }
   
