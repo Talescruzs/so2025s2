@@ -311,13 +311,6 @@ static void so_salva_estado_da_cpu(so_t *self)
     self->erro_interno = true;
     return;
   }
-  
-  // Gambiarra para morte de processo
-  if (a == 1 && pc == 71 && erro == 1 && x == 32) {
-    self->processo_corrente->regX = self->processo_corrente->pid;
-    so_chamada_mata_proc(self);
-    return;
-  }
 
   // SALVA no descritor do processo
   self->processo_corrente->regA = a;
@@ -858,10 +851,6 @@ static void so_trata_irq_err_cpu(so_t *self)
     return;
   }
   
-  // Outros erros - mata o processo (gambiarra absurda aqui, mas oq somos nos alem de um amontoado de gambiarras?)
-  console_printf("SO: erro fatal %s - matando processo", err_nome(err));
-  self->processo_corrente->regX = self->processo_corrente->pid;
-  so_chamada_mata_proc(self);
 }
 
 
