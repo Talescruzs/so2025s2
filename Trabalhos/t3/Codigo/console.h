@@ -40,4 +40,7 @@ terminal_t *console_terminal(console_t *self, char id_terminal);
 // esta função deve ser chamada periodicamente para que tela funcione
 void console_tictac(console_t *self);
 
+// Insere um comando externo na fila (por exemplo 'F' para finalizar)
+void console_insere_comando_externo(console_t *self, char c);
+
 #endif // CONSOLE_H

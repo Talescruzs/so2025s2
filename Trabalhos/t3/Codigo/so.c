@@ -419,6 +419,13 @@ static void so_escalona(so_t *self) {
     {
       // AQUI TU PARA O SO E MOSTRA AS METRICAS
       console_printf("SO: todos os processos morreram, encerrando o SO");
+      // Mostra métricas e solicita finalização do laço do controlador
+      if (self->metrica != NULL) {
+        mostra_metricas(self->metrica);
+      }
+      if (self->console != NULL) {
+        console_insere_comando_externo(self->console, 'F');
+      }
     }
     
   }
